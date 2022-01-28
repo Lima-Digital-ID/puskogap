@@ -1,17 +1,33 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.template')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    You're logged in!
+@section('page-header')
+    @include('components.page-header', [
+        'pageTitle' => 'Dashboard',
+        'pageSubtitle' => '',
+        'pageIcon' => 'feather icon-home',
+        'parentMenu' => '',
+        'current' => 'Dashboard'
+    ])
+@endsection
+
+@section('content')
+    @include('components.notification')
+    {{--  <div class="row">
+        <div class="col-md-12">
+            <div class="card sale-card">
+                <div class="card-header">
+                    <h5>HLS</h5>
+                </div>
+                <div class="card-block">
+                    <figure class="highcharts-figure">
+                        <div id="container-hls"></div>
+                        <p class="highcharts-description">
+                        </p>
+                    </figure>                    
                 </div>
             </div>
         </div>
+    </div>  --}}
+
     </div>
-</x-app-layout>
+@endsection
