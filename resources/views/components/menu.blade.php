@@ -16,38 +16,20 @@
             {{-- end master --}}
 
 
-            {{-- hls --}}
-            {{--  <div class="pcoded-navigation-label">HLS</div>
+            <--- Golongan --->
+            <div class="pcoded-navigation-label">Data Master</div>
             <ul class="pcoded-item pcoded-left-item">
-                <li class="{{ Request::segment(2) == 'master-hls' ? 'active' : '' }}">
-                    <a href="{{ url('hls/master-hls') }}" class="waves-effect waves-dark">
+                <li class="{{ Request::segment(2) == 'golongan' ? 'active' : '' }}">
+                    <a href="{{ route('golongan.index') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="fa fa-database"></i>
                         </span>
-                        <span class="pcoded-mtext">Master HLS</span>
+                        <span class="pcoded-mtext">Golongan</span>
                     </a>
                 </li>
 
-                <li class="{{ Request::segment(2) == 'faktor-koreksi-pesantren' ? 'active' : '' }}">
-                    <a href="{{ url('hls/faktor-koreksi-pesantren') }}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="fa fa-database"></i>
-                        </span>
-                        <span class="pcoded-mtext">Faktor Koreksi Pesantren</span>
-                    </a>
-                </li>
-
-                <li class="{{ Request::segment(2) == 'hitung-hls' ? 'active' : '' }}">
-                    <a href="{{ url('hls/hitung-hls') }}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="fa fa-calculator"></i>
-                        </span>
-                        <span class="pcoded-mtext">Hitung HLS</span>
-                    </a>
-                </li>
-
-            </ul>  --}}
-            {{-- end hls --}}
+            </ul>
+            <--- End Golongan --->
             
         </div>
     </div>
