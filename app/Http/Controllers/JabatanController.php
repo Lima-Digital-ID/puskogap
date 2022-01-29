@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GolonganRequest;
-use App\Models\Golongan;
+use App\Http\Requests\JabatanRequest;
+use App\Models\Jabatan;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\QueryException;
 
-class GolonganController extends Controller
+class JabatanController extends Controller
 {
     private $param;
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Golongan';
+        $this->param['pageTitle'] = 'Jabatan';
         $this->param['pageIcon'] = 'fa fa-database';
-        $this->param['parentMenu'] = '/golongan';
-        $this->param['current'] = 'Golongan';
+        $this->param['parentMenu'] = '/jabatan';
+        $this->param['current'] = 'Jabatan';
     }
 
     /**
@@ -28,14 +28,14 @@ class GolonganController extends Controller
     public function index(Request $request)
     {
         $this->param['btnText'] = 'Tambah';
-        $this->param['btnLink'] = route('golongan.create');
+        $this->param['btnLink'] = route('jabatan.create');
 
         try {
             $keyword = $request->get('keyword');
-            $getGolongan = Golongan::orderBy('id');
+            $getGolongan = Jabatan::orderBy('id');
 
             if ($keyword) {
-                $getGolongan->where('golongan', 'LIKE', "%{$keyword}%");
+                $getGolongan->where('jabatan', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['data'] = $getGolongan->paginate(10);
@@ -46,7 +46,7 @@ class GolonganController extends Controller
             return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
         }
 
-        return \view('golongan.index', $this->param);
+        return \view('jabatan.index', $this->param);
     }
 
     /**
@@ -56,10 +56,10 @@ class GolonganController extends Controller
      */
     public function create()
     {
-        $this->param['btnText'] = 'List golongan';
-        $this->param['btnLink'] = route('golongan.index');
+        $this->param['btnText'] = 'List Jabatan';
+        $this->param['btnLink'] = route('jabatan.index');
 
-        return \view('golongan.create', $this->param);
+        return \view('jabatan.create', $this->param);
     }
 
     /**
@@ -68,31 +68,30 @@ class GolonganController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(GolonganRequest $request)
+    public function store(JabatanRequest $request)
     {
         $request = $request->validate(
             [
-                'pangkat' => 'required|max:100|unique:golongan,pangkat',
+                'jabatan' => 'required|max:191|unique:jabatan,jabatan',
             ],
             [
-                'pangkat.required' => 'Pangkat harus diisi.', 
-                'pangkat.max' => 'Maksimal jumlah karakter 100.', 
-                'pangkat.unique' => 'Nama telah digunakan.', 
+                'jabatan.required' => 'Jabatan harus diisi.', 
+                'jabatan.max' => 'Maksimal jumlah karakter 191.', 
+                'jabatan.unique' => 'Nama telah digunakan.', 
             ]
         );
-
         $validated = $request;
         try {
-            $golongan = new Golongan;
-            $golongan->pangkat = $validated['pangkat'];
-            $golongan->save();
+            $jabatan = new Jabatan;
+            $jabatan->jabatan = $validated['jabatan'];
+            $jabatan->save();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.');
         } catch (QueryException $e) {
             return back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('golongan.index')->withStatus('Data berhasil disimpan.');
+        return redirect()->route('jabatan.index')->withStatus('Data berhasil disimpan.');
     }
 
     /**
@@ -114,11 +113,11 @@ class GolonganController extends Controller
      */
     public function edit($id)
     {
-        $this->param['data'] = Golongan::find($id);
-        $this->param['btnText'] = 'List Golongan';
-        $this->param['btnLink'] = route('golongan.index');
+        $this->param['data'] = Jabatan::find($id);
+        $this->param['btnText'] = 'List Jabatan';
+        $this->param['btnLink'] = route('jabatan.index');
 
-        return view('golongan.edit', $this->param);
+        return view('jabatan.edit', $this->param);
     }
 
     /**
@@ -128,36 +127,36 @@ class GolonganController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(GolonganRequest $request, $id)
+    public function update(JabatanRequest $request, $id)
     {
-        $golongan = Golongan::findOrFail($id);
-        
-        $pangkatUnique = $request['pangkat'] != null && $request['pangkat'] != $golongan->pangkat ? '|unique:golongan,pangkat' : '';
+        $data = Jabatan::findOrFail($id);
+
+        $jabatanUnique = $request['jabatan'] != null && $request['jabatan'] != $data->jabatan ? '|unique:jabatan,jabatan' : '';
 
         $request = $request->validate(
             [
-                'pangkat' => 'required|max:100'.$pangkatUnique,
+                'jabatan' => 'required|max:191'.$jabatanUnique,
             ],
             [
-                'pangkat.required' => 'Pangkat harus diisi.', 
-                'pangkat.max' => 'Maksimal jumlah karakter 100.', 
-                'pangkat.unique' => 'Nama telah digunakan.', 
+                'jabatan.required' => 'Jabatan harus diisi.', 
+                'jabatan.max' => 'Maksimal jumlah karakter 191.', 
+                'jabatan.unique' => 'Nama telah digunakan.', 
             ]
         );
 
         $validated = $request;
 
         try {
-            $golongan->pangkat = $validated['pangkat'];
+            $data->jabatan = $validated['jabatan'];
 
-            $golongan->save();
+            $data->save();
         } catch (\Exception $e) {
             return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('golongan.index')->withStatus('Data berhasil diperbarui.');
+        return redirect()->route('jabatan.index')->withStatus('Data berhasil diperbarui.');
     }
 
     /**
@@ -169,7 +168,7 @@ class GolonganController extends Controller
     public function destroy($id)
     {
         try {
-            $golongan = Golongan::findOrFail($id);
+            $golongan = Jabatan::findOrFail($id);
             $golongan->delete();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.');
@@ -177,6 +176,6 @@ class GolonganController extends Controller
             return back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('golongan.index')->withStatus('Data berhasil dihapus.');
+        return redirect()->route('jabatan.index')->withStatus('Data berhasil dihapus.');
     }
 }

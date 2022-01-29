@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GolonganRequest;
-use App\Models\Golongan;
+use App\Http\Requests\UnitKerjaRequest;
+use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\QueryException;
 
-class GolonganController extends Controller
+class UnitKerjaController extends Controller
 {
     private $param;
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Golongan';
+        $this->param['pageTitle'] = 'Unit Kerja';
         $this->param['pageIcon'] = 'fa fa-database';
-        $this->param['parentMenu'] = '/golongan';
-        $this->param['current'] = 'Golongan';
+        $this->param['parentMenu'] = '/unit-kerja';
+        $this->param['current'] = 'Unit Kerja';
     }
 
     /**
@@ -28,25 +28,25 @@ class GolonganController extends Controller
     public function index(Request $request)
     {
         $this->param['btnText'] = 'Tambah';
-        $this->param['btnLink'] = route('golongan.create');
+        $this->param['btnLink'] = route('unit-kerja.create');
 
         try {
             $keyword = $request->get('keyword');
-            $getGolongan = Golongan::orderBy('id');
+            $getData = UnitKerja::orderBy('id');
 
             if ($keyword) {
-                $getGolongan->where('golongan', 'LIKE', "%{$keyword}%");
+                $getData->where('unit_kerja', 'LIKE', "%{$keyword}%");
             }
 
-            $this->param['data'] = $getGolongan->paginate(10);
+            $this->param['data'] = $getData->paginate(10);
         } catch (\Illuminate\Database\QueryException $e) {
             return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
         }
         catch (Exception $e) {
-            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+            return back()->withError('Terjadi Kesalahan pada database: ' . $e->getMessage());
         }
 
-        return \view('golongan.index', $this->param);
+        return \view('unit-kerja.index', $this->param);
     }
 
     /**
@@ -56,10 +56,10 @@ class GolonganController extends Controller
      */
     public function create()
     {
-        $this->param['btnText'] = 'List golongan';
-        $this->param['btnLink'] = route('golongan.index');
+        $this->param['btnText'] = 'List Unit Kerja';
+        $this->param['btnLink'] = route('unit-kerja.index');
 
-        return \view('golongan.create', $this->param);
+        return \view('unit-kerja.create', $this->param);
     }
 
     /**
@@ -68,31 +68,21 @@ class GolonganController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(GolonganRequest $request)
+    public function store(UnitKerjaRequest $request)
     {
-        $request = $request->validate(
-            [
-                'pangkat' => 'required|max:100|unique:golongan,pangkat',
-            ],
-            [
-                'pangkat.required' => 'Pangkat harus diisi.', 
-                'pangkat.max' => 'Maksimal jumlah karakter 100.', 
-                'pangkat.unique' => 'Nama telah digunakan.', 
-            ]
-        );
-
-        $validated = $request;
+        $validated = $request->validated();
         try {
-            $golongan = new Golongan;
-            $golongan->pangkat = $validated['pangkat'];
-            $golongan->save();
+            $unitKerja = new UnitKerja;
+            $unitKerja->kode = $validated['kode'];
+            $unitKerja->unit_kerja = $validated['unit_kerja'];
+            $unitKerja->save();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.');
         } catch (QueryException $e) {
             return back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('golongan.index')->withStatus('Data berhasil disimpan.');
+        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil disimpan.');
     }
 
     /**
@@ -114,11 +104,11 @@ class GolonganController extends Controller
      */
     public function edit($id)
     {
-        $this->param['data'] = Golongan::find($id);
-        $this->param['btnText'] = 'List Golongan';
-        $this->param['btnLink'] = route('golongan.index');
+        $this->param['data'] = UnitKerja::find($id);
+        $this->param['btnText'] = 'List Unit Kerja';
+        $this->param['btnLink'] = route('unit-kerja.index');
 
-        return view('golongan.edit', $this->param);
+        return view('unit-kerja.edit', $this->param);
     }
 
     /**
@@ -128,36 +118,39 @@ class GolonganController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(GolonganRequest $request, $id)
+    public function update(UnitKerjaRequest $request, $id)
     {
-        $golongan = Golongan::findOrFail($id);
-        
-        $pangkatUnique = $request['pangkat'] != null && $request['pangkat'] != $golongan->pangkat ? '|unique:golongan,pangkat' : '';
+        $data = UnitKerja::findOrFail($id);
+
+        $unitUnique = $request['unit_kerja'] != null && $request['unit_kerja'] != $data->jabatan ? '|unique:unit_kerja,unit_kerja' : '';
 
         $request = $request->validate(
             [
-                'pangkat' => 'required|max:100'.$pangkatUnique,
+                'kode' => 'required|max:30',
+                'unit_kerja' => 'required|max:191'.$unitUnique,
             ],
             [
-                'pangkat.required' => 'Pangkat harus diisi.', 
-                'pangkat.max' => 'Maksimal jumlah karakter 100.', 
-                'pangkat.unique' => 'Nama telah digunakan.', 
+            'kode.required' => 'Kode harus diisi.',
+            'kode.max' => 'Maksimal jumlah karakter 30.',
+            'kode.unique' => 'Nama telah digunakan.',
+            'unit_kerja.required' => 'Unit kerja harus diisi.',
+            'unit_kerja.max' => 'Maksimal jumlah karakter 191.'
             ]
         );
 
         $validated = $request;
 
         try {
-            $golongan->pangkat = $validated['pangkat'];
+            $data->jabatan = $validated['Unit Kerja'];
 
-            $golongan->save();
+            $data->save();
         } catch (\Exception $e) {
             return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('golongan.index')->withStatus('Data berhasil diperbarui.');
+        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil diperbarui.');
     }
 
     /**
@@ -169,14 +162,14 @@ class GolonganController extends Controller
     public function destroy($id)
     {
         try {
-            $golongan = Golongan::findOrFail($id);
-            $golongan->delete();
+            $data = UnitKerja::findOrFail($id);
+            $data->delete();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.');
         } catch (QueryException $e) {
             return back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('golongan.index')->withStatus('Data berhasil dihapus.');
+        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil dihapus.');
     }
 }

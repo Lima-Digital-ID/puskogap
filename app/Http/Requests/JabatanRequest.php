@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class GolonganRequest extends FormRequest
+class JabatanRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +25,15 @@ class GolonganRequest extends FormRequest
     public function rules()
     {
         return [
-            'pangkat' => 'required|max:100'
+            'jabatan' => 'required|max:191'
         ];
     }
 
     public function messages()
     {
         return [
-            'pangkat.required' => 'Pangkat harus diisi.',
-            'pangkat.max' => 'Maksimal jumlah karakter 100.'
+            'jabatan.required' => 'Jabatan harus diisi.',
+            'jabatan.max' => 'Maksimal jumlah karakter 191.'
         ];
     }
 }

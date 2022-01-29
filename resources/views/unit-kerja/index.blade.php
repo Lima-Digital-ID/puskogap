@@ -25,7 +25,7 @@
             
         </div>
         <div class="card-block table-border-style">
-            @include('golongan._table')
+            @include('unit-kerja._table')
         </div>
     </div>
 

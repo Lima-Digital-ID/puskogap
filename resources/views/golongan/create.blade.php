@@ -19,7 +19,7 @@
             @include('components.button-list', ['btnText' => $btnText, 'btnLink' => $btnLink])
             <div class="card">
                 <div class="card-header">
-                    <h5>Tambah Golongan</h5>
+                    <h5>Tambah {{ $pageTitle }}</h5>
                 </div>
                 <div class="card-block">
                     {{-- <h4 class="sub-title">Basic Inputs</h4> --}}

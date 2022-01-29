@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\GolonganController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\UnitKerjaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +26,8 @@ Route::middleware(['auth'])->group(function () {
     })->middleware(['auth'])->name('dashboard');
 
     Route::resource('golongan', GolonganController::class);
+    Route::resource('jabatan', JabatanController::class);
+    Route::resource('unit-kerja', UnitKerjaController::class);
 });
 
 require __DIR__.'/auth.php';

@@ -22,7 +22,7 @@
                     <h5>Edit {{ $pageTitle }}</h5>
                 </div>
                 <div class="card-block">
-                    @include('golongan._form-edit')
+                    @include('jabatan._form-edit')
                 </div>
             </div>
         </div>

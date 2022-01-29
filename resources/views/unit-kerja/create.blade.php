@@ -19,10 +19,10 @@
             @include('components.button-list', ['btnText' => $btnText, 'btnLink' => $btnLink])
             <div class="card">
                 <div class="card-header">
-                    <h5>Edit {{ $pageTitle }}</h5>
+                    <h5>Tambah {{ $pageTitle }}</h5>
                 </div>
                 <div class="card-block">
-                    @include('golongan._form-edit')
+                    @include('unit-kerja._form-create')
                 </div>
             </div>
         </div>
