@@ -25,19 +25,46 @@ class KompetensiKhususRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode' => 'required|max:30|unique:kompetensi_khusus,kode',
-            'kompetensi_khusus' => 'required|max:191',
+            'nama_kegiatan' => 'required',
+            'id_jenis_kegiatan' => 'required',
+            'waktu_mulai' => 'required',
+            'waktu_selesai' => 'required',
+            'lokasi' => 'required',
+            'tamu_vvip' => 'required',
+            'biaya' => 'required',
+            'jumlah_roda_4' => 'required',
+            'jumlah_roda_2' => 'required',
+            'poc' => 'required',
+            'jumlah_ht' => 'required',
+            'penyelenggara' => 'required',
+            'jumlah_peserta' => 'required',
+            'penanggung_jawab' => 'required',
+            'lampiran' => 'required',
+            'status' => 'required',
+            'keterangan' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'kode.required' => 'Kode harus diisi.',
-            'kode.max' => 'Maksimal jumlah karakter 30.',
-            'kode.unique' => 'Nama telah digunakan.',
-            'kompetensi_khusus.required' => 'Kompetensi khusus harus diisi.',
-            'kompetensi_khusus.max' => 'Maksimal jumlah karakter 191.'
+            'nama_kegiatan.required' => 'Nama kegiatan harus diisi.',
+            'id_jenis_kegiatan.required' => 'Jenis kegiatan harus diisi.',
+            'waktu_mulai.required' => 'Waktu mulai harus diisi.',
+            'waktu_selesai.required' => 'Waktu selesai harus diisi.',
+            'lokasi.required' => 'Lokasi harus diisi.',
+            'tamu_vvip.required' => 'Tamu VVIP harus diisi.',
+            'biaya.required' => 'Biaya harus diisi.',
+            'jumlah_roda_4.required' => 'Jumlah roda 4 harus diisi.',
+            'jumlah_roda_2.required' => 'Jumlah roda 2 harus diisi.',
+            'poc.required' => 'POC harus diisi.',
+            'jumlah_ht.required' => 'Jumlah HT harus diisi.',
+            'penyelenggara.required' => 'Penyelenggara harus diisi.',
+            'jumlah_peserta.required' => 'Jumlah peserta harus diisi.',
+            'penanggung_jawab.required' => 'Penanggung Jawab harus diisi.',
+            'lampiran.required' => 'Lampiran harus diisi.',
+            'status.required' => 'Status harus diisi.',
+            'keterangan.required' => 'Keterangan harus diisi.',
         ];
     }
 }

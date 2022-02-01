@@ -15,6 +15,20 @@
             </ul>
             {{-- end master --}}
 
+            {{-- Penugasan --}}
+            <div class="pcoded-navigation-label">Penugasan</div>
+            <ul class="pcoded-item pcoded-left-item">
+                <li class="{{ Request::segment(1) == 'penugasan' ? 'active' : '' }}">
+                    <a href="{{ url('penugasan') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-briefcase"></i>
+                        </span>
+                        <span class="pcoded-mtext">Penugasan</span>
+                    </a>
+                </li>
+            </ul>
+            {{-- end Penugasan --}}
+
 
             <div class="pcoded-navigation-label">Data Master</div>
             <ul class="pcoded-item pcoded-left-item">
