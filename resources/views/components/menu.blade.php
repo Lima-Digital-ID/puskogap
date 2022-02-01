@@ -48,6 +48,26 @@
                         </a>
                     </li>
                 <!-- End Unit Kerja ---!>
+                <!-- Kompetensi Khusus---!>
+                    <li class="{{ Request::segment(1) == 'kompetensi-khusus' ? 'active' : '' }}">
+                        <a href="{{ route('kompetensi-khusus.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fa fa-database"></i>
+                            </span>
+                            <span class="pcoded-mtext">Kompetensi Khusus</span>
+                        </a>
+                    </li>
+                <!-- End Kompetensi Khusus---!>
+                <!-- Jenis Kegiatan---!>
+                    <li class="{{ Request::segment(1) == 'jenis-kegiatan' ? 'active' : '' }}">
+                        <a href="{{ route('jenis-kegiatan.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fa fa-database"></i>
+                            </span>
+                            <span class="pcoded-mtext">Jenis Kegiatan</span>
+                        </a>
+                    </li>
+                <!-- End Jenis Kegiatan---!>
             </ul>
         </div>
     </div>

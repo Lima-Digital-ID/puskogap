@@ -1,4 +1,4 @@
-<form action="{{ route('unit-kerja.update', $data->id) }}" method="POST">
+<form action="{{ route('kompetensi-khusus.update', $data->id) }}" method="POST">
   @csrf
   @method('PUT')
 
@@ -15,10 +15,10 @@
   </div>
 
     <div class="form-group row">
-      <label class="col-sm-2 col-form-label">unit_kerja</label>
+      <label class="col-sm-2 col-form-label">Kompetensi Khusus</label>
       <div class="col-sm-10">
-          <input type="text" name="unit_kerja" class="form-control @error('unit_kerja') is-invalid @enderror" placeholder="Nama unit_kerja" value="{{old('unit_kerja', $data->unit_kerja)}}">
-          @error('unit_kerja')
+          <input type="text" name="kompetensi_khusus" class="form-control @error('kompetensi_khusus') is-invalid @enderror" placeholder="Nama Kompetensi Khusus" value="{{old('kompetensi_khusus', $data->kompetensi_khusus)}}">
+          @error('kompetensi_khusus')
               <div class="invalid-feedback">
                   {{ $message }}
               </div>

@@ -22,7 +22,7 @@
                     <h5>Edit {{ $pageTitle }}</h5>
                 </div>
                 <div class="card-block">
-                    @include('unit-kerja._form-edit')
+                    @include('jenis-kegiatan._form-edit')
                 </div>
             </div>
         </div>

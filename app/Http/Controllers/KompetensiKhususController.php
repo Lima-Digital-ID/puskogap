@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UnitKerjaRequest;
-use App\Models\UnitKerja;
+use App\Http\Requests\KompetensiKhususRequest;
+use App\Models\KompetensiKhusus;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\QueryException;
 
-class UnitKerjaController extends Controller
+class KompetensiKhususController extends Controller
 {
-    private $param;
-
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Unit Kerja';
+        $this->param['pageTitle'] = 'Kompetensi Khusus';
         $this->param['pageIcon'] = 'fa fa-database';
-        $this->param['parentMenu'] = '/unit-kerja';
-        $this->param['current'] = 'Unit Kerja';
+        $this->param['parentMenu'] = '/kompetensi-khusus';
+        $this->param['current'] = 'Kompetensi Khusus';
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -28,14 +25,14 @@ class UnitKerjaController extends Controller
     public function index(Request $request)
     {
         $this->param['btnText'] = 'Tambah';
-        $this->param['btnLink'] = route('unit-kerja.create');
+        $this->param['btnLink'] = route('kompetensi-khusus.create');
 
         try {
             $keyword = $request->get('keyword');
-            $getData = UnitKerja::orderBy('id');
+            $getData = KompetensiKhusus::orderBy('id');
 
             if ($keyword) {
-                $getData->where('unit_kerja', 'LIKE', "%{$keyword}%");
+                $getData->where('kompetensi_khusus', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['data'] = $getData->paginate(10);
@@ -46,7 +43,7 @@ class UnitKerjaController extends Controller
             return back()->withError('Terjadi Kesalahan pada database: ' . $e->getMessage());
         }
 
-        return \view('unit-kerja.index', $this->param);
+        return \view('kompetensi-khusus.index', $this->param);
     }
 
     /**
@@ -56,10 +53,10 @@ class UnitKerjaController extends Controller
      */
     public function create()
     {
-        $this->param['btnText'] = 'List Unit Kerja';
-        $this->param['btnLink'] = route('unit-kerja.index');
+        $this->param['btnText'] = 'List Kompetensi Khusus';
+        $this->param['btnLink'] = route('kompetensi-khusus.index');
 
-        return \view('unit-kerja.create', $this->param);
+        return \view('kompetensi-khusus.create', $this->param);
     }
 
     /**
@@ -68,21 +65,21 @@ class UnitKerjaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UnitKerjaRequest $request)
+    public function store(KompetensiKhususRequest $request)
     {
         $validated = $request->validated();
         try {
-            $unitKerja = new UnitKerja;
-            $unitKerja->kode = $validated['kode'];
-            $unitKerja->unit_kerja = $validated['unit_kerja'];
-            $unitKerja->save();
+            $kompetensiKhusus = new KompetensiKhusus;
+            $kompetensiKhusus->kode = $validated['kode'];
+            $kompetensiKhusus->kompetensi_khusus = $validated['kompetensi_khusus'];
+            $kompetensiKhusus->save();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.');
         } catch (QueryException $e) {
             return back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil disimpan.');
+        return redirect()->route('kompetensi-khusus.index')->withStatus('Data berhasil disimpan.');
     }
 
     /**
@@ -104,11 +101,11 @@ class UnitKerjaController extends Controller
      */
     public function edit($id)
     {
-        $this->param['data'] = UnitKerja::find($id);
-        $this->param['btnText'] = 'List Unit Kerja';
-        $this->param['btnLink'] = route('unit-kerja.index');
+        $this->param['data'] = KompetensiKhusus::find($id);
+        $this->param['btnText'] = 'List Kompetensi Khusus';
+        $this->param['btnLink'] = route('kompetensi-khusus.index');
 
-        return view('unit-kerja.edit', $this->param);
+        return view('kompetensi-khusus.edit', $this->param);
     }
 
     /**
@@ -118,23 +115,23 @@ class UnitKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UnitKerjaRequest $request, $id)
+    public function update(KompetensiKhususRequest $request, $id)
     {
-        $data = UnitKerja::findOrFail($id);
+        $data = KompetensiKhusus::findOrFail($id);
 
-        $unitUnique = $request['unit_kerja'] != null && $request['unit_kerja'] != $data->unit_kerja ? '|unique:unit_kerja,unit_kerja' : '';
+        $unitUnique = $request['kompetensi_khusus'] != null && $request['kompetensi_khusus'] != $data->kompetensi_khusus ? '|unique:kompetensi_khusus,kompetensi_khusus' : '';
 
         $request = $request->validate(
             [
                 'kode' => 'required|max:30',
-                'unit_kerja' => 'required|max:191'.$unitUnique,
+                'kompetensi_khusus' => 'required|max:191'.$unitUnique,
             ],
             [
             'kode.required' => 'Kode harus diisi.',
             'kode.max' => 'Maksimal jumlah karakter 30.',
             'kode.unique' => 'Nama telah digunakan.',
-            'unit_kerja.required' => 'Unit kerja harus diisi.',
-            'unit_kerja.max' => 'Maksimal jumlah karakter 191.'
+            'kompetensi_khusus.required' => 'Unit kerja harus diisi.',
+            'kompetensi_khusus.max' => 'Maksimal jumlah karakter 191.'
             ]
         );
 
@@ -142,7 +139,7 @@ class UnitKerjaController extends Controller
 
         try {
             $data->kode = $validated['kode'];
-            $data->unit_kerja = $validated['unit_kerja'];
+            $data->kompetensi_khusus = $validated['kompetensi_khusus'];
 
             $data->save();
         } catch (\Exception $e) {
@@ -151,7 +148,7 @@ class UnitKerjaController extends Controller
             return redirect()->back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil diperbarui.');
+        return redirect()->route('kompetensi-khusus.index')->withStatus('Data berhasil diperbarui.');
     }
 
     /**
@@ -163,7 +160,7 @@ class UnitKerjaController extends Controller
     public function destroy($id)
     {
         try {
-            $data = UnitKerja::findOrFail($id);
+            $data = KompetensiKhusus::findOrFail($id);
             $data->delete();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.');
@@ -171,6 +168,6 @@ class UnitKerjaController extends Controller
             return back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil dihapus.');
+        return redirect()->route('kompetensi-khusus.index')->withStatus('Data berhasil dihapus.');
     }
 }

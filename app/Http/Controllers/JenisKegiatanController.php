@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UnitKerjaRequest;
-use App\Models\UnitKerja;
+use App\Http\Requests\JenisKegiatanRequest;
+use App\Models\JenisKegiatan;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\QueryException;
 
-class UnitKerjaController extends Controller
+class JenisKegiatanController extends Controller
 {
-    private $param;
-
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Unit Kerja';
+        $this->param['pageTitle'] = 'Jenis Kegiatan';
         $this->param['pageIcon'] = 'fa fa-database';
-        $this->param['parentMenu'] = '/unit-kerja';
-        $this->param['current'] = 'Unit Kerja';
+        $this->param['parentMenu'] = '/jenis-kegiatan';
+        $this->param['current'] = 'Jenis Kegiatan';
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -28,14 +25,14 @@ class UnitKerjaController extends Controller
     public function index(Request $request)
     {
         $this->param['btnText'] = 'Tambah';
-        $this->param['btnLink'] = route('unit-kerja.create');
+        $this->param['btnLink'] = route('jenis-kegiatan.create');
 
         try {
             $keyword = $request->get('keyword');
-            $getData = UnitKerja::orderBy('id');
+            $getData = JenisKegiatan::orderBy('id');
 
             if ($keyword) {
-                $getData->where('unit_kerja', 'LIKE', "%{$keyword}%");
+                $getData->where('jenis_kegiatan', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['data'] = $getData->paginate(10);
@@ -46,7 +43,7 @@ class UnitKerjaController extends Controller
             return back()->withError('Terjadi Kesalahan pada database: ' . $e->getMessage());
         }
 
-        return \view('unit-kerja.index', $this->param);
+        return \view('jenis-kegiatan.index', $this->param);
     }
 
     /**
@@ -56,10 +53,10 @@ class UnitKerjaController extends Controller
      */
     public function create()
     {
-        $this->param['btnText'] = 'List Unit Kerja';
-        $this->param['btnLink'] = route('unit-kerja.index');
+        $this->param['btnText'] = 'List Jenis Kegiatan';
+        $this->param['btnLink'] = route('jenis-kegiatan.index');
 
-        return \view('unit-kerja.create', $this->param);
+        return \view('jenis-kegiatan.create', $this->param);
     }
 
     /**
@@ -68,21 +65,22 @@ class UnitKerjaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UnitKerjaRequest $request)
+    public function store(JenisKegiatanRequest $request)
     {
         $validated = $request->validated();
         try {
-            $unitKerja = new UnitKerja;
-            $unitKerja->kode = $validated['kode'];
-            $unitKerja->unit_kerja = $validated['unit_kerja'];
-            $unitKerja->save();
+            $jenisKegiatan = new JenisKegiatan;
+            $jenisKegiatan->kode = $validated['kode'];
+            $jenisKegiatan->jenis_kegiatan = $validated['jenis_kegiatan'];
+            $jenisKegiatan->jenis = $validated['jenis'];
+            $jenisKegiatan->save();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.');
         } catch (QueryException $e) {
             return back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil disimpan.');
+        return redirect()->route('jenis-kegiatan.index')->withStatus('Data berhasil disimpan.');
     }
 
     /**
@@ -104,11 +102,11 @@ class UnitKerjaController extends Controller
      */
     public function edit($id)
     {
-        $this->param['data'] = UnitKerja::find($id);
-        $this->param['btnText'] = 'List Unit Kerja';
-        $this->param['btnLink'] = route('unit-kerja.index');
+        $this->param['data'] = JenisKegiatan::find($id);
+        $this->param['btnText'] = 'List Jenis Kegiatan';
+        $this->param['btnLink'] = route('jenis-kegiatan.index');
 
-        return view('unit-kerja.edit', $this->param);
+        return view('jenis-kegiatan.edit', $this->param);
     }
 
     /**
@@ -118,23 +116,25 @@ class UnitKerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UnitKerjaRequest $request, $id)
+    public function update(JenisKegiatanRequest $request, $id)
     {
-        $data = UnitKerja::findOrFail($id);
+        $data = JenisKegiatan::findOrFail($id);
 
-        $unitUnique = $request['unit_kerja'] != null && $request['unit_kerja'] != $data->unit_kerja ? '|unique:unit_kerja,unit_kerja' : '';
+        $unitUnique = $request['jenis_kegiatan'] != null && $request['jenis_kegiatan'] != $data->jenis_kegiatan ? '|unique:jenis_kegiatan,jenis_kegiatan' : '';
 
         $request = $request->validate(
             [
                 'kode' => 'required|max:30',
-                'unit_kerja' => 'required|max:191'.$unitUnique,
+                'jenis_kegiatan' => 'required|max:191'.$unitUnique,
+                'jenis' => 'required',
             ],
             [
             'kode.required' => 'Kode harus diisi.',
             'kode.max' => 'Maksimal jumlah karakter 30.',
             'kode.unique' => 'Nama telah digunakan.',
-            'unit_kerja.required' => 'Unit kerja harus diisi.',
-            'unit_kerja.max' => 'Maksimal jumlah karakter 191.'
+            'jenis_kegiatan.required' => 'Jenis Kegiatan harus diisi.',
+            'jenis_kegiatan.max' => 'Maksimal jumlah karakter 191.',
+            'jenis.required' => 'Jenis harus diisi.',
             ]
         );
 
@@ -142,7 +142,8 @@ class UnitKerjaController extends Controller
 
         try {
             $data->kode = $validated['kode'];
-            $data->unit_kerja = $validated['unit_kerja'];
+            $data->jenis_kegiatan = $validated['jenis_kegiatan'];
+            $data->jenis = $validated['jenis'];
 
             $data->save();
         } catch (\Exception $e) {
@@ -151,7 +152,7 @@ class UnitKerjaController extends Controller
             return redirect()->back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil diperbarui.');
+        return redirect()->route('jenis-kegiatan.index')->withStatus('Data berhasil diperbarui.');
     }
 
     /**
@@ -163,7 +164,7 @@ class UnitKerjaController extends Controller
     public function destroy($id)
     {
         try {
-            $data = UnitKerja::findOrFail($id);
+            $data = JenisKegiatan::findOrFail($id);
             $data->delete();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.');
@@ -171,6 +172,6 @@ class UnitKerjaController extends Controller
             return back()->withError('Terjadi kesalahan pada database.');
         }
 
-        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil dihapus.');
+        return redirect()->route('jenis-kegiatan.index')->withStatus('Data berhasil dihapus.');
     }
 }

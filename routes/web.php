@@ -3,6 +3,8 @@
 use App\Http\Controllers\GolonganController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\UnitKerjaController;
+use App\Http\Controllers\JenisKegiatanController;
+use App\Http\Controllers\KompetensiKhususController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +30,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('golongan', GolonganController::class);
     Route::resource('jabatan', JabatanController::class);
     Route::resource('unit-kerja', UnitKerjaController::class);
+    Route::resource('kompetensi-khusus', KompetensiKhususController::class);
+    Route::resource('jenis-kegiatan', JenisKegiatanController::class);
 });
 
 require __DIR__.'/auth.php';
