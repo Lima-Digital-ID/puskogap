@@ -56,7 +56,10 @@ class PenugasanController extends Controller
      */
     public function create()
     {
-        //
+        $this->param['btnText'] = 'List Penugasan Kerja';
+        $this->param['btnLink'] = route('penugasan.index');
+
+        return \view('penugasan.create', $this->param);
     }
 
     /**
