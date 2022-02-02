@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class KompetensiKhususRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class KompetensiKhususRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check();
+        return true;
     }
 
     /**
@@ -25,16 +24,9 @@ class KompetensiKhususRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode' => 'required',
-            'kompetensi_khusus' => 'required',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'kode.required' => 'Kode harus diisi.',
-            'kompetensi_khusus.required' => 'Kompetensi Khusus harus diisi.',
+            'name' => 'required|max:191',
+            'email' => 'required|email',
+            'username' => 'required'
         ];
     }
 }

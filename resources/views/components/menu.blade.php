@@ -29,7 +29,7 @@
             </ul>
             {{-- end Penugasan --}}
 
-
+            @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin')
             <div class="pcoded-navigation-label">Data Master</div>
             <ul class="pcoded-item pcoded-left-item">
                 <!-- Golongan ---!>
@@ -82,7 +82,18 @@
                         </a>
                     </li>
                 <!-- End Jenis Kegiatan---!>
+                <!-- User---!>
+                    <li class="{{ Request::segment(1) == 'user' ? 'active' : '' }}">
+                        <a href="{{ route('user.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fa fa-users"></i>
+                            </span>
+                            <span class="pcoded-mtext">User</span>
+                        </a>
+                    </li>
+                <!-- End User---!>
             </ul>
+            @endif
         </div>
     </div>
 </nav>

@@ -6,6 +6,7 @@ use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\JenisKegiatanController;
 use App\Http\Controllers\KompetensiKhususController;
 use App\Http\Controllers\PenugasanController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('kompetensi-khusus', KompetensiKhususController::class);
     Route::resource('jenis-kegiatan', JenisKegiatanController::class);
     Route::resource('penugasan', PenugasanController::class);
+    Route::resource('user', UserController::class);
 });
 
 require __DIR__.'/auth.php';
