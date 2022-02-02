@@ -23,7 +23,7 @@
                 </div>
                 <div class="card-block">
                     {{-- <h4 class="sub-title">Basic Inputs</h4> --}}
-                    @include('golongan._form-create')
+                    @include('penugasan._form-create')
                 </div>
             </div>
         </div>
