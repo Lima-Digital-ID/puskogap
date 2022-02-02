@@ -41,6 +41,7 @@
                                     data-toggle="tooltip" title="Edit" data-placement="top"><span
                                         class="feather icon-edit"></span></button>
                             </a>
+                            @if (auth()->user()->id != $item->id)
                             <form action="{{ route('user.destroy', $item->id) }}" method="post">
                                 @csrf
                                 @method('delete')
@@ -50,6 +51,7 @@
                                     <span class="feather icon-trash"></span>
                                 </button>
                             </form>
+                            @endif
                         </div>
                     </td>
                 </tr>

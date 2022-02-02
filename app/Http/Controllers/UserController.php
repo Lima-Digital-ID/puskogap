@@ -120,7 +120,15 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->param['data'] = User::find($id);
+        $this->param['allGol'] = Golongan::get();
+        $this->param['allJab'] = Jabatan::get();
+        $this->param['allKhs'] = KompetensiKhusus::get();
+        $this->param['allUnt'] = UnitKerja::get();
+        $this->param['btnText'] = 'List User';
+        $this->param['btnLink'] = route('user.index');
+
+        return view('user.edit', $this->param);
     }
 
     /**
@@ -130,9 +138,49 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreRequest $request, $id)
     {
-        //
+        try {
+            $user = User::find($id);
+            $isEmailUnique = $request->get('email') != null && $request->get('email') != $user->email ? '|unique:users,email' : '';
+            $isUsernameUnique = $request->get('username') != null && $request->get('username') != $user->username ? '|unique:users,username' : '';
+
+            $requestValid = $request->validate(
+                [
+                    'name' => 'required|max:191',
+                    'email' => 'required|email'.$isEmailUnique,
+                    'username' => 'required'.$isUsernameUnique,
+                ],
+                [
+                    'name.required' => 'Nama harus diisi.',
+                    'email.required' => 'Email harus diisi.',
+                    'username.required' => 'Username harus diisi.',
+                    'name.max' => 'Nama tidak boleh lebih dari 191 karakter.',
+                    'email.unique' => 'Email telah digunakan.',
+                    'username.unique' => 'Username telah digunakan.',
+                ]
+            );
+            $validated = $requestValid;
+
+            $user->nama = $validated['name'];
+            $user->email = $validated['email'];
+            $user->username = $validated['username'];
+            $user->id_golongan = $request->get('id_golongan');
+            $user->id_jabatan = $request->get('id_jabatan');
+            $user->id_kompetensi_khusus = $request->get('id_kompetensi_khusus');
+            $user->id_unit_kerja = $request->get('id_unit_kerja');
+            $user->jenis_pegawai = $request->get('jenis_pegawai');
+            $user->jenis_kelamin = $request->get('jenis_kelamin');
+            $user->nip = $request->get('nip');
+            $user->level = $request->get('level');
+            $user->save();
+        } catch (Exception $e) {
+            return back()->withError('Terjadi kesalahan.' . $e->getMessage());
+        } catch (QueryException $e) {
+            return back()->withError('Terjadi kesalahan.' . $e->getMessage());
+        }
+
+        return redirect()->route('user.index')->withStatus('Data berhasil disimpan.');
     }
 
     /**
