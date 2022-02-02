@@ -64,6 +64,24 @@ class PenugasanController extends Controller
         return \view('penugasan.create', $this->param);
     }
 
+    public function getAnggota()
+    {
+        $waktu_mulai = $_GET['waktu_mulai'];
+        $waktu_selesai = $_GET['waktu_selesai'];
+        $anggotaFree = DB::table('users AS u')
+                        ->select('u.id', 'u.nama')
+                        ->whereNotIn('id', function($query) use ($waktu_mulai, $waktu_selesai){
+                            $query->select('p.id')->from('penugasan as p')
+                            ->where('p.waktu_mulai', '>=', $waktu_mulai)
+                            ->where('p.waktu_mulai', '<=', $waktu_selesai)
+                            ->where('t.waktu_selesai', '>=', $waktu_mulai)
+                            ->where('t.waktu_selesai', '<=', $waktu_selesai);
+                        })
+                        ->orderBy('id', 'asc')
+                        ->get();
+        return json_encode($anggotaFree);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -92,7 +110,6 @@ class PenugasanController extends Controller
             $penugasan->lampiran = $validated['lampiran'];
             $penugasan->status = $validated['status'];
             $penugasan->keterangan = $validated['keterangan'];
-            ddd($penugasan);
             $penugasan->save();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.'. $e);
@@ -100,7 +117,7 @@ class PenugasanController extends Controller
             return back()->withError('Terjadi kesalahan pada database.'.$e);
         }
 
-        return redirect()->route('unit-kerja.index')->withStatus('Data berhasil disimpan.');
+        return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
     }
 
     /**
@@ -145,6 +162,15 @@ class PenugasanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $data = Penugasan::findOrFail($id);
+            $data->delete();
+        } catch (Exception $e) {
+            return back()->withError('Terjadi kesalahan.');
+        } catch (QueryException $e) {
+            return back()->withError('Terjadi kesalahan pada database.');
+        }
+
+        return redirect()->route('penugasan.index')->withStatus('Data berhasil dihapus.');
     }
 }

@@ -138,6 +138,18 @@
     </div>
 
     <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Penyelenggara</label>
+        <div class="col-sm-10">
+            <input type="text" name="penyelenggara" class="form-control @error('penyelenggara') is-invalid @enderror" placeholder="Penyelenggara" value="{{old('penyelenggara')}}">
+            @error('penyelenggara')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+    </div>
+
+    <div class="form-group row">
         <label class="col-sm-2 col-form-label">Jumlah Peserta</label>
         <div class="col-sm-10">
             <input type="number" name="jumlah_peserta" class="form-control @error('jumlah_peserta') is-invalid @enderror" placeholder="Jumlah Peserta" value="{{old('jumlah_peserta')}}">
