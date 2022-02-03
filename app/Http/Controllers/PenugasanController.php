@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PenugasanRequest;
+use App\Models\User;
 use App\Models\Penugasan;
 use App\Models\JenisKegiatan;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ class PenugasanController extends Controller
 
         try {
             $keyword = $request->get('keyword');
-            $getPenugasan = Penugasan::orderBy('id');
+            // $getPenugasan = Penugasan::orderBy('id');
             $getPenugasan = Penugasan::with('jenis_kegiatan')->orderBy('id');
 
             if ($keyword) {
@@ -66,22 +67,102 @@ class PenugasanController extends Controller
         return \view('penugasan.create', $this->param);
     }
 
-    public function getAnggota()
+    public function getAnggota($waktu_mulai, $waktu_selesai)
     {
-        $waktu_mulai = $_GET['waktu_mulai'];
-        $waktu_selesai = $_GET['waktu_selesai'];
-        $anggotaFree = DB::table('users AS u')
-                        ->select('u.id', 'u.nama')
-                        ->whereNotIn('id', function($query) use ($waktu_mulai, $waktu_selesai){
-                            $query->select('p.id')->from('penugasan as p')
-                            ->where('p.waktu_mulai', '>=', $waktu_mulai)
-                            ->where('p.waktu_mulai', '<=', $waktu_selesai)
-                            ->where('t.waktu_selesai', '>=', $waktu_mulai)
-                            ->where('t.waktu_selesai', '<=', $waktu_selesai);
-                        })
-                        ->orderBy('id', 'asc')
-                        ->get();
-        return json_encode($anggotaFree);
+        $waktu_mulai = $waktu_mulai.' 15:51:00';
+        $waktu_selesai = $waktu_selesai.' 15:51:59';
+        // $anggotaFree = DB::table('detail_anggota AS da')
+        //                 ->select('u.nama')
+        //                 ->join('users as u','u.id','da.id_user')
+        //                 ->whereNotIn('u.id', function($query) use ($waktu_mulai, $waktu_selesai){
+        //                     $query->select('p.id')->from('penugasan as p')
+        //                     ->where('p.waktu_mulai', '>=', $waktu_mulai)
+        //                     ->where('p.waktu_selesai', '<=', $waktu_selesai);
+        //                 })
+        //                 ->orderBy('u.id', 'asc')
+        //                 ->get();
+    //    $detailAnggota = DB::table('detail_anggota')->pluck('id_penugasan','id_user')->all();
+        // $anggotaNotFree = DB::table('penugasan as p')
+        //                     ->select(
+        //                         'p.id',
+        //                         'p.waktu_mulai',
+        //                         'p.waktu_selesai',
+        //                         // 'u.nama',
+        //                     )
+        //                     // ->whereNotIn('id', $detailAnggota)
+        //                     ->whereIn('p.id',function($query) {
+        //                         $query->select('id_penugasan')
+        //                                 ->from('detail_anggota')
+        //                                 ->get();
+        //                     })
+        //                     // ->join('detail_anggota as da','da.id_penugasan', 'p.id')
+        //                     // ->join('users as u','u.id', 'da.id_user')
+        //                     // ->where('waktu_mulai', '>=', $waktu_mulai)
+        //                     // ->where('waktu_selesai', '<=', $waktu_selesai)
+        //                     ->orderBy('id')
+        //                     ->get();
+        // $anggotaNotFree = DB::table('penugasan as p')
+        //                     ->select(
+        //                         'p.id',
+        //                         'p.waktu_mulai',
+        //                         'p.waktu_selesai',
+        //                         // 'u.nama',
+        //                     )
+        //                     // ->whereNotIn('id', $detailAnggota)
+        //                     ->whereIn('p.id',function($query) {
+        //                         $query->select('id_penugasan')
+        //                                 ->from('detail_anggota')
+        //                                 ->get();
+        //                     })
+        //                     // ->join('detail_anggota as da','da.id_penugasan', 'p.id')
+        //                     // ->join('users as u','u.id', 'da.id_user')
+        //                     // ->where('waktu_mulai', '>=', $waktu_mulai)
+        //                     // ->where('waktu_selesai', '<=', $waktu_selesai)
+        //                     ->orderBy('id')
+        //                     ->get();
+        $anggotaNotFree = DB::table('detail_anggota as da')
+                            ->select(
+                                'u.id',
+                                'u.nama',
+                                'da.id_penugasan',
+                            )
+                            ->whereIn('da.id_penugasan',function($query) use ($waktu_mulai, $waktu_selesai) {
+                                $query->select('id')
+                                        ->from('penugasan')
+                                        ->where('waktu_mulai', '>=', $waktu_mulai)
+                                        ->where('waktu_selesai', '<=', $waktu_selesai)
+                                        ->get();
+                            })
+                            ->join('users as u','u.id', 'da.id_user')
+                            ->orderBy('da.id')
+                            ->get();
+
+        $anggotaFree = User::from('users as u')
+                            ->select(
+                                'u.id',
+                                'u.nama',
+                                'da.id_penugasan',
+                            )
+                            ->leftJoin('detail_anggota as da', 'da.id_user', 'u.id')
+                            ->leftJoin('penugasan as p', 'p.id', '!=', 'da.id_penugasan')
+                            ->whereNotIn('da.id_penugasan',function($query) use ($waktu_mulai, $waktu_selesai) {
+                                $query->select('id')
+                                        ->from('penugasan')
+                                        ->where('waktu_mulai', '>=', $waktu_mulai)
+                                        ->where('waktu_selesai', '<=', $waktu_selesai)
+                                        ->get();
+                            })
+                            ->orWhereNull('da.id_penugasan')
+                            ->get();
+        // ddd($anggotaNotFree);
+        $data = array(
+            'waktu_mulai' => $waktu_mulai,
+            'waktu_selesai' => $waktu_selesai,
+            'free' => $anggotaFree,
+            'tugas' => $anggotaNotFree
+        );
+        return $data;
+        return json_encode($data);
     }
 
     /**

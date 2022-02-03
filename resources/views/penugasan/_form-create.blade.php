@@ -27,7 +27,7 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Waktu Mulai</label>
         <div class="col-sm-10">
-            <input type="datetime-local" name="waktu_mulai" class="form-control @error('waktu_mulai') is-invalid @enderror" placeholder="Nama waktu_mulai" value="{{old('waktu_mulai')}}">
+            <input type="datetime-local" name="waktu_mulai" onchange="ambilAnggota()" class="form-control @error('waktu_mulai') is-invalid @enderror" placeholder="Nama waktu_mulai" value="{{old('waktu_mulai')}}">
             @error('waktu_mulai')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -39,7 +39,7 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Waktu Selesai</label>
         <div class="col-sm-10">
-            <input type="datetime-local" name="waktu_selesai" class="form-control @error('waktu_selesai') is-invalid @enderror" placeholder="Nama waktu_selesai" value="{{old('waktu_selesai')}}">
+            <input type="datetime-local" name="waktu_selesai" onchange="ambilAnggota()" class="form-control @error('waktu_selesai') is-invalid @enderror" placeholder="Nama waktu_selesai" value="{{old('waktu_selesai')}}">
             @error('waktu_selesai')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -60,20 +60,31 @@
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" id="ketua">
         <label class="col-sm-2 col-form-label">Ketua</label>
         <div class="col-sm-10">
             <select name="id_user" class="js-example-basic-single" style="width: 100%;" required>
+            {{-- <select name="id_user" class="js-example-basic-single" id="ketua" style="width: 100%;" required> --}}
                 <option value="">Pilih Ketua</option>
             </select>
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Anggota</label>
-        <div class="col-sm-10">
-            <select name="id_user" class="js-example-basic-single" style="width: 100%;" required>
-                <option value="">Pilih Anggota</option>
+        <label class="col-sm-2 col-form-label">Anggota Bertugas</label>
+        <div class="col-sm-4">
+            <select name="id_user" class="js-example-basic-single" multiple="multiple" style="width: 100%;" required>
+                <option value="">Pilih Anggota Bertugas</option>
+                <option value="">Pilih Anggota Bertugas</option>
+                <option value="">Pilih Anggota Bertugas</option>
+            </select>
+        </div>
+        <label class="col-sm-2 col-form-label">Anggota Kosong</label>
+        <div class="col-sm-4">
+            <select name="id_user" class="js-example-basic-single" multiple="multiple" style="width: 100%;" required>
+                <option value="">Pilih Anggota Kosong</option>
+                <option value="">Pilih Anggota Kosong</option>
+                <option value="">Pilih Anggota Kosong</option>
             </select>
         </div>
     </div>

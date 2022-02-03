@@ -29,3 +29,34 @@
         </div>
     </div>
 @endsection
+@push('custom-scripts')
+    <script>
+        function ambilAnggota(){
+            var mulai = $('[name^=waktu_mulai]').val();
+            var selesai = $('[name^=waktu_selesai]').val();
+            $('#ketua').remove();
+            if(mulai != null && selesai != null) {
+                mulai = mulai.replace("T", " ");
+                selesai = selesai.replace("T", " ");
+                $.ajax({
+                    type: "GET",
+                    url:"{{ url('penugasan/cek-anggota') }}"+'/'+mulai+'/'+selesai,
+                    dataType : "json",
+                    success : function(response){
+                        console.log(response);
+                        // $('#ketua').append(
+                        //     '<div class="form-group row" id="ketua">'
+                        //         '<label class="col-sm-2 col-form-label">Ketua</label>'
+                        //         '<div class="col-sm-10">'
+                        //             '<select name="id_user" class="js-example-basic-single" style="width: 100%;" required>'
+                        //                 '<option value="">Pilih asd</option>'
+                        //             '</select>'
+                        //         '</div>'
+                        //     '</div>'
+                        //     )
+                    } 
+                })
+            }
+        }
+    </script>
+@endpush

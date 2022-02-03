@@ -33,6 +33,7 @@ class GolonganController extends Controller
         try {
             $keyword = $request->get('keyword');
             $getGolongan = Golongan::orderBy('id');
+            // ddd($getGolongan);
 
             if ($keyword) {
                 $getGolongan->where('golongan', 'LIKE', "%{$keyword}%");
