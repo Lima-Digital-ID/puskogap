@@ -21,11 +21,6 @@
                     <option value="{{ $jen->id }}">{{ $jen->jenis_kegiatan }}</option>
                 @endforeach
             </select>
-            @error('pangkat')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
         </div>
     </div>
 
@@ -62,6 +57,24 @@
                     {{ $message }}
                 </div>
             @enderror
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Ketua</label>
+        <div class="col-sm-10">
+            <select name="id_user" class="js-example-basic-single" style="width: 100%;" required>
+                <option value="">Pilih Ketua</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Anggota</label>
+        <div class="col-sm-10">
+            <select name="id_user" class="js-example-basic-single" style="width: 100%;" required>
+                <option value="">Pilih Anggota</option>
+            </select>
         </div>
     </div>
 

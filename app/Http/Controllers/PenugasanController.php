@@ -8,6 +8,7 @@ use App\Models\JenisKegiatan;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class PenugasanController extends Controller
 {
@@ -34,6 +35,7 @@ class PenugasanController extends Controller
         try {
             $keyword = $request->get('keyword');
             $getPenugasan = Penugasan::orderBy('id');
+            $getPenugasan = Penugasan::with('jenis_kegiatan')->orderBy('id');
 
             if ($keyword) {
                 $getPenugasan->where('penugasan', 'LIKE', "%{$keyword}%");

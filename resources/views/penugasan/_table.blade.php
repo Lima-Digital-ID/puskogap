@@ -32,7 +32,7 @@
               <tr class="border-bottom-primary">
                 <td class="text-center text-muted">{{ $no }}</td>
                 <td>{{ $item->nama_kegiatan }}</td>
-                <td>{{ $item->id_jenis_kegiatan }}</td>
+                <td>{{ $item->jenis_kegiatan->jenis_kegiatan }}</td>
                 <td>{{ $item->waktu_mulai }}</td>
                 <td>{{ $item->waktu_selesai }}</td>
                 <td>{{ $item->lokasi }}</td>

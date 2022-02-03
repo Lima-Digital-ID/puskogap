@@ -111,7 +111,7 @@
     @php
     $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 
-    $getPenugasan = \App\Models\Penugasan::orderBy('id');
+    $getPenugasan = \App\Models\Penugasan::with('jenis_kegiatan')->orderBy('id');
 
     if ($keyword) {
         $getPenugasan->where('penugasan', 'LIKE', "%{$keyword}%");
@@ -164,7 +164,7 @@
                                         <tr class="border-bottom-primary">
                                           <td class="text-center text-muted">{{ $no }}</td>
                                           <td>{{ $item->nama_kegiatan }}</td>
-                                          <td>{{ $item->id_jenis_kegiatan }}</td>
+                                          <td>{{ $item->jenis_kegiatan->jenis_kegiatan }}</td>
                                           <td>{{ $item->waktu_mulai }}</td>
                                           <td>{{ $item->waktu_selesai }}</td>
                                           <td>{{ $item->lokasi }}</td>
