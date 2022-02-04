@@ -40,9 +40,11 @@
                 selesai = selesai.replace("T", " ");
                 $.ajax({
                     type: "GET",
-                    url:"{{ url('penugasan/cek-anggota') }}"+'/'+mulai+'/'+selesai,
+                    data: {waktu_mulai : mulai, waktu_selesai: selesai},
+                    url:"{{ url('penugasan/cek-anggota') }}",
                     dataType : "json",
                     success : function(response){
+                    console.log(response)
                         // $('#ketua').append(
                         //     '<div class="form-group row" id="ketua">'
                         //         '<label class="col-sm-2 col-form-label">Ketua</label>'
@@ -57,7 +59,7 @@
                             console.log(`${key}`);
                             $.each(val,function(i,v){
                                 $('#ketua').append('halo');
-                                console.log(`${v.nama}`);
+                                // console.log(`${v.nama}`);
                             })
                         })
                     } 
