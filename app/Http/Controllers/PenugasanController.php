@@ -201,15 +201,23 @@ class PenugasanController extends Controller
             $penugasan->keterangan = $validated['keterangan'];
             if($penugasan->save()){
                 $scanLampiran->move($uploadPath,$newScanLampiran);
-                foreach($request->input('ketua') as $key => $value)
-                {
-                    $lastId = Penugasan::max('id');
-                    DB::table('detail_anggota')->insert(
-                        array('id_penugasan' => '2',
-                                'id_user' => $request->input('anggota_not_free')[$key],
-                                'status' => 'Anggota')
-                    );   
+                // foreach($request->input('ketua') as $key => $value)
+                // {
+                //     $lastId = Penugasan::max('id');
+                //     DB::table('detail_anggota')->insert(
+                //         array('id_penugasan' => '2',
+                //                 'id_user' => $request->input('anggota_not_free')[$key],
+                //                 'status' => 'Anggota')
+                //     );   
+                // }
+                foreach ($request->get('ketua') as $key) {
+                    $detail[] = [
+                        'id_penugasan' => '1',
+                        'id_user' => $key,
+                        'status' => "Anggota",
+                    ];
                 }
+                dd($detail);
                 return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
             }
             
