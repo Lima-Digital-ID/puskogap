@@ -6,7 +6,7 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 
 <head>
-    <title>BANGUN JATIM | Indeks Pembangunan Manusia Jawa Timur</title>
+    <title>PUSKOGAP | SATPOL PP</title>
 
 
     <!--[if lt IE 10]>
@@ -23,7 +23,7 @@
         content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
     <meta name="author" content="colorlib" />
 
-    <link rel="icon" href="{{ asset('') }}png/jatim.png" type="image/x-icon">
+    <link rel="icon" href="{{ asset('') }}png/satpol-pp.png" type="image/x-icon">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
@@ -104,10 +104,9 @@
 
                     <form class="md-float-material form-material" method="post" class="" action="{{ route('login') }}">
                         <div class="text-center">
-                            {{--  <img src="{{ asset('') }}png/jatim.png" alt="logo.png" style="height:80px">
-                            <img src="{{ asset('') }}png/jatim-bangkit.png" alt="jatim bangkit.png" style="height:70px">
+                            <img src="{{ asset('') }}png/satpol-pp.png" alt="satpol pp.png" style="height:150px">
                             <br>
-                            <br>  --}}
+                            <br> 
                             <h3><strong>PUSKOGAP</strong></h3>
                         </div>
                         <div class="auth-box card">

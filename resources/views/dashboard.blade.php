@@ -177,7 +177,7 @@
                                           <td>{{ $item->penyelenggara }}</td>
                                           <td>{{ $item->jumlah_peserta }}</td>
                                           <td>{{ $item->penanggung_jawab }}</td>
-                                          <td>{{ $item->lampiran }}</td>
+                                          <td align="center"><a href="{{ "upload/lampiran/".$item->lampiran }}" target="_blank" class="btn btn-info btn-sm mr-2"><i class="fa fa-file"></i></a></td>
                                           <td>{{ $item->status }}</td>
                                           <td>{{ $item->keterangan }}</td>
                                         </tr>

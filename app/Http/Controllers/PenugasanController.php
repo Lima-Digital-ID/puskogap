@@ -156,13 +156,14 @@ class PenugasanController extends Controller
                             ->get();
         // ddd($anggotaNotFree);
         $data = array(
-            'waktu_mulai' => $waktu_mulai,
-            'waktu_selesai' => $waktu_selesai,
+            // 'waktu_mulai' => $waktu_mulai,
+            // 'waktu_selesai' => $waktu_selesai,
             'free' => $anggotaFree,
             'tugas' => $anggotaNotFree
         );
-        return $data;
-        return json_encode($data);
+        // return $data;
+        // return json_encode($data);
+        echo json_encode($data);
     }
 
     /**
@@ -176,6 +177,11 @@ class PenugasanController extends Controller
         $validated = $request->validated();
         try {
             $penugasan = new Penugasan();
+
+            $uploadPath = 'upload/lampiran/';
+            $scanLampiran = $validated['lampiran'];
+            $newScanLampiran = time().'_'.$scanLampiran->getClientOriginalName();
+
             $penugasan->nama_kegiatan = $validated['nama_kegiatan'];
             $penugasan->id_jenis_kegiatan = $validated['id_jenis_kegiatan'];
             $penugasan->waktu_mulai = $validated['waktu_mulai'];
@@ -190,10 +196,23 @@ class PenugasanController extends Controller
             $penugasan->penyelenggara = $validated['penyelenggara'];
             $penugasan->jumlah_peserta = $validated['jumlah_peserta'];
             $penugasan->penanggung_jawab = $validated['penanggung_jawab'];
-            $penugasan->lampiran = $validated['lampiran'];
+            $penugasan->lampiran = $newScanLampiran;
             $penugasan->status = $validated['status'];
             $penugasan->keterangan = $validated['keterangan'];
-            $penugasan->save();
+            if($penugasan->save()){
+                $scanLampiran->move($uploadPath,$newScanLampiran);
+                foreach($request->input('ketua') as $key => $value)
+                {
+                    $lastId = Penugasan::max('id');
+                    DB::table('detail_anggota')->insert(
+                        array('id_penugasan' => '2',
+                                'id_user' => $request->input('anggota_not_free')[$key],
+                                'status' => 'Anggota')
+                    );   
+                }
+                return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
+            }
+            
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.'. $e);
         } catch (QueryException $e) {
@@ -247,9 +266,15 @@ class PenugasanController extends Controller
     {
         try {
             $data = Penugasan::findOrFail($id);
-            $data->delete();
+            $lampiran = 'upload/lampiran/'.$data->lampiran;
+            if($data->lampiran != '' && $data->lampiran != null){
+                unlink($lampiran);
+                $data->delete();
+            }else{
+                $data->delete();
+            }
         } catch (Exception $e) {
-            return back()->withError('Terjadi kesalahan.');
+            return back()->withError('Terjadi kesalahan.'.$e);
         } catch (QueryException $e) {
             return back()->withError('Terjadi kesalahan pada database.');
         }

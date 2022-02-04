@@ -1,4 +1,4 @@
-<form action="{{ route('penugasan.store') }}" method="POST">
+<form action="{{ route('penugasan.store') }}" method="POST"  enctype="multipart/form-data">
     @csrf
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Nama Kegiatan</label>
@@ -63,9 +63,10 @@
     <div class="form-group row" id="ketua">
         <label class="col-sm-2 col-form-label">Ketua</label>
         <div class="col-sm-10">
-            <select name="id_user" class="js-example-basic-single" style="width: 100%;" required>
+            <select name="ketua" class="js-example-basic-single" style="width: 100%;">
             {{-- <select name="id_user" class="js-example-basic-single" id="ketua" style="width: 100%;" required> --}}
                 <option value="">Pilih Ketua</option>
+                <option value="1">Pilih Aku</option>
             </select>
         </div>
     </div>
@@ -73,18 +74,18 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Anggota Bertugas</label>
         <div class="col-sm-4">
-            <select name="id_user" class="js-example-basic-single" multiple="multiple" style="width: 100%;" required>
-                <option value="">Pilih Anggota Bertugas</option>
-                <option value="">Pilih Anggota Bertugas</option>
-                <option value="">Pilih Anggota Bertugas</option>
+            <select name="anggota_not_free[]" class="js-example-basic-single" multiple="multiple" style="width: 100%;">
+                <option value="1">Pilih Anggota Bertugas</option>
+                <option value="2">Pilih Anggota Bertugas</option>
+                <option value="4">Pilih Anggota Bertugas</option>
             </select>
         </div>
         <label class="col-sm-2 col-form-label">Anggota Kosong</label>
         <div class="col-sm-4">
-            <select name="id_user" class="js-example-basic-single" multiple="multiple" style="width: 100%;" required>
-                <option value="">Pilih Anggota Kosong</option>
-                <option value="">Pilih Anggota Kosong</option>
-                <option value="">Pilih Anggota Kosong</option>
+            <select name="anggota_free" class="js-example-basic-single" multiple="multiple" style="width: 100%;">
+                <option value="46">Pilih Anggota Kosong</option>
+                <option value="45">Pilih Anggota Kosong</option>
+                <option value="44">Pilih Anggota Kosong</option>
             </select>
         </div>
     </div>
@@ -200,7 +201,7 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Lampiran</label>
         <div class="col-sm-10">
-            <input type="input" name="lampiran" class="form-control @error('lampiran') is-invalid @enderror" placeholder="Lampiran" value="{{old('lampiran')}}">
+            <input type="file" name="lampiran" class="form-control @error('lampiran') is-invalid @enderror" placeholder="Lampiran" value="{{old('lampiran')}}">
             @error('penanggung_jawab')
                 <div class="invalid-feedback">
                     {{ $message }}

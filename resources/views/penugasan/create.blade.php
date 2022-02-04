@@ -43,7 +43,6 @@
                     url:"{{ url('penugasan/cek-anggota') }}"+'/'+mulai+'/'+selesai,
                     dataType : "json",
                     success : function(response){
-                        console.log(response);
                         // $('#ketua').append(
                         //     '<div class="form-group row" id="ketua">'
                         //         '<label class="col-sm-2 col-form-label">Ketua</label>'
@@ -54,6 +53,13 @@
                         //         '</div>'
                         //     '</div>'
                         //     )
+                        $.each(response,function(key,val){
+                            console.log(`${key}`);
+                            $.each(val,function(i,v){
+                                $('#ketua').append('halo');
+                                console.log(`${v.nama}`);
+                            })
+                        })
                     } 
                 })
             }
