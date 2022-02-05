@@ -31,11 +31,21 @@
 @endsection
 @push('custom-scripts')
     <script>
+        function appendAnggotaFree(res){
+            $(".loop-anggota-free").empty()
+            $.each(res,function(key,val){
+                $(".loop-anggota-free").append(`
+                    <div class="mb-2">
+                        <input type="checkbox" id="free${key}" name="id_user[]" value="${val.id}">
+                        <label for="free${key}">${val.nama}</label>
+                    </div>
+                `);
+            })
+        }
         function ambilAnggota(){
             var mulai = $('[name^=waktu_mulai]').val();
             var selesai = $('[name^=waktu_selesai]').val();
-            $('#ketua').remove();
-            if(mulai != null && selesai != null) {
+            if(mulai != '' && selesai != '') {
                 mulai = mulai.replace("T", " ");
                 selesai = selesai.replace("T", " ");
                 $.ajax({
@@ -44,27 +54,49 @@
                     url:"{{ url('penugasan/cek-anggota') }}",
                     dataType : "json",
                     success : function(response){
-                    console.log(response)
-                        // $('#ketua').append(
-                        //     '<div class="form-group row" id="ketua">'
-                        //         '<label class="col-sm-2 col-form-label">Ketua</label>'
-                        //         '<div class="col-sm-10">'
-                        //             '<select name="id_user" class="js-example-basic-single" style="width: 100%;" required>'
-                        //                 '<option value="">Pilih asd</option>'
-                        //             '</select>'
-                        //         '</div>'
-                        //     '</div>'
-                        //     )
-                        $.each(response,function(key,val){
-                            console.log(`${key}`);
-                            $.each(val,function(i,v){
-                                $('#ketua').append('halo');
-                                // console.log(`${v.nama}`);
-                            })
+                        appendAnggotaFree(response.free);
+                        $(".loop-anggota-bertugas").empty()
+                        $.each(response.tugas,function(key,val){
+                            $(".loop-anggota-bertugas").append(`
+                                <div class="mb-2">
+                                    <label class="mb-2">${val.nama} (${val.nama_kegiatan})</label>
+                                </div>
+                            `);
                         })
                     } 
                 })
             }
         }
+        $(document).ready(function(){
+            $("#btn-filter").click(function(e){
+                e.preventDefault();
+                
+                var id_jabatan = $("#id_jabatan").val()
+                var id_unit_kerja = $("#id_unit_kerja").val()
+                var id_kompetensi_khusus = $("#id_kompetensi_khusus").val()
+                var mulai = $('[name^=waktu_mulai]').val();
+                var selesai = $('[name^=waktu_selesai]').val();
+
+                if(mulai != '' && selesai != '') {
+                    $.ajax({
+                        type : 'get',
+                        url:"{{ url('penugasan/filter-anggota-free') }}",
+                        data: {waktu_mulai : mulai, 
+                                waktu_selesai: selesai,
+                                id_jabatan:id_jabatan,
+                                id_unit_kerja:id_unit_kerja,
+                                id_kompetensi_khusus:id_kompetensi_khusus},
+                        dataType : "json",
+                        beforeSend : function(){
+                            $(".loop-anggota-free").prepend('<p>Loading....</p>')
+                        },
+                        success : function(response){
+                            appendAnggotaFree(response);
+                        }
+                    })
+                }
+            })
+        })
+
     </script>
 @endpush

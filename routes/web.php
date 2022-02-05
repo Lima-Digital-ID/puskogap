@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('penugasan')->group(function () {
         Route::resource('master-penugasan', PenugasanController::class);
         Route::get('cek-anggota', [PenugasanController::class, 'getAnggota']);
+        Route::get('filter-anggota-free', [PenugasanController::class, 'filterAnggotaFree']);
     });
     Route::resource('penugasan', PenugasanController::class);
     Route::resource('user', UserController::class);

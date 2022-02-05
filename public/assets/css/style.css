@@ -9329,7 +9329,7 @@ body.horizontal-icon-fixed .pcoded[pcoded-device-type=desktop] .pcoded-navbar .p
 }
 
 .select2-container {
-    width: 100%
+    width: 100% !important;
 }
 
 .form-group {
@@ -10862,8 +10862,8 @@ body.horizontal-icon-fixed .pcoded[pcoded-device-type=desktop] .pcoded-navbar .p
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    background-color: #4099ff;
-    color: #fff;
+    /* background-color: #4099ff;
+    color: #fff; */
     padding: 8px 30px 8px 20px
 }
 

@@ -60,19 +60,72 @@
         </div>
     </div>
 
-    <div class="form-group row" id="ketua">
+    {{-- <div class="form-group row" id="ketua">
         <label class="col-sm-2 col-form-label">Ketua</label>
         <div class="col-sm-10">
             <select name="ketua" class="js-example-basic-single" style="width: 100%;">
-            {{-- <select name="id_user" class="js-example-basic-single" id="ketua" style="width: 100%;" required> --}}
                 <option value="">Pilih Ketua</option>
                 <option value="1">Pilih Aku</option>
             </select>
         </div>
-    </div>
+    </div> --}}
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Anggota Bertugas</label>
+    <div class="form-group row mb-5">
+        <div class="col-md-12">
+            <div class="form-control">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="bg-light p-3">
+                            <h5 class="font-weight-bold">Anggota Tidak Bertugas</h5>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for=""><b>Jabatan</b></label>
+                                    <select id="id_jabatan" class="form-control js-example-basic-single">
+                                        <option value="">Semua Jabatan</option>
+                                        @foreach ($jabatan as $item)
+                                        <option value="{{$item->id}}">{{$item->jabatan}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for=""><b>Unit Kerja</b></label>
+                                    <select id="id_unit_kerja" class="form-control js-example-basic-single">
+                                        <option value="">Semua Unit Kerja</option>
+                                        @foreach ($kompetensi as $item)
+                                        <option value="{{$item->id}}">{{$item->kompetensi_khusus}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="id_kompetensi_khusus"><b>Kompetensi Khusus</b></label>
+                                    <select id="id_kompetensi_khusus" class="form-control js-example-basic-single">
+                                        <option value="">Semua Kompetensi Khusus</option>
+                                        @foreach ($unitkerja as $item)
+                                            <option value="{{$item->id}}">{{$item->unit_kerja}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <button class="btn btn-primary btn-sm" id="btn-filter"><span class="fa fa-filter"></span> Filter</button>
+                            <hr>
+                            <div class="loop-anggota-free">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="bg-light p-3">
+                            <h5 class="font-weight-bold">Anggota Bertugas</h5>
+                            <hr>
+                            <div class="loop-anggota-bertugas">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- <label class="col-sm-2 col-form-label">Anggota Bertugas</label>
         <div class="col-sm-4">
             <select name="anggota_not_free[]" class="js-example-basic-single" multiple="multiple" style="width: 100%;">
                 <option value="1">Pilih Anggota Bertugas</option>
@@ -87,7 +140,7 @@
                 <option value="45">Pilih Anggota Kosong</option>
                 <option value="44">Pilih Anggota Kosong</option>
             </select>
-        </div>
+        </div> --}}
     </div>
 
     <div class="form-group row">

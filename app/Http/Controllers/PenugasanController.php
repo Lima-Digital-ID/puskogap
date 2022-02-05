@@ -6,6 +6,9 @@ use App\Http\Requests\PenugasanRequest;
 use App\Models\User;
 use App\Models\Penugasan;
 use App\Models\JenisKegiatan;
+use \App\Models\Jabatan;
+use \App\Models\KompetensiKhusus;
+use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -60,6 +63,9 @@ class PenugasanController extends Controller
      */
     public function create()
     {
+        $this->param['jabatan'] = Jabatan::get();
+        $this->param['kompetensi'] = KompetensiKhusus::get();
+        $this->param['unitkerja'] = UnitKerja::get();
         $this->param['btnText'] = 'List Penugasan Kerja';
         $this->param['btnLink'] = route('penugasan.index');
         $this->param['allJen'] = JenisKegiatan::get();
@@ -67,42 +73,57 @@ class PenugasanController extends Controller
         return \view('penugasan.create', $this->param);
     }
 
-    public function anggotaFree($waktu_mulai,$waktu_selesai)
+    public function anggotaFree($waktu_mulai,$waktu_selesai,$filter="")
     {
         $anggotaFree = User::from('users as u')
                             ->select(
                                 'u.id',
                                 'u.nama',
                             )
+                            ->where('level','Anggota')
                             ->whereNotIn('u.id',function($query) use ($waktu_mulai, $waktu_selesai) {
                                 $query->select('da.id_user')
                                         ->from('detail_anggota as da')
                                         ->join('penugasan as p', 'da.id_penugasan', 'p.id')
-                                        ->whereBetween('waktu_mulai', [$waktu_mulai,$waktu_selesai])
-                                        ->whereBetween('waktu_selesai', [$waktu_mulai,$waktu_selesai])
+                                        ->whereRaw("(waktu_mulai <= '$waktu_mulai' or waktu_mulai <= '$waktu_selesai') and (waktu_selesai >= '$waktu_mulai' or waktu_selesai >= '$waktu_selesai')")
                                         ->get();
-                            })
-                            ->get();
+                            });
+                        if($filter!="" && count($filter)!=0){
+                            $anggotaFree = $anggotaFree->where($filter);
+                        }
+        $anggotaFree = $anggotaFree->get();
         return $anggotaFree;
     }
 
     public function anggotaNotFree($waktu_mulai,$waktu_selesai)
     {
-        $anggotaNotFree = User::from('users as u')
-                            ->select(
-                                'u.id',
-                                'u.nama',
-                            )
-                            ->whereIn('u.id',function($query) use ($waktu_mulai, $waktu_selesai) {
-                                $query->select('da.id_user')
-                                        ->from('detail_anggota as da')
+        $anggotaNotFree = \DB::table('detail_anggota as da')->select('u.id','u.nama','p.nama_kegiatan')
+                                        ->join('users as u', 'da.id_user', 'u.id')
                                         ->join('penugasan as p', 'da.id_penugasan', 'p.id')
-                                        ->whereBetween('waktu_mulai', [$waktu_mulai,$waktu_selesai])
-                                        ->whereBetween('waktu_selesai', [$waktu_mulai,$waktu_selesai])
+                                        ->where('u.level','Anggota')
+                                        ->whereRaw("(waktu_mulai <= '$waktu_mulai' or waktu_mulai <= '$waktu_selesai') and (waktu_selesai >= '$waktu_mulai' or waktu_selesai >= '$waktu_selesai')")
                                         ->get();
-                            })
-                            ->get();
         return $anggotaNotFree;
+    }
+    public function filterAnggotaFree()
+    {
+        $waktu_mulai = $_GET['waktu_mulai'];
+        $waktu_selesai = $_GET['waktu_selesai'];
+        $id_jabatan = $_GET['id_jabatan'];
+        $id_unit_kerja = $_GET['id_unit_kerja'];
+        $id_kompetensi_khusus = $_GET['id_kompetensi_khusus'];
+        $filter = [];
+        if($id_jabatan!=''){
+            $filter['id_jabatan'] = $id_jabatan;
+        }
+        else if($id_unit_kerja!=''){
+            $filter['id_unit_kerja'] = $id_unit_kerja;
+        }
+        else if($id_kompetensi_khusus!=''){
+            $filter['id_kompetensi_khusus'] = $id_kompetensi_khusus;
+        }
+        $anggota = $this->anggotaFree($waktu_mulai,$waktu_selesai,$filter);
+        echo json_encode($anggota);
     }
 
     public function getAnggota()
@@ -126,6 +147,7 @@ class PenugasanController extends Controller
     public function store(PenugasanRequest $request)
     {
         $validated = $request->validated();
+        DB::beginTransaction();        
         try {
             $penugasan = new Penugasan();
 
@@ -150,35 +172,32 @@ class PenugasanController extends Controller
             $penugasan->lampiran = $newScanLampiran;
             $penugasan->status = $validated['status'];
             $penugasan->keterangan = $validated['keterangan'];
-            if($penugasan->save()){
-                $scanLampiran->move($uploadPath,$newScanLampiran);
-                // foreach($request->input('ketua') as $key => $value)
-                // {
-                //     $lastId = Penugasan::max('id');
-                //     DB::table('detail_anggota')->insert(
-                //         array('id_penugasan' => '2',
-                //                 'id_user' => $request->input('anggota_not_free')[$key],
-                //                 'status' => 'Anggota')
-                //     );   
-                // }
-                foreach ($request->get('ketua') as $key) {
-                    $detail[] = [
-                        'id_penugasan' => '1',
-                        'id_user' => $key,
-                        'status' => "Anggota",
-                    ];
-                }
-                dd($detail);
-                return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
+            $penugasan->save();
+            $scanLampiran->move($uploadPath,$newScanLampiran);
+            foreach($request->input('id_user') as $key => $value)
+            {
+                DB::table('detail_anggota')->insert(
+                    array(
+                        'id_penugasan' => $penugasan->id,
+                        'id_user' => $value,
+                        'status' => 'Anggota'
+                    )
+                );   
             }
-            
+            DB::table('detail_anggota',[
+                'id_penugasan' => $penugasan->id,
+                'id_user' => $request->input('ketua'),
+                'status' => "Ketua",
+            ]);
+            DB::commit();  
+            return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
         } catch (Exception $e) {
+            DB::rollback();            
             return back()->withError('Terjadi kesalahan.'. $e);
         } catch (QueryException $e) {
+            DB::rollback();            
             return back()->withError('Terjadi kesalahan pada database.'.$e);
         }
-
-        return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
     }
 
     /**
