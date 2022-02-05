@@ -37,9 +37,18 @@
                 $(".loop-anggota-free").append(`
                     <div class="mb-2">
                         <input type="checkbox" id="free${key}" name="id_user[]" value="${val.id}">
-                        <label for="free${key}">${val.nama}</label>
+                        <label class='check-anggota' for="free${key}">${val.nama}</label>
                     </div>
                 `);
+            })
+            $(".check-anggota").click(function(){
+                var dataFor = $(this).attr('for')
+                if($("#"+dataFor).is(":checked")){
+                    $(".check-anggota").removeClass("checked")
+                }
+                else{
+                    $(".check-anggota").addClass("checked")
+                }
             })
         }
         function ambilAnggota(){
