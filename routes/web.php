@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('master-penugasan', PenugasanController::class);
         Route::get('cek-anggota', [PenugasanController::class, 'getAnggota']);
         Route::get('filter-anggota-free', [PenugasanController::class, 'filterAnggotaFree']);
+        Route::post('send-whatsapp', [PenugasanController::class, 'sendWhatsapp'])->name('penugasan.send-wa');
     });
     Route::resource('penugasan', PenugasanController::class);
     Route::resource('user', UserController::class);

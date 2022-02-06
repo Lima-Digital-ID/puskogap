@@ -113,6 +113,7 @@
                             $(".loop-anggota-free").prepend('<p>Loading....</p>')
                         },
                         success : function(response){
+                            console.log(response);
                             appendAnggotaFree(response);
                         }
                     })

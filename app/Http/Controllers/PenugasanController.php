@@ -13,10 +13,12 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class PenugasanController extends Controller
 {
     private $param;
+    private $whatsapp_api_url = 'http://127.0.0.1:8000/send-message';
 
     public function __construct()
     {
@@ -149,6 +151,8 @@ class PenugasanController extends Controller
         $validated = $request->validated();
         DB::beginTransaction();        
         try {
+            $arrUser = $request->input('id_user');
+
             $penugasan = new Penugasan();
 
             $uploadPath = 'upload/lampiran/';
@@ -173,7 +177,17 @@ class PenugasanController extends Controller
             $penugasan->status = $validated['status'];
             $penugasan->keterangan = $validated['keterangan'];
             $penugasan->save();
-            DB::table('detail_anggota')->insert([
+            $scanLampiran->move($uploadPath,$newScanLampiran);
+            for ($i=0; $i < count($arrUser); $i++) { 
+                DB::table('detail_anggota')->insert(
+                    array(
+                        'id_penugasan' => $penugasan->id,
+                        'id_user' => $arrUser[$i],
+                        'status' => 'Anggota'
+                    )
+                );
+            }
+            DB::table('detail_anggota',[
                 'id_penugasan' => $penugasan->id,
                 'id_user' => $request->input('ketua'),
                 'status' => "Kepala",
@@ -192,6 +206,20 @@ class PenugasanController extends Controller
             }
             DB::commit();  
             $scanLampiran->move($uploadPath,$newScanLampiran);
+            /* Send Whatsapp Message */
+            $message = "Jangan lupa saksikan acara ".$request->nama_kegiatan." pada ".$validated['waktu_mulai']." hingga ".$validated['waktu_selesai']." bertempatan di ".$validated['lokasi'].".";
+            for ($i=0; $i < count($arrUser); $i++) { 
+                $user = User::find($arrUser[$i]);
+                if($user && isset($user->phone)) {
+                    $response = Http::post($this->whatsapp_api_url, [
+                        'number' => $user->phone,
+                        'message' => $message,
+                    ]);        
+                    return $response;
+                }
+            }
+            /* End Send Whatsapp Message */
+
             return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
         } catch (Exception $e) {
             DB::rollback();            
