@@ -27,7 +27,7 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Waktu Mulai</label>
         <div class="col-sm-10">
-            <input type="datetime-local" name="waktu_mulai" onchange="ambilAnggota()" class="form-control @error('waktu_mulai') is-invalid @enderror" placeholder="Nama waktu_mulai" value="{{old('waktu_mulai')}}">
+            <input type="datetime-local" name="waktu_mulai" class="form-control ambilAnggota @error('waktu_mulai') is-invalid @enderror" placeholder="Nama waktu_mulai" value="{{old('waktu_mulai')}}">
             @error('waktu_mulai')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -39,7 +39,7 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Waktu Selesai</label>
         <div class="col-sm-10">
-            <input type="datetime-local" name="waktu_selesai" onchange="ambilAnggota()" class="form-control @error('waktu_selesai') is-invalid @enderror" placeholder="Nama waktu_selesai" value="{{old('waktu_selesai')}}">
+            <input type="datetime-local" name="waktu_selesai" class="form-control ambilAnggota @error('waktu_selesai') is-invalid @enderror" placeholder="Nama waktu_selesai" value="{{old('waktu_selesai')}}">
             @error('waktu_selesai')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -59,7 +59,7 @@
             @enderror
         </div>
     </div>
-
+    <input type="hidden" name="ketua" id="ketua">
     {{-- <div class="form-group row" id="ketua">
         <label class="col-sm-2 col-form-label">Ketua</label>
         <div class="col-sm-10">

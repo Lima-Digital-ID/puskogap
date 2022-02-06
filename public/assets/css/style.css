@@ -12734,3 +12734,20 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
 .pcoded[layout-type=dark] .bg-c-purple {
     background: #536dfe
 }
+.select-anggota.selected-ketua{
+    color : #4099ff;
+    font-weight: bold;
+}
+.select-anggota.selected-ketua label:after{
+    content : "(Ketua)";
+}
+.select-anggota .isKetua{
+    display : none;
+    margin-left : 10px;
+    cursor : pointer;
+    color : #4099ff;
+    text-decoration : underline;
+}
+.select-anggota.checked:not(.selected-ketua):hover .isKetua{
+    display : inline-block;
+}

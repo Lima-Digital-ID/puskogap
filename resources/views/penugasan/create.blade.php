@@ -31,52 +31,65 @@
 @endsection
 @push('custom-scripts')
     <script>
-        function appendAnggotaFree(res){
-            $(".loop-anggota-free").empty()
-            $.each(res,function(key,val){
-                $(".loop-anggota-free").append(`
-                    <div class="mb-2">
-                        <input type="checkbox" id="free${key}" name="id_user[]" value="${val.id}">
-                        <label class='check-anggota' for="free${key}">${val.nama}</label>
-                    </div>
-                `);
-            })
-            $(".check-anggota").click(function(){
-                var dataFor = $(this).attr('for')
-                if($("#"+dataFor).is(":checked")){
-                    $(".check-anggota").removeClass("checked")
-                }
-                else{
-                    $(".check-anggota").addClass("checked")
-                }
-            })
-        }
-        function ambilAnggota(){
-            var mulai = $('[name^=waktu_mulai]').val();
-            var selesai = $('[name^=waktu_selesai]').val();
-            if(mulai != '' && selesai != '') {
-                mulai = mulai.replace("T", " ");
-                selesai = selesai.replace("T", " ");
-                $.ajax({
-                    type: "GET",
-                    data: {waktu_mulai : mulai, waktu_selesai: selesai},
-                    url:"{{ url('penugasan/cek-anggota') }}",
-                    dataType : "json",
-                    success : function(response){
-                        appendAnggotaFree(response.free);
-                        $(".loop-anggota-bertugas").empty()
-                        $.each(response.tugas,function(key,val){
-                            $(".loop-anggota-bertugas").append(`
-                                <div class="mb-2">
-                                    <label class="mb-2">${val.nama} (${val.nama_kegiatan})</label>
-                                </div>
-                            `);
-                        })
-                    } 
+        $(document).ready(function(){
+            function appendAnggotaFree(res){
+                $(".loop-anggota-free").empty()
+                $.each(res,function(key,val){
+                    $(".loop-anggota-free").append(`
+                        <div class="select-anggota mb-2">
+                            <label class='check-anggota' for="free${key}">
+                                <input type="checkbox" id="free${key}" name="id_user[]" value="${val.id}">
+                                ${val.nama}
+                            </label>
+                            <span class="isKetua" data-id="${val.id}">Jadikan Ketua</span>                                
+                        </div>
+                    `);
+                })
+                $(".check-anggota").click(function(){
+                    var dataFor = $(this).attr('for')
+                    var parentDiv = $(this).closest('.select-anggota');
+
+                    if($("#"+dataFor).is(":checked")){
+                        $(parentDiv).addClass("checked")
+                    }
+                    else{
+                        $(parentDiv).removeClass("checked")
+                    }
+                    $(".isKetua").click(function(){
+                        var parentDiv = $(this).closest('.select-anggota');
+                        $(".select-anggota").removeClass("selected-ketua")
+                        $(parentDiv).addClass("selected-ketua")
+                        var id_ketua = $(this).data('id')
+                        $("#ketua").val(id_ketua)
+                    })
                 })
             }
-        }
-        $(document).ready(function(){
+            $(".ambilAnggota").change(function(){
+                var mulai = $('[name^=waktu_mulai]').val();
+                var selesai = $('[name^=waktu_selesai]').val();
+                if(mulai != '' && selesai != '') {
+                    mulai = mulai.replace("T", " ");
+                    selesai = selesai.replace("T", " ");
+                    $.ajax({
+                        type: "GET",
+                        data: {waktu_mulai : mulai, waktu_selesai: selesai},
+                        url:"{{ url('penugasan/cek-anggota') }}",
+                        dataType : "json",
+                        success : function(response){
+                            appendAnggotaFree(response.free);
+                            $(".loop-anggota-bertugas").empty()
+                            $.each(response.tugas,function(key,val){
+                                $(".loop-anggota-bertugas").append(`
+                                    <div class="mb-2">
+                                        <label class="mb-2">${val.nama} (${val.nama_kegiatan})</label>
+                                    </div>
+                                `);
+                            })
+                        } 
+                    })
+                }
+            })
+            
             $("#btn-filter").click(function(e){
                 e.preventDefault();
                 
@@ -105,6 +118,7 @@
                     })
                 }
             })
+
         })
 
     </script>

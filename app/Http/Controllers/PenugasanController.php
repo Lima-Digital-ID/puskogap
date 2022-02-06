@@ -173,23 +173,25 @@ class PenugasanController extends Controller
             $penugasan->status = $validated['status'];
             $penugasan->keterangan = $validated['keterangan'];
             $penugasan->save();
-            $scanLampiran->move($uploadPath,$newScanLampiran);
-            foreach($request->input('id_user') as $key => $value)
-            {
-                DB::table('detail_anggota')->insert(
-                    array(
-                        'id_penugasan' => $penugasan->id,
-                        'id_user' => $value,
-                        'status' => 'Anggota'
-                    )
-                );   
-            }
-            DB::table('detail_anggota',[
+            DB::table('detail_anggota')->insert([
                 'id_penugasan' => $penugasan->id,
                 'id_user' => $request->input('ketua'),
-                'status' => "Ketua",
+                'status' => "Kepala",
             ]);
+            foreach($request->input('id_user') as $key => $value)
+            {
+                if($value!=$request->input('ketua')){
+                    DB::table('detail_anggota')->insert(
+                        array(
+                            'id_penugasan' => $penugasan->id,
+                            'id_user' => $value,
+                            'status' => 'Anggota'
+                            )
+                    );   
+                }
+            }
             DB::commit();  
+            $scanLampiran->move($uploadPath,$newScanLampiran);
             return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
         } catch (Exception $e) {
             DB::rollback();            
