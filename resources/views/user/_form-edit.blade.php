@@ -40,6 +40,19 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">No Whatsapp</label>
+        <div class="col-sm-10">
+            <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror"
+                placeholder="Nomor Whatsapp User" value="{{ old('phone', $data->phone) }}">
+            @error('phone')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+    </div>
+
         <div class="form-group row">
         <label class="col-sm-2 col-form-label">Golongan</label>
         <div class="col-sm-10">

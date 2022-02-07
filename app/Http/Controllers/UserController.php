@@ -82,6 +82,7 @@ class UserController extends Controller
             $user->nama = $validated['name'];
             $user->email = $validated['email'];
             $user->username = $validated['username'];
+            $user->phone = $validated['phone'];
             $user->password = Hash::make('password');
             $user->id_golongan = $request->get('id_golongan');
             $user->id_jabatan = $request->get('id_jabatan');
@@ -144,12 +145,14 @@ class UserController extends Controller
             $user = User::find($id);
             $isEmailUnique = $request->get('email') != null && $request->get('email') != $user->email ? '|unique:users,email' : '';
             $isUsernameUnique = $request->get('username') != null && $request->get('username') != $user->username ? '|unique:users,username' : '';
+            $isPhoneUnique = $request->get('phone') != null && $request->get('phone') != $user->phone ? '|unique:users,phone' : '';
 
             $requestValid = $request->validate(
                 [
                     'name' => 'required|max:191',
                     'email' => 'required|email'.$isEmailUnique,
                     'username' => 'required'.$isUsernameUnique,
+                    'phone' => 'required'.$isPhoneUnique,
                 ],
                 [
                     'name.required' => 'Nama harus diisi.',
@@ -165,6 +168,7 @@ class UserController extends Controller
             $user->nama = $validated['name'];
             $user->email = $validated['email'];
             $user->username = $validated['username'];
+            $user->phone = $validated['phone'];
             $user->id_golongan = $request->get('id_golongan');
             $user->id_jabatan = $request->get('id_jabatan');
             $user->id_kompetensi_khusus = $request->get('id_kompetensi_khusus');
