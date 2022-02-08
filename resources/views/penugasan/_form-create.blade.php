@@ -25,32 +25,117 @@
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Waktu Mulai</label>
+        <label class="col-sm-2 col-form-label">Model Kegiatan</label>
         <div class="col-sm-10">
-            <input type="datetime-local" name="waktu_mulai" class="form-control ambilAnggota @error('waktu_mulai') is-invalid @enderror" placeholder="Nama waktu_mulai" value="{{old('waktu_mulai')}}">
-            @error('waktu_mulai')
+            <select name="model_kegiatan" class="modelKegiatan js-example-basic-single" style="width: 100%;" required>
+                <option value="1">Kegiatan Khusus</option>
+                <option value="2">Kegiatan Rutin Mingguan</option>
+                <option value="3">Kegiatan Rutin Bulanan</option>
+            </select>
+        </div>
+    </div>
+    <div id="kegiatan-khusus">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tanggal Mulai</label>
+        <div class="col-sm-10">
+            <input type="date" name="tanggal_mulai" class="form-control ambilAnggota @error('tanggal_mulai') is-invalid @enderror" placeholder="Nama tanggal_mulai" value="{{old('tanggal_mulai')}}">
+            @error('tanggal_mulai')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tanggal Selesai</label>
+            <div class="col-sm-10">
+                <input type="date" name="tanggal_selesai" class="form-control ambilAnggota @error('tanggal_selesai') is-invalid @enderror" placeholder="Nama tanggal_selesai" value="{{old('tanggal_selesai')}}">
+                @error('tanggal_selesai')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
             @enderror
+            </div>
         </div>
     </div>
+    <div id="kegiatan-mingguan" style="display:none">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pilih Hari</label>
+            <div class="col-sm-10">
+                <select name="is_mingguan[]" class="js-example-basic-single @error('is_mingguan') is-invalid @enderror" multiple="multiple" style="width: 100%;" required>
+                    <?php 
+                        $day = ['Senin','Selasa','Rabu','Kamis',"Jum'at",'Sabtu',"Minggu"];
+                    ?>
 
+                    @foreach ($day as $key => $value) 
+                        @php $key++ @endphp
+                        <option value="{{$key}}">{{$value}}</option>
+                    @endforeach
+                </select>
+                @error('is_mingguan')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+    </div>
+    <div id="kegiatan-bulanan" style="display:none">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pilih Tanggal</label>
+            <div class="col-sm-10">
+                <div class="isBulanan">
+                    <input type="text" name="is_tanggal" class="form-control" readonly>
+                    <div class="date">
+                        <p>Pilih Tanggal</p>
+                        <?php 
+                                for($i=1;$i<=31;$i++){
+                                    if($i%10==1){
+                                        echo '<div class="row-date">';
+                                    }
+                                        echo "<span>$i</span>";
+                                    if($i%10==0 || $i==31){
+                                        echo '</div>';
+                                    }
+                                }
+                        ?>
+                    </div>
+                </div>
+                @error('is_bulanan')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Waktu Mulai</label>
+        <div class="col-sm-10">
+        <input type="time" name="waktu_mulai" class="form-control ambilAnggota @error('waktu_mulai') is-invalid @enderror" placeholder="Nama waktu_mulai" value="{{old('waktu_mulai')}}">
+        @error('waktu_mulai')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Waktu Selesai</label>
         <div class="col-sm-10">
-            <input type="datetime-local" name="waktu_selesai" class="form-control ambilAnggota @error('waktu_selesai') is-invalid @enderror" placeholder="Nama waktu_selesai" value="{{old('waktu_selesai')}}">
-            @error('waktu_selesai')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+        <input type="time" name="waktu_selesai" class="form-control ambilAnggota @error('waktu_selesai') is-invalid @enderror" placeholder="Nama waktu_selesai" value="{{old('waktu_selesai')}}">
+        @error('waktu_selesai')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
             @enderror
         </div>
     </div>
-
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Lokasi</label>
         <div class="col-sm-10">
+            
             <input type="input" name="lokasi" class="form-control @error('lokasi') is-invalid @enderror" placeholder="Nama Lokasi" value="{{old('lokasi')}}">
             @error('lokasi')
                 <div class="invalid-feedback">

@@ -32,6 +32,41 @@
 @push('custom-scripts')
     <script>
         $(document).ready(function(){
+            $(".modelKegiatan").change(function(){
+                var thisVal = $(this).val()
+                if(thisVal=='1'){
+                    $("#kegiatan-khusus").show();
+                    $("#kegiatan-mingguan").hide();
+                    $("#kegiatan-bulanan").hide();
+                }
+                else if(thisVal=='2'){
+                    $("#kegiatan-khusus").hide();
+                    $("#kegiatan-mingguan").show();
+                    $("#kegiatan-bulanan").hide();
+                }
+                else if(thisVal=='3'){
+                    $("#kegiatan-khusus").hide();
+                    $("#kegiatan-mingguan").hide();
+                    $("#kegiatan-bulanan").show();
+                }
+            })
+            $(".isBulanan .form-control").click(function(e){
+                $(".isBulanan .date").toggleClass('show')
+                e.stopPropagation();
+            })
+            $("body").click(function(){
+                $(".isBulanan .date").removeClass('show')
+            })
+            $(".isBulanan .date span").click(function(e){
+                $(this).toggleClass('selected')
+                var data='';
+                $(".isBulanan .date span.selected").each(function(i,v){
+                    data+=v.innerHTML+', '
+                })
+                $(".isBulanan .form-control").val(data)
+                e.stopPropagation();
+            })
+
             function appendAnggotaFree(res){
                 $(".loop-anggota-free").empty()
                 $.each(res,function(key,val){

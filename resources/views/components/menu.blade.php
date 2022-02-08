@@ -26,7 +26,7 @@
                         <span class="pcoded-mtext">Jadwal</span>
                     </a>
                 </li>
-                <li class="{{ Request::segment(1) == 'penugasan' ? 'active' : '' }}">
+                <li class="{{ Request::segment(1) == 'penugasan' && Request::segment(2) != 'jadwal' ? 'active' : '' }}">
                     <a href="{{ url('penugasan') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="feather icon-briefcase"></i>

@@ -13,8 +13,6 @@
 @section('content')
 
     @include('components.notification')
-
-    @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
     
     <div class="card">
         <div class="card-header">
@@ -29,7 +27,6 @@
 @section("full-calendar")
 <script>
     $(document).ready(function() {
-         
          $('#calendar').fullCalendar({
              header: {
                  left: 'prev,next today',

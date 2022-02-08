@@ -176,8 +176,34 @@ class PenugasanController extends Controller
             $penugasan->lampiran = $newScanLampiran;
             $penugasan->status = $validated['status'];
             $penugasan->keterangan = $validated['keterangan'];
+            $penugasan->model_penugasan = $validated['model_penugasan'];
             $penugasan->save();
-            $scanLampiran->move($uploadPath,$newScanLampiran);
+
+            if($validated['model_penugasan']=='1'){
+                DB::table('waktu_penugasan')->insert([
+                    'id_penugasan' => $penugasan->id,
+                    'is_dari' => $validated['tanggal_mulai'],
+                    'is_sampai' => $validated['tanggal_sampai'],
+                ]);
+            }
+            else if($validated['model_penugasan']=='2'){
+                foreach($validated['is_mingguan'] as $key => $value){
+                    DB::table('waktu_penugasan')->insert([
+                        'id_penugasan' => $penugasan->id,
+                        'is_hari' => $value,
+                    ]);
+                }
+            }
+            else if($validated['model_penugasan']=='3'){
+                $ex = explode(',',$validated['is_tanggal']);
+                foreach ($ex as $key => $value) {
+                    DB::table('waktu_penugasan')->insert([
+                        'id_penugasan' => $penugasan->id,
+                        'is_tanggal' => $value,
+                    ]);
+                }
+            }
+
             for ($i=0; $i < count($arrUser); $i++) { 
                 DB::table('detail_anggota')->insert(
                     array(

@@ -12766,3 +12766,52 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
     padding:6px 10px;
     margin:0;
   }
+.isBulanan{
+    position : relative;
+}
+.isBulanan .date.show{
+    display : block;
+}
+.isBulanan .form-control{
+    cursor : pointer;
+}
+.isBulanan .date{
+    border-radius : 8px 8px 0px 0px;
+    overflow : hidden;
+    position : absolute;
+    background : white;
+    border : 1px solid #ddd;
+    top : 0;
+    transform : translateY(-100%);
+    -webkit-transform : translateY(-100%);
+    display : none;
+}
+.isBulanan .date .row-date{
+    display : flex;
+}
+.isBulanan .date p{
+    text-align : center;
+    margin-bottom : 20px;
+    background : #4099ff;
+    padding : 10px 0px;
+    color : white;
+    font-weight : bold;
+}
+.isBulanan .date span{
+    transition: all.3s ease;
+    -webkit-transition: all.3s ease;
+    cursor : pointer;
+    width : 40px;
+    height : 40px;
+    font-size : 14px;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+}
+.isBulanan .date span:hover,.isBulanan .date span.selected{
+    color : white;
+    background : #4099ff;
+}
+
+
+
