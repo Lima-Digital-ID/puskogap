@@ -1,7 +1,7 @@
 <script data-cfasync="false" src="{{ asset('') }}js/email-decode.min.js"></script>
-<script type="text/javascript" src="{{ asset('') }}js/jquery.js"></script>
-<script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="{{ asset('') }}js/jquery-ui.min.js"></script>
-<script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="{{ asset('') }}js/popper.min.js"></script>
+{{-- <script type="text/javascript" src="{{ asset('') }}js/jquery.js"></script>
+<script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="{{ asset('') }}js/jquery-ui.min.js"></script> --}}
+
 <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="{{ asset('') }}js/bootstrap.min.js"></script>
 
 <script src="{{ asset('') }}js/waves.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>

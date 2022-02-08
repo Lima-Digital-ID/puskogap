@@ -261,4 +261,13 @@ class PenugasanController extends Controller
 
         return redirect()->route('penugasan.index')->withStatus('Data berhasil dihapus.');
     }
+    public function jadwal()
+    {
+        $this->param['btnText'] = 'Tambah';
+        $this->param['btnLink'] = '';
+        $this->param['pageTitle'] = 'Jadwal';
+        $this->param['penugasan'] = Penugasan::select("id","nama_kegiatan","waktu_mulai","waktu_selesai")->get();
+
+        return \view('penugasan.jadwal', $this->param);
+    }
 }

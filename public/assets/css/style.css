@@ -12751,3 +12751,18 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
 .select-anggota.checked:not(.selected-ketua):hover .isKetua{
     display : inline-block;
 }
+.fc-event{
+    background : #4099ff !important;
+    color : white !important;
+}
+#tooltip{
+    display:none;
+    position:fixed;
+    z-index:999;
+    top:0;
+    left:0;
+    background-color:yellow;
+    border-radius:10px;
+    padding:6px 10px;
+    margin:0;
+  }

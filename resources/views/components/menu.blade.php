@@ -18,6 +18,14 @@
             {{-- Penugasan --}}
             <div class="pcoded-navigation-label">Penugasan</div>
             <ul class="pcoded-item pcoded-left-item">
+                <li class="{{ Request::segment(2) == 'jadwal' ? 'active' : '' }}">
+                    <a href="{{ url('penugasan/jadwal') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-calendar"></i>
+                        </span>
+                        <span class="pcoded-mtext">Jadwal</span>
+                    </a>
+                </li>
                 <li class="{{ Request::segment(1) == 'penugasan' ? 'active' : '' }}">
                     <a href="{{ url('penugasan') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
