@@ -27,8 +27,9 @@ class PenugasanRequest extends FormRequest
         return [
             'nama_kegiatan' => 'required',
             'id_jenis_kegiatan' => 'required',
+            'tanggal_mulai' => 'required',
+            'tanggal_selesai' => 'required',
             'waktu_mulai' => 'required',
-            'waktu_selesai' => 'required',
             'waktu_selesai' => 'required',
             'lokasi' => 'required',
             'tamu_vvip' => 'required',
@@ -43,6 +44,7 @@ class PenugasanRequest extends FormRequest
             'lampiran' => 'required',
             'status' => 'required',
             'keterangan' => 'required',
+            'model_kegiatan' => 'required',
         ];
     }
 

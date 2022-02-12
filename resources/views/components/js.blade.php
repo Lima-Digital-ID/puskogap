@@ -37,6 +37,7 @@
 <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="{{ asset('') }}js/custom-dashboard.min.js"></script>
 <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="{{ asset('') }}js/script.min.js"></script>
 
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"
 type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
 <script type="d2d1d6e2f87cbebdf4013b26-text/javascript">
@@ -50,4 +51,11 @@ type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
     gtag('config', 'UA-23581568-13');
 </script>
 <script src="{{ asset('') }}js/rocket-loader.min.js" data-cf-settings="d2d1d6e2f87cbebdf4013b26-|49" defer="">
+</script>
+<script>
+$('.date').datepicker({
+  multidate: true,
+	format: 'dd-mm-yyyy'
+});
+
 </script>

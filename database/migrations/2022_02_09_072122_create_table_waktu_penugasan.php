@@ -22,7 +22,7 @@ class CreateTableWaktuPenugasan extends Migration
             $table->date('is_sampai');
             $table->timestamps();
 
-            $table->foreign('id_penugasan')->references('id')->on('penugasan')->cascadeOnUpdate()->cascadeOnDelete();
+            // $table->foreign('id_penugasan')->references('id')->on('penugasan')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

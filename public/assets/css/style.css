@@ -12812,6 +12812,28 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
     color : white;
     background : #4099ff;
 }
+.list-tanggal a{
+    display : inline-block;
+    padding : 5px 15px;
+    border-radius: 3px;
+    margin-bottom :5px;
+}
+.list-tanggal a span{
+    display : none;
+    margin-left : 20px;
+}
+    
+.list-tanggal a:hover span, .list-tanggal .active a span{
+    display : inline;
+}
+.list-tanggal a:hover,.list-tanggal .active a{
+    background : #00bcd4;
+    color : white;
+}
+.input-group-text{
+    background : #f8f9fa!important;
+    color : #495057 !important;
+}
 
 
 

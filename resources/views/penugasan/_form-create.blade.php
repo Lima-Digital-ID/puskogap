@@ -24,25 +24,64 @@
         </div>
     </div>
 
-    <div class="form-group row">
+    {{-- <div class="form-group row">
         <label class="col-sm-2 col-form-label">Model Kegiatan</label>
         <div class="col-sm-10">
-            <select name="model_kegiatan" class="modelKegiatan js-example-basic-single" style="width: 100%;" required>
+            <select name="model_kegiatan" class="modelKegiatan ambilAnggota js-example-basic-single" style="width: 100%;" required>
                 <option value="1">Kegiatan Khusus</option>
                 <option value="2">Kegiatan Rutin Mingguan</option>
                 <option value="3">Kegiatan Rutin Bulanan</option>
             </select>
         </div>
-    </div>
-    <div id="kegiatan-khusus">
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Tanggal Mulai</label>
+    </div> --}}
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Lokasi</label>
         <div class="col-sm-10">
-            <input type="date" name="tanggal_mulai" class="form-control ambilAnggota @error('tanggal_mulai') is-invalid @enderror" placeholder="Nama tanggal_mulai" value="{{old('tanggal_mulai')}}">
-            @error('tanggal_mulai')
+            
+            <input type="input" name="lokasi" class="form-control @error('lokasi') is-invalid @enderror" placeholder="Nama Lokasi" value="{{old('lokasi')}}">
+            @error('lokasi')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+            @enderror
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Tanggal Kegiatan</label>
+        <div class="col-sm-4">
+            <input type="date" id="pilih-tanggal" class="form-control" placeholder="Pilih Tanggal Kegiatan">
+        </div>
+        <div class="col-sm-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Dari</span>
+                </div>
+                <input type="time" id="pilih-dari" class="form-control" placeholder="Pilih Tanggal Kegiatan">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Sampai</span>
+                </div>
+                <input type="time" id="pilih-sampai" class="form-control" placeholder="Pilih Tanggal Kegiatan">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-success btn-sm newTanggal">Tambah Tanggal Kegiatan</button>
+        </div>
+    </div>
+
+    {{-- <div id="kegiatan-khusus">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tanggal Mulai</label>
+            <div class="col-sm-10">
+                <input type="date" name="tanggal_mulai" class="form-control ambilAnggota @error('tanggal_mulai') is-invalid @enderror" placeholder="Nama tanggal_mulai" value="{{old('tanggal_mulai')}}">
+                @error('tanggal_mulai')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                 @enderror
             </div>
         </div>
@@ -58,14 +97,14 @@
             @enderror
             </div>
         </div>
-    </div>
-    <div id="kegiatan-mingguan" style="display:none">
+    </div> --}}
+    {{-- <div id="kegiatan-mingguan" style="display:none">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Pilih Hari</label>
             <div class="col-sm-10">
-                <select name="is_mingguan[]" class="js-example-basic-single @error('is_mingguan') is-invalid @enderror" multiple="multiple" style="width: 100%;" required>
+                <select name="is_mingguan[]" class="js-example-basic-single select-hari ambilAnggota @error('is_mingguan') is-invalid @enderror" multiple="multiple" style="width: 100%;">
                     <?php 
-                        $day = ['Senin','Selasa','Rabu','Kamis',"Jum'at",'Sabtu',"Minggu"];
+                        $day = ["Minggu",'Senin','Selasa','Rabu','Kamis',"Jum'at",'Sabtu'];
                     ?>
 
                     @foreach ($day as $key => $value) 
@@ -86,7 +125,7 @@
             <label class="col-sm-2 col-form-label">Pilih Tanggal</label>
             <div class="col-sm-10">
                 <div class="isBulanan">
-                    <input type="text" name="is_tanggal" class="form-control" readonly>
+                    <input type="text" name="is_tanggal" class="form-control select-tanggal ambilAnggota" readonly>
                     <div class="date">
                         <p>Pilih Tanggal</p>
                         <?php 
@@ -109,8 +148,8 @@
                 @enderror
             </div>
         </div>
-    </div>
-    <div class="form-group row">
+    </div> --}}
+    {{-- <div class="form-group row">
         <label class="col-sm-2 col-form-label">Waktu Mulai</label>
         <div class="col-sm-10">
         <input type="time" name="waktu_mulai" class="form-control ambilAnggota @error('waktu_mulai') is-invalid @enderror" placeholder="Nama waktu_mulai" value="{{old('waktu_mulai')}}">
@@ -131,20 +170,7 @@
             </div>
             @enderror
         </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Lokasi</label>
-        <div class="col-sm-10">
-            
-            <input type="input" name="lokasi" class="form-control @error('lokasi') is-invalid @enderror" placeholder="Nama Lokasi" value="{{old('lokasi')}}">
-            @error('lokasi')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-    </div>
-    <input type="hidden" name="ketua" id="ketua">
+    </div> --}}
     {{-- <div class="form-group row" id="ketua">
         <label class="col-sm-2 col-form-label">Ketua</label>
         <div class="col-sm-10">
@@ -156,13 +182,35 @@
     </div> --}}
 
     <div class="form-group row mb-5">
-        <div class="col-md-12">
-            <div class="form-control">
-                <div class="row">
-                    <div class="col-md-7">
-                        <div class="bg-light p-3">
-                            <h5 class="font-weight-bold">Anggota Tidak Bertugas</h5>
-                            <hr>
+        <div class="col-md-12" id="append-tanggal-anggota">
+            <div class="form-control box-anggota">
+                <div class="alert background-info mb-0">
+                    <div class="row">
+                        <div class="col-md-2 pl-3">
+                            <h5 class="font-weight-bold">
+                                Tanggal Penugasan
+                            </h5>
+                        </div>
+                        <div class="col-md-6 pl-3">
+                            <h5 class="font-weight-bold">
+                                Anggota Tidak Bertugas
+                            </h5>
+                        </div>
+                        <div class="col-md-4 pl-3">
+                            <h5 class="font-weight-bold">
+                                Anggota Bertugas
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-light p-3">
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="list-tanggal" data-row='0'>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for=""><b>Jabatan</b></label>
@@ -187,7 +235,7 @@
                                     <select id="id_kompetensi_khusus" class="form-control js-example-basic-single">
                                         <option value="">Semua Kompetensi Khusus</option>
                                         @foreach ($unitkerja as $item)
-                                            <option value="{{$item->id}}">{{$item->unit_kerja}}</option>
+                                        <option value="{{$item->id}}">{{$item->unit_kerja}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -198,11 +246,7 @@
                             <div class="loop-anggota-free">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="bg-light p-3">
-                            <h5 class="font-weight-bold">Anggota Bertugas</h5>
-                            <hr>
+                        <div class="col-md-4">
                             <div class="loop-anggota-bertugas">
                             </div>
                         </div>

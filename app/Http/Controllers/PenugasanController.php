@@ -74,68 +74,86 @@ class PenugasanController extends Controller
 
         return \view('penugasan.create', $this->param);
     }
-
-    public function anggotaFree($waktu_mulai,$waktu_selesai,$filter="")
+    function hari($hari){
+        switch ($hari) {
+            case '1':
+                return 'Monday';
+            break;
+            case '2':
+                return 'Tuesday';
+            break;
+            case '3':
+                return 'Wednesday';
+            break;
+            case '4':
+                return 'Thursday';
+            break;
+            case '5':
+                return 'Friday';
+            break;
+            case '6':
+                return 'Saturday';
+            break;
+            case '7':
+                return 'Sunday';
+            break;
+        }
+    }
+    public function anggotaFree($tanggal,$dari,$sampai,$filter="")
     {
         $anggotaFree = User::from('users as u')
                             ->select(
                                 'u.id',
                                 'u.nama',
                             )
-                            ->where('level','Anggota')
-                            ->whereNotIn('u.id',function($query) use ($waktu_mulai, $waktu_selesai) {
+                            ->where('level','Anggota');
+                            if($filter!=""){
+                                $anggotaFree = $anggotaFree->where($filter);
+                            }
+                            $anggotaFree = $anggotaFree->whereNotIn('u.id',function($query) use ($tanggal,$dari,$sampai) {
                                 $query->select('da.id_user')
                                         ->from('detail_anggota as da')
                                         ->join('penugasan as p', 'da.id_penugasan', 'p.id')
-                                        ->whereRaw("(waktu_mulai <= '$waktu_mulai' or waktu_mulai <= '$waktu_selesai') and (waktu_selesai >= '$waktu_mulai' or waktu_selesai >= '$waktu_selesai')")
-                                        ->get();
+                                        ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
+                                        ->whereRaw("(p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")->get();
                             });
-                        if($filter!="" && count($filter)!=0){
-                            $anggotaFree = $anggotaFree->where($filter);
-                        }
         $anggotaFree = $anggotaFree->get();
         return $anggotaFree;
     }
 
-    public function anggotaNotFree($waktu_mulai,$waktu_selesai)
+    public function anggotaNotFree($tanggal,$dari,$sampai)
     {
         $anggotaNotFree = \DB::table('detail_anggota as da')->select('u.id','u.nama','p.nama_kegiatan')
                                         ->join('users as u', 'da.id_user', 'u.id')
                                         ->join('penugasan as p', 'da.id_penugasan', 'p.id')
+                                        ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
                                         ->where('u.level','Anggota')
-                                        ->whereRaw("(waktu_mulai <= '$waktu_mulai' or waktu_mulai <= '$waktu_selesai') and (waktu_selesai >= '$waktu_mulai' or waktu_selesai >= '$waktu_selesai')")
+                                        ->whereRaw("(p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")
                                         ->get();
         return $anggotaNotFree;
-    }
-    public function filterAnggotaFree()
-    {
-        $waktu_mulai = $_GET['waktu_mulai'];
-        $waktu_selesai = $_GET['waktu_selesai'];
-        $id_jabatan = $_GET['id_jabatan'];
-        $id_unit_kerja = $_GET['id_unit_kerja'];
-        $id_kompetensi_khusus = $_GET['id_kompetensi_khusus'];
-        $filter = [];
-        if($id_jabatan!=''){
-            $filter['id_jabatan'] = $id_jabatan;
-        }
-        else if($id_unit_kerja!=''){
-            $filter['id_unit_kerja'] = $id_unit_kerja;
-        }
-        else if($id_kompetensi_khusus!=''){
-            $filter['id_kompetensi_khusus'] = $id_kompetensi_khusus;
-        }
-        $anggota = $this->anggotaFree($waktu_mulai,$waktu_selesai,$filter);
-        echo json_encode($anggota);
     }
 
     public function getAnggota()
     {
-        $waktu_mulai = $_GET['waktu_mulai'];
-        $waktu_selesai = $_GET['waktu_selesai'];
-        
+        if(isset($_GET['id_jabatan'])){
+            $filter = [];
+            if($_GET['id_jabatan']!=''){
+                $filter['id_jabatan'] = $_GET['id_jabatan'];                
+            }
+            if($_GET['id_unit_kerja']!=''){
+                $filter['id_unit_kerja'] = $_GET['id_unit_kerja'];                
+            }
+            if($_GET['id_kompetensi_khusus']!=''){
+                $filter['id_kompetensi_khusus'] = $_GET['id_kompetensi_khusus'];                
+            }
+            
+        }
+        else{
+            $filter = "";
+        }
         $data = array(
-            'free' => $this->anggotaFree($waktu_mulai,$waktu_selesai),
-            'tugas' => $this->anggotaNotFree($waktu_mulai,$waktu_selesai)
+            'free' => $this->anggotaFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$filter),
+            'tugas' => $this->anggotaNotFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'])
         );
         echo json_encode($data);
     }
@@ -146,7 +164,7 @@ class PenugasanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PenugasanRequest $request)
+    public function store(PenugasanRequest $request, Request $input)
     {
         $validated = $request->validated();
         DB::beginTransaction();        
@@ -176,30 +194,38 @@ class PenugasanController extends Controller
             $penugasan->lampiran = $newScanLampiran;
             $penugasan->status = $validated['status'];
             $penugasan->keterangan = $validated['keterangan'];
-            $penugasan->model_penugasan = $validated['model_penugasan'];
+            $penugasan->model_penugasan = $validated['model_kegiatan'];
             $penugasan->save();
 
-            if($validated['model_penugasan']=='1'){
+            if($validated['model_kegiatan']=='1'){
                 DB::table('waktu_penugasan')->insert([
                     'id_penugasan' => $penugasan->id,
                     'is_dari' => $validated['tanggal_mulai'],
-                    'is_sampai' => $validated['tanggal_sampai'],
-                ]);
-            }
-            else if($validated['model_penugasan']=='2'){
+                    'is_sampai' => $validated['tanggal_selesai'],
+                    'is_tanggal' => 0,
+                    'is_hari' => 0,
+                    ]);
+                }
+            else if($validated['model_kegiatan']=='2'){
                 foreach($validated['is_mingguan'] as $key => $value){
                     DB::table('waktu_penugasan')->insert([
                         'id_penugasan' => $penugasan->id,
                         'is_hari' => $value,
-                    ]);
-                }
+                        'is_dari' =>'0000-00-00 00:00',
+                        'is_sampai' => '0000-00-00 00:00',
+                        'is_tanggal' => 0,
+                        ]);
+                    }
             }
-            else if($validated['model_penugasan']=='3'){
+            else if($validated['model_kegiatan']=='3'){
                 $ex = explode(',',$validated['is_tanggal']);
                 foreach ($ex as $key => $value) {
                     DB::table('waktu_penugasan')->insert([
                         'id_penugasan' => $penugasan->id,
                         'is_tanggal' => $value,
+                        'is_hari' => 0,
+                        'is_dari' =>'0000-00-00 00:00',
+                        'is_sampai' => '0000-00-00 00:00',
                     ]);
                 }
             }
@@ -215,12 +241,12 @@ class PenugasanController extends Controller
             }
             DB::table('detail_anggota',[
                 'id_penugasan' => $penugasan->id,
-                'id_user' => $request->input('ketua'),
+                'id_user' => $input->input('ketua'),
                 'status' => "Kepala",
             ]);
-            foreach($request->input('id_user') as $key => $value)
+            foreach($input->input('id_user') as $key => $value)
             {
-                if($value!=$request->input('ketua')){
+                if($value!=$input->input('ketua')){
                     DB::table('detail_anggota')->insert(
                         array(
                             'id_penugasan' => $penugasan->id,
