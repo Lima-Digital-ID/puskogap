@@ -2,8 +2,8 @@
     @csrf
     @method('put')
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Nama</label>
-        <div class="col-sm-10">
+        <div class="col-md-6">
+            <label>Nama</label>
             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
                 placeholder="Nama User" value="{{ old('name', $data->nama) }}">
             @error('name')
@@ -12,11 +12,8 @@
                 </div>
             @enderror
         </div>
-    </div>
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Email</label>
-        <div class="col-sm-10">
+        <div class="col-md-6">
+            <label>Email</label>
             <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
                 placeholder="Email User" value="{{ old('email', $data->email) }}">
             @error('email')
@@ -28,8 +25,8 @@
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Username</label>
-        <div class="col-sm-10">
+        <div class="col-md-6">
+            <label>Username</label>
             <input type="username" name="username" class="form-control @error('username') is-invalid @enderror"
                 placeholder="Username User" value="{{ old('username', $data->username) }}">
             @error('username')
@@ -38,11 +35,8 @@
                 </div>
             @enderror
         </div>
-    </div>
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">No Whatsapp</label>
-        <div class="col-sm-10">
+        <div class="col-md-6">
+            <label>No Whatsapp</label>
             <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror"
                 placeholder="Nomor Whatsapp User" value="{{ old('phone', $data->phone) }}">
             @error('phone')
@@ -53,10 +47,10 @@
         </div>
     </div>
 
-        <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Golongan</label>
-        <div class="col-sm-10">
-            <select name="id_golongan" id="id_golongan" class="js-example-basic-single" style="width: 100%;" required>
+    <div class="form-group row">
+        <div class="col-md-6">
+            <label>Golongan</label>
+            <select name="id_golongan" id="id_golongan" class="select2 form-control" style="width: 100%;" required>
                 <option value="">Pilih Golongan</option>
                 @foreach ($allGol as $gol)
                     <option value="{{ $gol->id }}" {{ $data->id_golongan == $gol->id ? 'selected' : '' }}>{{ $gol->pangkat }}</option>
@@ -68,12 +62,9 @@
                 </div>
             @enderror
         </div>
-    </div>
-
-        <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Jabatan</label>
-        <div class="col-sm-10">
-            <select name="id_jabatan" id="id_jabatan" class="js-example-basic-single" style="width: 100%;" required>
+        <div class="col-md-6">
+            <label>Jabatan</label>
+            <select name="id_jabatan" id="id_jabatan" class="select2 form-control" style="width: 100%;" required>
                 <option value="">Pilih Jabatan</option>
                 @foreach ($allJab as $jab)
                     <option value="{{ $jab->id }}" {{ $data->id_jabatan == $jab->id ? 'selected' : '' }}>{{ $jab->jabatan }}</option>
@@ -87,10 +78,10 @@
         </div>
     </div>
 
-        <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Kompetensi Khusus</label>
-        <div class="col-sm-10">
-            <select name="id_kompetensi_khusus" id="id_kompetensi_khusus" class="js-example-basic-single" style="width: 100%;" required>
+    <div class="form-group row">
+        <div class="col-md-6">
+            <label>Kompetensi Khusus</label>
+            <select name="id_kompetensi_khusus" id="id_kompetensi_khusus" class="select2 form-control" style="width: 100%;" required>
                 <option value="">Pilih Kompetensi Khusus</option>
                 @foreach ($allKhs as $khs)
                     <option value="{{ $khs->id }}" {{ $data->id_kompetensi_khusus == $khs->id ? 'selected' : '' }}>{{ $khs->kompetensi_khusus }}</option>
@@ -102,12 +93,9 @@
                 </div>
             @enderror
         </div>
-    </div>
-
-        <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Unit Kerja</label>
-        <div class="col-sm-10">
-            <select name="id_unit_kerja" id="id_unit_kerja" class="js-example-basic-single" style="width: 100%;" required>
+        <div class="col-md-6">
+            <label>Unit Kerja</label>
+            <select name="id_unit_kerja" id="id_unit_kerja" class="select2 form-control" style="width: 100%;" required>
                 <option value="">Pilih Unit Kerja</option>
                 @foreach ($allUnt as $unt)
                     <option value="{{ $unt->id }}" {{ $data->id_unit_kerja == $unt->id ? 'selected' : '' }}>{{ $unt->unit_kerja }}</option>
@@ -121,10 +109,9 @@
         </div>
     </div>
 
-
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Jenis Pegawai</label>
-        <div class="col-sm-10">
+        <div class="col-md-6">
+            <label>Jenis Pegawai</label>
             <select name="jenis_pegawai" id="jenis_pegawai" class="form-control @error('jenis_pegawai') is-invalid @enderror">
                 <option value="">Pilih Jenis Pegawai</option>
                 <option value="ASN" {{ old('jenis_pegawai', $data->jenis_pegawai) == 'ASN' ? ' selected' : '' }}>ASN</option>
@@ -137,11 +124,8 @@
                 </div>
             @enderror
         </div>
-    </div>
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Jenis Kelamin</label>
-        <div class="col-sm-10">
+        <div class="col-md-6">
+            <label>Jenis Kelamin</label>
             <select name="jenis_kelamin" id="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
                 <option value="">Pilih Jenis kelamin</option>
                 <option value="L" {{ old('jenis_kelamin', $data->jenis_kelamin) == 'L' ? ' selected' : '' }}>L</option>
@@ -152,26 +136,23 @@
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
-            @enderror
+                @enderror
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">NIP</label>
-        <div class="col-sm-10">
-            <input type="nip" name="nip" class="form-control @error('nip') is-invalid @enderror"
-                placeholder="NIP User" value="{{ old('nip', $data->nip) }}">
-            @error('nip')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
+        <div class="col-md-6">
+            <label>NIP</label>
+                <input type="nip" name="nip" class="form-control @error('nip') is-invalid @enderror"
+                    placeholder="NIP User" value="{{ old('nip', $data->nip) }}">
+                @error('nip')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
         </div>
-    </div>
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Level</label>
-        <div class="col-sm-10">
+        <div class="col-md-6">
+            <label>Level</label>
             <select name="level" id="level" class="form-control @error('level') is-invalid @enderror">
                 <option value="">Pilih Level</option>
                 <option value="Administrator" {{ old('level', $data->level) == 'Administrator' ? ' selected' : '' }}>Administrator</option>
@@ -189,7 +170,6 @@
             @enderror
         </div>
     </div>
-
 
     <button type="submit" class="btn btn-sm btn-primary"><i class="feather icon-save"></i>Simpan</button>
 </form>

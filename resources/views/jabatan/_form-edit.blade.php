@@ -2,8 +2,8 @@
   @csrf
   @method('PUT')
   <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Jabatan</label>
-      <div class="col-sm-10">
+      <div class="col-md-6">
+          <label>Jabatan</label>
           <input type="text" name="jabatan" class="form-control @error('jabatan') is-invalid @enderror" placeholder="Nama Jabatan" value="{{old('jabatan', $data->jabatan)}}">
           @error('jabatan')
               <div class="invalid-feedback">
