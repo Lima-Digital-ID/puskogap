@@ -1,4 +1,4 @@
-@push('custom-styles')
+{{-- @push('custom-styles')
 
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/themify-icons.css">
 
@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/animate.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/pages.css">
-@endpush
+@endpush --}}
 
 @if (session('status'))
     <div class="alert alert-success background-success">
@@ -30,7 +30,7 @@
     </div>
 @endif
 
-@push('custom-scripts')
+{{-- @push('custom-scripts')
     <script type="bc9e5e682d42f376717182ab-text/javascript" src="{{ asset('') }}js/modernizr.js"></script>
     <script type="bc9e5e682d42f376717182ab-text/javascript" src="{{ asset('') }}js/css-scrollbars.js"></script>
 
@@ -42,4 +42,4 @@
         type="bc9e5e682d42f376717182ab-text/javascript"></script>
 
     <script type="bc9e5e682d42f376717182ab-text/javascript" src="{{ asset('') }}js/script.js"></script>
-@endpush
+@endpush --}}

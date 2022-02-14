@@ -22,19 +22,19 @@ class PenugasanController extends Controller
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Penugasan';
         $this->param['pageIcon'] = 'feather icon-briefcase';
         $this->param['parentMenu'] = '/penugasan';
         $this->param['current'] = 'Penugasan';
     }
-
+    
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function index(Request $request)
     {
+        $this->param['pageTitle'] = 'List Penugasan';
         $this->param['btnText'] = 'Tambah';
         $this->param['btnLink'] = route('penugasan.create');
 
@@ -68,6 +68,8 @@ class PenugasanController extends Controller
         $this->param['jabatan'] = Jabatan::get();
         $this->param['kompetensi'] = KompetensiKhusus::get();
         $this->param['unitkerja'] = UnitKerja::get();
+        $this->param['pageTitle'] = 'Tambah Penugasan';
+
         $this->param['btnText'] = 'List Penugasan Kerja';
         $this->param['btnLink'] = route('penugasan.index');
         $this->param['allJen'] = JenisKegiatan::get();

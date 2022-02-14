@@ -68,22 +68,37 @@
 
             <div class="row row-breadcrumbs align-items-center">
                 <div class="col-md-6">
-                    <h5><span class="mr-2 {{$pageIcon}}"></span> {{ ucwords(Request::segment(1)) }}</h5>
+                    <h5>
+                        <a @if(Request::segment(1)!='dashboard') onclick="window.history.back()" @endif>
+                            @if(Request::segment(1)!='dashboard') <span class="fa fa-arrow-left mr-3 btn-rgb-primary fa-sm p-2 "></span> @endif </span> 
+                        </a>
+                        {{ ucwords(Request::segment(1)) }}</h5>
                 </div>
                 <div class="col-md-6 text-right">
                     <h6>{{ ucwords(Request::segment(1)) }} / {{$pageTitle}}</h6>
                 </div>
             </div>
             <hr class="mt-4">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor esse amet delectus nam tenetur cum voluptates ratione atque et eaque voluptatem, quisquam, vitae blanditiis magnam nulla doloribus eligendi, voluptatum laborum.
+            @yield('content')
         </div>
     </div>   
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://unpkg.com/popper.js@1.12.8/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tooltip.js@1.3.1/dist/umd/tooltip.min.js"></script>
+<script src="{{ asset('') }}js/select2.full.min.js"></script>
+
 <script
       src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
   ></script>
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+$(".select2").select2()
+</script>
 </body>
 </html>
