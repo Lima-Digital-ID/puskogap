@@ -26,7 +26,9 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $param['pageIcon'] = 'fa fa-home';
+        $param['pageTitle'] = 'Aplikasi PUSKOGAP';
+        return view('dashboard',$param);
     })->middleware(['auth'])->name('dashboard');
 
     Route::resource('golongan', GolonganController::class);

@@ -1,150 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- Mirrored from colorlib.com/polygon/admindek/default/sample-page.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2019 16:10:10 GMT -->
-<!-- Added by HTTrack -->
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PUSKOGAP | SATPOL PP</title>
-
-
-    <!--[if lt IE 10]>
-  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="description"
-        content="Admindek Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
-    <meta name="keywords"
-        content="flat ui, admin Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
-    <meta name="author" content="colorlib" />
-
-    <link rel="icon" href="{{ asset('') }}png/satpol-pp.png" type="image/x-icon">
-
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
-
-    <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="{{ asset('') }}css/waves.min.css" type="text/css" media="all">
-
-    <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/feather.css">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />    
     <link rel="stylesheet" href="{{ asset('') }}css/select2.min.css" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/bootstrap-multiselect.css" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/multi-select.css" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    {{-- <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="{{ asset('') }}js/popper.min.js"></script> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
-    <script src="https://unpkg.com/popper.js@1.12.8/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tooltip.js@1.3.1/dist/umd/tooltip.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('') }}css/custom.css" />
 
-    @yield("full-calendar")
-    @stack('custom-styles')
 </head>
-
 <body>
+    <div class="container custom">
+        <nav class="navbar navbar-expand-lg py-3 navbar-light mt-4">
+            <div class="container custom">
 
-    <div class="loader-bg">
-        <div class="loader-bar"></div>
-    </div>
-
-    <div id="pcoded" class="pcoded">
-        <div class="pcoded-overlay-box"></div>
-        <div class="pcoded-container navbar-wrapper">
-
-            @include('components.navbar')
-
-            <div class="pcoded-main-container">
-                <div class="pcoded-wrapper">
-
-                    @include('components.menu')
-
-                    <div class="pcoded-content">
-
-                        @yield('page-header')
-
-                        <div class="pcoded-inner-content">
-                            <div class="main-body">
-                                <div class="page-wrapper">
-                                    <div class="page-body">
-                                        @yield('content')
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <a class="navbar-brand font-weight-bold" href="#"><img src="{{ asset('') }}png/satpol-pp.png" width="40px" class="mr-2" alt=""> PUSKOGAP</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::segment(1) == 'dashboard' ? 'active' : '' }}" href="{{url('/dashboard')}}"><span class="fa fa-home mr-1"></span> Dashboard <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::segment(2) == 'jadwal' ? 'active' : '' }}" href="{{url('penugasan/jadwal')}}"><span class="fa fa-calendar mr-1"></span> Schedule</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::segment(1) == 'penugasan' && Request::segment(2) != 'jadwal' ? 'active' : '' }}" href="{{url('penugasan')}}"><span class="fa fa-car mr-1"></span> Penugasan</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="fa fa-database"></span> Data Master
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="#">Master Anggota</a>
+                      <a class="dropdown-item" href="{{ route('user.index') }}">Master User</a>
+                      <a class="dropdown-item" href="{{ route('jenis-kegiatan.index') }}">Master Jenis Kegiatan</a>
+                      <a class="dropdown-item" href="{{ route('jabatan.index') }}">Master Jabatan</a>
+                      <a class="dropdown-item" href="{{ route('golongan.index') }}">Master Golongan</a>
+                      <a class="dropdown-item" href="{{ route('unit-kerja.index') }}">Master Unit Kerja</a>
+                      <a class="dropdown-item" href="{{ route('kompetensi-khusus.index') }}">Master Kompetensi Khusus</a>
                     </div>
-
-                    <div id="styleSelector">
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!--[if lt IE 10]>
-    <div class="ie-warning">
-        <h1>Warning!!</h1>
-        <p>You are using an outdated version of Internet Explorer, please upgrade
-            <br/>to any of the following web browsers to access this website.
-        </p>
-        <div class="iew-container">
-            <ul class="iew-download">
-                <li>
-                    <a href="http://www.google.com/chrome/">
-                        <img src="../files/assets/images/browser/chrome.png" alt="Chrome">
-                        <div>Chrome</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.mozilla.org/en-US/firefox/new/">
-                        <img src="../files/assets/images/browser/firefox.png" alt="Firefox">
-                        <div>Firefox</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.opera.com">
-                        <img src="../files/assets/images/browser/opera.png" alt="Opera">
-                        <div>Opera</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.apple.com/safari/">
-                        <img src="../files/assets/images/browser/safari.png" alt="Safari">
-                        <div>Safari</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-                        <img src="../files/assets/images/browser/ie.png" alt="">
-                        <div>IE (9 & above)</div>
-                    </a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="fa fa-user"></span> User
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="{{ url('logout') }}">Logout</a>
+                    </div>
+                  </li>
+            </ul>
         </div>
-        <p>Sorry for the inconvenience!</p>
     </div>
-    <![endif]-->
-    @include('components.logout-modal')
-    @include('components.js')
-    @stack('custom-scripts')
+    </nav> 
+    <div class="box-content px-3 py-4 my-4">
+        <div class="container cusutom">
+
+            <div class="row row-breadcrumbs align-items-center">
+                <div class="col-md-6">
+                    <h5><span class="mr-2 {{$pageIcon}}"></span> {{ ucwords(Request::segment(1)) }}</h5>
+                </div>
+                <div class="col-md-6 text-right">
+                    <h6>{{ ucwords(Request::segment(1)) }} / {{$pageTitle}}</h6>
+                </div>
+            </div>
+            <hr class="mt-4">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor esse amet delectus nam tenetur cum voluptates ratione atque et eaque voluptatem, quisquam, vitae blanditiis magnam nulla doloribus eligendi, voluptatum laborum.
+        </div>
+    </div>   
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+  ></script>
 </body>
-
-</body>
-
-</body>
-
-<!-- Mirrored from colorlib.com/polygon/admindek/default/sample-page.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2019 16:10:10 GMT -->
-
 </html>
