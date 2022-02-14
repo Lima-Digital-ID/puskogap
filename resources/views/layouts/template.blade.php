@@ -40,7 +40,7 @@
                       <span class="fa fa-database"></span> Data Master
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="#">Master Anggota</a>
+                      <a class="dropdown-item" href="{{ route('anggota.index') }}">Master Anggota</a>
                       <a class="dropdown-item" href="{{ route('user.index') }}">Master User</a>
                       <a class="dropdown-item" href="{{ route('jenis-kegiatan.index') }}">Master Jenis Kegiatan</a>
                       <a class="dropdown-item" href="{{ route('jabatan.index') }}">Master Jabatan</a>
