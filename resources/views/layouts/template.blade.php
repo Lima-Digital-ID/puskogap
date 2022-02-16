@@ -56,7 +56,11 @@
                       <span class="fa fa-user"></span> User
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="{{ url('logout') }}">Logout</a>
+                      {{-- <a class="dropdown-item" href="{{ url('logout') }}">Logout</a> --}}
+                      <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                     </div>
                   </li>
             </ul>

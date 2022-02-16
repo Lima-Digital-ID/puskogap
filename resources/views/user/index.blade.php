@@ -14,18 +14,15 @@
 
     @include('components.notification')
 
-    @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
-    
-    <div class="card">
-        <div class="card-header">
-            <h5>List User</h5>
-            <div class="col-md-4 pull-right">
-                @include('components.search')
-            </div>
-            
-        </div>
-        <div class="card-block table-border-style">
-            @include('user._table')
+    <div class="row justify-content-between">
+        <div class="col-md-6">
+            @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
+        </div>        
+        <div class="col-md-4">
+            @include('components.search')
         </div>
     </div>
+    @include('user._table')
+    </div>
+
 @endsection

@@ -19,19 +19,19 @@
                 <td>{{ $item->kode }}</td>
                 <td>{{ $item->kompetensi_khusus }}</td>
                 <td>
-                    <div class="form-inline">
+                    <div class="form-inline btn-action">
                         <a href="{{ route('kompetensi-khusus.edit', $item->id) }}" class="mr-2">
-                            <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm"
+                            <button type="button" id="PopoverCustomT-1" class="btn btn-rgb-primary btn-sm"
                                 data-toggle="tooltip" title="Edit" data-placement="top"><span
-                                    class="feather icon-edit"></span></button>
+                                    class="fa fa-edit fa-sm"></span></button>
                         </a>
                         <form action="{{ route('kompetensi-khusus.destroy', $item->id) }}" method="post">
                             @csrf
                             @method('delete')
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                            <button type="button" class="btn btn-rgb-danger btn-sm" data-toggle="tooltip"
                                 title="Hapus" data-placement="top"
                                 onclick="confirm('{{ __('Apakah anda yakin ingin menghapus?') }}') ? this.parentElement.submit() : ''">
-                                <span class="feather icon-trash"></span>
+                                <span class="fa fa-trash fa-sm"></span>
                             </button>
                         </form>
                     </div>

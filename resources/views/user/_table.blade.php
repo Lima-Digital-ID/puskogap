@@ -35,20 +35,20 @@
                     <td>{{ $item->nip }}</td>
                     <td>{{ $item->level }}</td>
                     <td>
-                        <div class="form-inline">
-                            <a href="{{ route('user.edit', $item->id) }}" class="mr-2">
-                                <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm"
+                        <div class="form-inline btn-action">
+                            <a href="{{ route('anggota.edit', $item->id) }}" class="mr-2">
+                                <button type="button" id="PopoverCustomT-1" class="btn btn-rgb-primary btn-sm"
                                     data-toggle="tooltip" title="Edit" data-placement="top"><span
-                                        class="feather icon-edit"></span></button>
+                                        class="fa fa-edit fa-sm"></span></button>
                             </a>
                             @if (auth()->user()->id != $item->id)
-                            <form action="{{ route('user.destroy', $item->id) }}" method="post">
+                            <form action="{{ route('anggota.destroy', $item->id) }}" method="post">
                                 @csrf
                                 @method('delete')
-                                <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus"
-                                    data-placement="top"
+                                <button type="button" class="btn btn-rgb-danger btn-sm" data-toggle="tooltip"
+                                    title="Hapus" data-placement="top"
                                     onclick="confirm('{{ __('Apakah anda yakin ingin menghapus?') }}') ? this.parentElement.submit() : ''">
-                                    <span class="feather icon-trash"></span>
+                                    <span class="fa fa-trash fa-sm"></span>
                                 </button>
                             </form>
                             @endif

@@ -14,19 +14,15 @@
 
     @include('components.notification')
 
-    @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
-    
-    <div class="card">
-        <div class="card-header">
-            <h5>List {{ $pageTitle }}</h5>
-            <div class="col-md-4 pull-right">
-                @include('components.search')
-            </div>
-            
+    <div class="row justify-content-between">
+        <div class="col-md-6">
+            @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
+        </div>        
+        <div class="col-md-4">
+            @include('components.search')
         </div>
-        <div class="card-block table-border-style">
-            @include('jabatan._table')
-        </div>
+    </div>
+    @include('jabatan._table')
     </div>
 
 @endsection
