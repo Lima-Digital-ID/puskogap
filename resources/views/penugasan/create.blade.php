@@ -69,7 +69,7 @@
                         $(parent+" .hidden_ketua").val(id_ketua)
                     })
                 })
-            }
+        }
             function appendAnggotaNotFree(parent,res){
                 $(parent+" .loop-anggota-bertugas").empty()
                 $.each(res,function(key,val){
@@ -111,10 +111,6 @@
                     } 
                 })
             }
-
-
-
-
             $('.datepicker-multi').datepicker({
                 format: 'yyyy-mm-dd',
                 multidate: true,
@@ -147,7 +143,7 @@
 
                         $("#list-tanggal").append(`
                             <div class='loop-tanggal ${classLoop}' data-index='${i}'>
-                                <a class="btn-pointer btn btn-${classBtn} mr-2" ${nextButton}>${tgl} <span class="fa fa-times ml-4 remove-tanggal"></span> </a>
+                                <a class="btn-pointer btn btn-${classBtn} mr-2" ${nextButton}>${tgl} <span class="fa fa-times ml-4 remove-tanggal" onclick="removeTanggal(${i})"></span> </a>
                                 <input type='hidden' class="hidden_tanggal" name='tanggal[]' value='${v}'>
                             </div>
                         `)
@@ -165,6 +161,39 @@
                     $(".select2").select2()
                 }
             })
+            function removeTanggal(index){
+                swal({
+                    title: "Apakah anda yakin?",
+                    text: 'Tanggal Akan Dihapus',
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#dc3545",
+                    confirmButtonText: 'Hapus',
+                    closeOnConfirm: false,
+                },
+                    function() {
+                        var tanggal = $(".loop-tanggal[data-index='"+index+"'] .hidden_tanggal").val()
+                        $(".loop-tanggal[data-index='"+index+"']").remove()
+                        $(".input-penugasan-popup[data-index='"+index+"']").remove()
+
+                        var inputTanggal = $("#pilih-tanggal").val().split(',')
+
+                        $.each(inputTanggal,function(i,v){
+                            if(v==tanggal){
+                                inputTanggal.splice(i,1)
+                                return false
+                            }
+                        })                
+                        $("#pilih-tanggal").val(inputTanggal.join())
+                        var numOfTanggal = parseInt($(".loop-tanggal").length)-1
+                        var nextIndex = index-1
+                        var destinationIndex = nextIndex>numOfTanggal ? 0 : nextIndex
+                        nextButton(destinationIndex)
+                        swal.close();
+                    }
+                );
+
+            }
             function getAnggota(){
                 var parent =".input-penugasan-popup.active";
                 var dari = $(parent+" .waktu-mulai").val()
