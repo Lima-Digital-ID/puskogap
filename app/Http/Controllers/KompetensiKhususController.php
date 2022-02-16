@@ -12,7 +12,6 @@ class KompetensiKhususController extends Controller
 {
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Kompetensi Khusus';
         $this->param['pageIcon'] = 'fa fa-database';
         $this->param['parentMenu'] = '/kompetensi-khusus';
         $this->param['current'] = 'Kompetensi Khusus';
@@ -24,6 +23,7 @@ class KompetensiKhususController extends Controller
      */
     public function index(Request $request)
     {
+        $this->param['pageTitle'] = 'List Kompetensi Khusus';
         $this->param['btnText'] = 'Tambah';
         $this->param['btnLink'] = route('kompetensi-khusus.create');
 
@@ -53,6 +53,7 @@ class KompetensiKhususController extends Controller
      */
     public function create()
     {
+        $this->param['pageTitle'] = 'Tambah Kompetensi Khusus';
         $this->param['btnText'] = 'List Kompetensi Khusus';
         $this->param['btnLink'] = route('kompetensi-khusus.index');
 
@@ -101,6 +102,7 @@ class KompetensiKhususController extends Controller
      */
     public function edit($id)
     {
+        $this->param['pageTitle'] = 'Edit Kompetensi Khusus';
         $this->param['data'] = KompetensiKhusus::find($id);
         $this->param['btnText'] = 'List Kompetensi Khusus';
         $this->param['btnLink'] = route('kompetensi-khusus.index');

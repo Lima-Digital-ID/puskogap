@@ -19,7 +19,6 @@ class AnggotaController extends Controller
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Anggota';
         $this->param['pageIcon'] = 'feather icon-users';
         $this->param['parentMenu'] = 'anggota';
         $this->param['current'] = 'Anggota';
@@ -31,6 +30,7 @@ class AnggotaController extends Controller
      */
     public function index(Request $request)
     {
+        $this->param['pageTitle'] = 'List Anggota';
         $this->param['btnText'] = 'Tambah';
         $this->param['btnLink'] = route('anggota.create');
 
@@ -61,6 +61,7 @@ class AnggotaController extends Controller
      */
     public function create()
     {
+        $this->param['pageTitle'] = 'Tambah Anggota';
         $this->param['btnText'] = 'List Anggota';
         $this->param['btnLink'] = route('anggota.index');
         $this->param['allGol'] = Golongan::get();
@@ -91,8 +92,7 @@ class AnggotaController extends Controller
             $anggota->jenis_pegawai = $request->get('jenis_pegawai');
             $anggota->jenis_kelamin = $request->get('jenis_kelamin');
             $anggota->nip = $request->get('nip');
-            ddd($anggota);
-            // $anggota->save();
+            $anggota->save();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.' . $e->getMessage());
         } catch (QueryException $e) {
@@ -121,6 +121,7 @@ class AnggotaController extends Controller
      */
     public function edit($id)
     {
+        $this->param['pageTitle'] = 'Edit Anggota';
         $this->param['data'] = Anggota::findOrFail($id);
         $this->param['allGol'] = Golongan::get();
         $this->param['allJab'] = Jabatan::get();

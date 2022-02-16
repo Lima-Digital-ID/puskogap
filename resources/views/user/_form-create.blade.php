@@ -170,5 +170,6 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-sm btn-primary"><i class="feather icon-save"></i>Simpan</button>
+    <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-save"></i> Simpan</button>
+    <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Reset</button>
 </form>
