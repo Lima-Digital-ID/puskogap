@@ -12,6 +12,7 @@
       crossorigin="anonymous"
     />    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />    
     <link rel="stylesheet" href="{{ asset('') }}css/select2.min.css" />
+<link rel="stylesheet" href="{{ asset('') }}vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="{{ asset('') }}css/custom.css" />
 
 </head>
@@ -87,18 +88,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://unpkg.com/popper.js@1.12.8/dist/umd/popper.min.js"></script>
 <script src="https://unpkg.com/tooltip.js@1.3.1/dist/umd/tooltip.min.js"></script>
-<script src="{{ asset('') }}js/select2.full.min.js"></script>
-
 <script
       src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
   ></script>
+<script src="{{ asset('') }}vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="{{ asset('') }}js/select2.full.min.js"></script>
+
 <script>
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-})
-$(".select2").select2()
+    // $(document).ready(function(){
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+        $(".select2").select2()
+        $(".datepicker").datepicker();
+    // })
 </script>
+@stack('custom-script')
 </body>
 </html>

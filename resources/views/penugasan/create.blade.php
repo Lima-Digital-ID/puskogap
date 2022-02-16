@@ -8,92 +8,41 @@
 
 
 @endsection
-@push('custom-scripts')
+@push('custom-script')
     <script>
-        $(document).ready(function(){
-            $(".newTanggal").click(function(e){
-                e.preventDefault()
-                var tanggal = $("#pilih-tanggal").val()
-                var dari = $("#pilih-dari").val()
-                var sampai = $("#pilih-sampai").val()
-                var row = $(".list-tanggal").attr('data-row')
-                if((tanggal!='' && dari!='' && sampai!='') && ($(".list-tanggal .hidden_tanggal[value='"+tanggal+"']").length==0 || $(".list-tanggal .hidden_dari[value='"+dari+"']").length==0 || $(".list-tanggal .hidden_sampai[value='"+sampai+"']").length==0)){
-                    $(".loop-tanggal").removeClass('active')
-                    $(".list-tanggal").append(`
-                    <div class='loop-tanggal active' data-id='${row}'>
-                        <a href="">${moment(tanggal).format('DD-MM-YYYY')} (${dari} s/d ${sampai}) <span class="fa fa-times"></span></a>
-                        <input type="hidden" class="hidden_tanggal" name="tanggal[]" value="${tanggal}">
-                        <input type="hidden" class="hidden_dari" name="dari[]" value="${dari}">
-                        <input type="hidden" class="hidden_sampai" name="sampai[]" value="${sampai}">
-                        <input type="hidden" class="hidden_ketua" name="ketua[]" value="">
-                        <br>
-                    </div>
-                    `)
-
-                    $(".loop-tanggal[data-id='"+row+"'] a").click(function(e){
-                        e.preventDefault() 
-                        $(".loop-tanggal").removeClass("active")
-                        $(this).closest(".loop-tanggal").addClass("active")
-                        ajaxAmbilAnggota()
-                    })
-                    $(".loop-tanggal[data-id='"+row+"'] a span").click(function(e){
-                        e.preventDefault() 
-                        e.stopPropagation() 
-                        if(confirm('Apakah Anda Yakin?')){
-                            var closestLoop = $(this).closest(".loop-tanggal")
-                            if(closestLoop.hasClass('active')){
-                                $(".loop-anggota-free").empty()
-                                $(".loop-anggota-bertugas").empty()
-                            }
-                            closestLoop.remove()
-                        }
-                    })
-                    row++
-                    $(".list-tanggal").attr("data-row",row)
-                    ajaxAmbilAnggota()
-                }
-            })
-            $("#btn-filter").click(function(e){
-                e.preventDefault()
-                if($(".loop-tanggal.active").length!=0){
-                    ajaxAmbilAnggota(filter=true)
-                }
-                
-            })
-            function ajaxAmbilAnggota(filter=false){
-                var parent =".loop-tanggal.active";
-                var tanggal = $(parent+" .hidden_tanggal").val()
-                var dari = $(parent+" .hidden_dari").val()
-                var sampai = $(parent+" .hidden_sampai").val()
-                var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai} 
-                if(filter){
-                    var id_jabatan = $("#id_jabatan").val()
-                    var id_unit_kerja = $("#id_unit_kerja").val()
-                    var id_kompetensi_khusus = $("#id_kompetensi_khusus").val()
-                    var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai,id_jabatan : id_jabatan, id_unit_kerja : id_unit_kerja, id_kompetensi_khusus : id_kompetensi_khusus} 
-                }
-                $.ajax({
-                    type: "GET",
-                    data : dataSend,
-                    url:"{{ url('penugasan/cek-anggota') }}",
-                    dataType : "json",
-                    beforeSend : function(){
-                        $(".loop-anggota-free").prepend('<p>Loading....</p>')
-                        $(".loop-anggota-bertugas").prepend('<p>Loading....</p>')
-                    },
-                    success : function(response){
-                        appendAnggotaFree(response.free);
-                        appendAnggotaNotFree(response.tugas);
-                    } 
-                })
+        function funcBtnTanggal(thisParam){
+            var index = $(thisParam).closest('.loop-tanggal').attr('data-index')
+            nextButton(index)
+        }
+        function nextButton(destinationIndex){
+            var numOfTanggal = parseInt($(".loop-tanggal").length)-1
+            if(destinationIndex>numOfTanggal){
+                $("#modalTanggal").modal('hide')
             }
-            function appendAnggotaFree(res){
-                $(".loop-anggota-free").empty()
+            else{
+                $(".loop-tanggal.active a").removeClass('btn-success')
+                $(".loop-tanggal.active a").addClass('btn-default')
+
+                $(".loop-tanggal.active").removeClass('active')
+                $(".input-penugasan-popup.active").removeClass('active')
+
+                $(".loop-tanggal[data-index='"+destinationIndex+"']").addClass('active')
+                $(".input-penugasan-popup[data-index='"+destinationIndex+"']").addClass('active')
+
+                $(".loop-tanggal[data-index='"+destinationIndex+"'] a").removeClass('disabled')
+                $(".loop-tanggal[data-index='"+destinationIndex+"'] a").removeClass('btn-default')
+                $(".loop-tanggal[data-index='"+destinationIndex+"'] a").addClass('btn-success')
+                $(".loop-tanggal[data-index='"+destinationIndex+"'] a").attr('onclick','funcBtnTanggal(this)')
+            }
+        }
+        function appendAnggotaFree(parent,res){
+                $(parent+" .loop-anggota-free").empty()
+                var indexActive = $(parent).attr('data-index');
                 $.each(res,function(key,val){
-                    $(".loop-anggota-free").append(`
+                    $(parent+" .loop-anggota-free").append(`
                         <div class="select-anggota mb-2">
-                            <label class='check-anggota' for="free${key}">
-                                <input type="checkbox" id="free${key}" name="id_user[]" value="${val.id}">
+                            <label class='check-anggota' for="free${indexActive}${key}">
+                                <input type="checkbox" id="free${indexActive}${key}" name="id_user[]" class="check-free" value="${val.id}">
                                 ${val.nama}
                             </label>
                             <span class="isKetua" data-id="${val.id}">Jadikan Ketua</span>                                
@@ -110,29 +59,178 @@
                     else{
                         $(parentDiv).removeClass("checked")
                         $(parentDiv).removeClass("selected-ketua")
-                        $(".loop-tanggal.active .hidden_ketua").val('')
+                        $(parent+" .hidden_ketua").val('')
                     }
                     $(".isKetua").click(function(){
                         var parentDiv = $(this).closest('.select-anggota');
                         $(".select-anggota").removeClass("selected-ketua")
                         $(parentDiv).addClass("selected-ketua")
                         var id_ketua = $(this).data('id')
-                        $(".loop-tanggal.active .hidden_ketua").val(id_ketua)
+                        $(parent+" .hidden_ketua").val(id_ketua)
                     })
                 })
             }
-            function appendAnggotaNotFree(res){
-                $(".loop-anggota-bertugas").empty()
+            function appendAnggotaNotFree(parent,res){
+                $(parent+" .loop-anggota-bertugas").empty()
                 $.each(res,function(key,val){
-                    $(".loop-anggota-bertugas").append(`
+                    key++
+                    $(parent+" .loop-anggota-bertugas").append(`
                         <div class="mb-2">
-                            <label class="mb-2">${val.nama} (${val.nama_kegiatan})</label>
+                            <label class="mb-2">${key}. ${val.nama} (${val.nama_kegiatan})</label>
                         </div>
                     `);
                 })
             }
-            
-        })
+            function ajaxAmbilAnggota(filter=false){
+                var tanggal = $(".loop-tanggal.active .hidden_tanggal").val()
+                var parent =".input-penugasan-popup.active";
+                var dari = $(parent+" .waktu-mulai").val()
+                var sampai = $(parent+" .waktu-sampai").val()
+                var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai} 
 
+                $(parent+" .hidden_ketua").val('')
+
+                if(filter){
+                    var id_jabatan = $(parent+" #id_jabatan").val()
+                    var id_unit_kerja = $(parent+" #id_unit_kerja").val()
+                    var id_kompetensi_khusus = $(parent+" #id_kompetensi_khusus").val()
+                    var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai,id_jabatan : id_jabatan, id_unit_kerja : id_unit_kerja, id_kompetensi_khusus : id_kompetensi_khusus} 
+                }
+                $.ajax({
+                    type: "GET",
+                    data : dataSend,
+                    url:"{{ url('penugasan/cek-anggota') }}",
+                    dataType : "json",
+                    beforeSend : function(){
+                        $(parent+" .loop-anggota-free").prepend('<p>Loading....</p>')
+                        $(parent+" .loop-anggota-bertugas").prepend('<p>Loading....</p>')
+                    },
+                    success : function(response){
+                        appendAnggotaFree(parent,response.free);
+                        appendAnggotaNotFree(parent,response.tugas);
+                    } 
+                })
+            }
+
+
+
+
+            $('.datepicker-multi').datepicker({
+                format: 'yyyy-mm-dd',
+                multidate: true,
+                clearBtn: true,
+                todayHighlight: true,
+            });
+
+            $(".btn-tanggal").click(function(e){
+                e.preventDefault()
+                var valueTanggal = $("#pilih-tanggal").val()
+                if(valueTanggal==''){
+                    $("#pilih-tanggal").addClass("is-invalid")
+                    $("#pilih-tanggal").closest('.col-md-6').append(`
+                    <small style="color:red">
+                        Pilih Tanggal Terlebih Dahulu
+                    </small>
+                    `)
+                }
+                else{
+                    $("#pilih-tanggal").removeClass("is-invalid")
+                    $("#pilih-tanggal small").remove()
+                    $("#modalTanggal").modal('show')
+                    $("#modalTanggal").off()
+                    var tanggal = valueTanggal.split(',')
+                    $.each(tanggal,function(i,v){
+                        var tgl = moment(v).format('DD MMMM')
+                        var classBtn = i==0 ? 'success' : 'default disabled';
+                        var classLoop = i==0 ? 'active' : ''
+                        var nextButton = i==0 ? "onclick='funcBtnTanggal(this)'" : ''
+
+                        $("#list-tanggal").append(`
+                            <div class='loop-tanggal ${classLoop}' data-index='${i}'>
+                                <a class="btn-pointer btn btn-${classBtn} mr-2" ${nextButton}>${tgl} <span class="fa fa-times ml-4 remove-tanggal"></span> </a>
+                                <input type='hidden' class="hidden_tanggal" name='tanggal[]' value='${v}'>
+                            </div>
+                        `)
+                        if(i==0){
+                            $(".input-penugasan-popup").addClass('active')
+                        }
+                        else{
+                            $(".input-penugasan-popup[data-index='0']").clone().appendTo('.modal-body')
+                            $(".input-penugasan-popup:last-child").attr('data-index',i)
+                            $(".input-penugasan-popup:last-child").removeClass('active')
+
+                            $(".input-penugasan-popup:last-child .select2-container").remove()
+                        }
+                    })
+                    $(".select2").select2()
+                }
+            })
+            function getAnggota(){
+                var parent =".input-penugasan-popup.active";
+                var dari = $(parent+" .waktu-mulai").val()
+                var sampai = $(parent+" .waktu-sampai").val()
+
+                if(dari!='' && sampai!=''){
+                    ajaxAmbilAnggota()
+                }
+            }
+            function filterAnggota(e){
+                e.preventDefault()
+                var parent =".input-penugasan-popup.active";
+                var dari = $(parent+" .waktu-mulai").val()
+                var sampai = $(parent+" .waktu-sampai").val()
+
+                if(dari!='' && sampai!=''){
+                    ajaxAmbilAnggota(filter=true)
+                }
+            }
+            $(".reset-popup").click(function(e){
+                e.preventDefault()
+                $(".input-penugasan-popup.active input,.input-penugasan-popup.active select").val('')
+                $(".loop-anggota-free").empty()
+                $(".loop-anggota-bertugas").empty()
+            })
+            $(".next-popup").click(function(){
+                var parent = ".input-penugasan-popup.active";
+                var countCheck = $(parent+' .check-free:checked').length
+                var input = $(parent+" input:not(.check-free)");
+                var nextInput = 0
+                if(countCheck==0 && $(parent+" .card-free .card-body #error-anggota").length==0){
+                    $(parent+" .card-free .card-body").append("<small style='color:red' id='error-anggota'>Pilih Minimal 1 Anggota</small>")
+                }
+                else{
+                    $(parent+" .card-free .card-body #error-anggota").remove()
+                }
+
+                $.each(input,function(i,v){
+                    if(v.value==''){
+                        nextInput++
+                        if(!$(this).hasClass('hidden_ketua') && !$(this).hasClass('is-invalid')){
+                            $(this).addClass('is-invalid')
+                            var label = $(this).prev('label').html()
+                            $(this).closest('.col-md-6').append("<small style='color:red'>"+label+" Harap Diisi</small>")
+                        }
+                        else if($(parent+" .card-free .card-body #error-ketua").length==0 && $(parent+" .card-free .card-body #error-anggota").length==0){
+                            $(parent+" .card-free .card-body").append("<small style='color:red' id='error-ketua'>Pilih Ketua</small>")
+                        }
+                        // return false
+                    }
+                    else{
+                        if(!$(this).hasClass('hidden_ketua') && $(this).hasClass('is-invalid')){
+                            $(this).removeClass('is-invalid')
+                            $(this).next('small').remove()
+                        }
+                        else{
+                            $(parent+" .card-free .card-body #error-ketua").remove()
+                        }
+                    }
+                })
+
+                if(nextInput==0 && countCheck!=0){
+                    var indexActive = $(".loop-tanggal.active").attr('data-index')
+                    var nextIndexActive = parseInt(indexActive)+1
+                    nextButton(nextIndexActive)
+                }
+            })
     </script>
 @endpush
