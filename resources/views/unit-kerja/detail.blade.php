@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
         <div class="table-responsive">
-            <table class="table table-styling table-de" id="detail_table">
+            <table class="table table-hover table-custom" id="detail_table">
                 <tr class="table-primary">
                     <th class="text-center"></th>
                     <th class="text-center">Indeks Pendidikan</th>

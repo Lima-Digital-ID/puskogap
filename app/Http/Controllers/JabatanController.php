@@ -14,7 +14,6 @@ class JabatanController extends Controller
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Jabatan';
         $this->param['pageIcon'] = 'fa fa-database';
         $this->param['parentMenu'] = '/jabatan';
         $this->param['current'] = 'Jabatan';
@@ -27,6 +26,7 @@ class JabatanController extends Controller
      */
     public function index(Request $request)
     {
+        $this->param['pageTitle'] = 'List Jabatan';
         $this->param['btnText'] = 'Tambah';
         $this->param['btnLink'] = route('jabatan.create');
 
@@ -56,6 +56,7 @@ class JabatanController extends Controller
      */
     public function create()
     {
+        $this->param['pageTitle'] = 'Tambah Jabatan';
         $this->param['btnText'] = 'List Jabatan';
         $this->param['btnLink'] = route('jabatan.index');
 
@@ -113,6 +114,7 @@ class JabatanController extends Controller
      */
     public function edit($id)
     {
+        $this->param['pageTitle'] = 'Edit Jabatan';
         $this->param['data'] = Jabatan::find($id);
         $this->param['btnText'] = 'List Jabatan';
         $this->param['btnLink'] = route('jabatan.index');

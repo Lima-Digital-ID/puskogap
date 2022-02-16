@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-styling table-de">
+    <table class="table table-hover table-custom">
         <thead>
             <tr class="table-primary">
                 <th class="text-center">#</th>
@@ -36,7 +36,7 @@
                     <td>{{ $item->level }}</td>
                     <td>
                         <div class="form-inline btn-action">
-                            <a href="{{ route('anggota.edit', $item->id) }}" class="mr-2">
+                            <a href="{{ route('anggota.edit', $item->id) }}">
                                 <button type="button" id="PopoverCustomT-1" class="btn btn-rgb-primary btn-sm"
                                     data-toggle="tooltip" title="Edit" data-placement="top"><span
                                         class="fa fa-edit fa-sm"></span></button>

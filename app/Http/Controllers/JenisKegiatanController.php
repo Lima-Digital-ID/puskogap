@@ -12,7 +12,6 @@ class JenisKegiatanController extends Controller
 {
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Jenis Kegiatan';
         $this->param['pageIcon'] = 'fa fa-database';
         $this->param['parentMenu'] = '/jenis-kegiatan';
         $this->param['current'] = 'Jenis Kegiatan';
@@ -24,6 +23,7 @@ class JenisKegiatanController extends Controller
      */
     public function index(Request $request)
     {
+        $this->param['pageTitle'] = 'List Jenis Kegiatan';
         $this->param['btnText'] = 'Tambah';
         $this->param['btnLink'] = route('jenis-kegiatan.create');
 
@@ -53,6 +53,7 @@ class JenisKegiatanController extends Controller
      */
     public function create()
     {
+        $this->param['pageTitle'] = 'Tambah Jenis Kegiatan';
         $this->param['btnText'] = 'List Jenis Kegiatan';
         $this->param['btnLink'] = route('jenis-kegiatan.index');
 
@@ -102,6 +103,7 @@ class JenisKegiatanController extends Controller
      */
     public function edit($id)
     {
+        $this->param['pageTitle'] = 'Edit Jenis Kegiatan';
         $this->param['data'] = JenisKegiatan::find($id);
         $this->param['btnText'] = 'List Jenis Kegiatan';
         $this->param['btnLink'] = route('jenis-kegiatan.index');

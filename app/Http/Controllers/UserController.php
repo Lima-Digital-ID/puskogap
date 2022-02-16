@@ -18,7 +18,6 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'User';
         $this->param['pageIcon'] = 'feather icon-users';
         $this->param['parentMenu'] = 'user';
         $this->param['current'] = 'User';
@@ -30,6 +29,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $this->param['pageTitle'] = 'List User';
         $this->param['btnText'] = 'Tambah User';
         $this->param['btnLink'] = route('user.create');
 
@@ -58,6 +58,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->param['pageTitle'] = 'Tambah User';
         $this->param['btnText'] = 'List User';
         $this->param['btnLink'] = route('user.index');
         $this->param['allGol'] = Golongan::get();
@@ -121,6 +122,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $this->param['pageTitle'] = 'Edit User';
         $this->param['data'] = User::find($id);
         $this->param['allGol'] = Golongan::get();
         $this->param['allJab'] = Jabatan::get();

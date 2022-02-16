@@ -14,7 +14,6 @@ class UnitKerjaController extends Controller
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Unit Kerja';
         $this->param['pageIcon'] = 'fa fa-database';
         $this->param['parentMenu'] = '/unit-kerja';
         $this->param['current'] = 'Unit Kerja';
@@ -27,6 +26,7 @@ class UnitKerjaController extends Controller
      */
     public function index(Request $request)
     {
+        $this->param['pageTitle'] = 'List Unit Kerja';
         $this->param['btnText'] = 'Tambah';
         $this->param['btnLink'] = route('unit-kerja.create');
 
@@ -56,6 +56,7 @@ class UnitKerjaController extends Controller
      */
     public function create()
     {
+        $this->param['pageTitle'] = 'Tambah Unit Kerja';
         $this->param['btnText'] = 'List Unit Kerja';
         $this->param['btnLink'] = route('unit-kerja.index');
 
@@ -104,6 +105,7 @@ class UnitKerjaController extends Controller
      */
     public function edit($id)
     {
+        $this->param['pageTitle'] = 'Edit Unit Kerja';
         $this->param['data'] = UnitKerja::find($id);
         $this->param['btnText'] = 'List Unit Kerja';
         $this->param['btnLink'] = route('unit-kerja.index');

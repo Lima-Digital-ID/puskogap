@@ -14,7 +14,6 @@ class GolonganController extends Controller
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Golongan';
         $this->param['pageIcon'] = 'fa fa-database';
         $this->param['parentMenu'] = '/golongan';
         $this->param['current'] = 'Golongan';
@@ -27,6 +26,7 @@ class GolonganController extends Controller
      */
     public function index(Request $request)
     {
+        $this->param['pageTitle'] = 'List Golongan';
         $this->param['btnText'] = 'Tambah';
         $this->param['btnLink'] = route('golongan.create');
 
@@ -57,6 +57,7 @@ class GolonganController extends Controller
      */
     public function create()
     {
+        $this->param['pageTitle'] = 'Tambah Golongan';
         $this->param['btnText'] = 'List golongan';
         $this->param['btnLink'] = route('golongan.index');
 
@@ -115,6 +116,7 @@ class GolonganController extends Controller
      */
     public function edit($id)
     {
+        $this->param['pageTitle'] = 'Edit Golongan';
         $this->param['data'] = Golongan::find($id);
         $this->param['btnText'] = 'List Golongan';
         $this->param['btnLink'] = route('golongan.index');
