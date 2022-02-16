@@ -12,7 +12,8 @@
       crossorigin="anonymous"
     />    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />    
     <link rel="stylesheet" href="{{ asset('') }}css/select2.min.css" />
-<link rel="stylesheet" href="{{ asset('') }}vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" href="{{ asset('') }}vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" href="{{ asset('') }}vendor/sweetalert-master/dist/sweetalert.css" />
     <link rel="stylesheet" href="{{ asset('') }}css/custom.css" />
 
 </head>
@@ -98,6 +99,7 @@
       crossorigin="anonymous"
   ></script>
 <script src="{{ asset('') }}vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="{{ asset('') }}vendor/sweetalert-master/dist/sweetalert.min.js"></script>
 <script src="{{ asset('') }}js/select2.full.min.js"></script>
 
 <script>
