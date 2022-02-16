@@ -221,4 +221,6 @@ label{
 .fc-day-grid-event{
     padding : 3px 8px
 }
-
+.table td, .table th{
+    padding :1rem;
+}

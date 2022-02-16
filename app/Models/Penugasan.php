@@ -14,4 +14,5 @@ class Penugasan extends Model
     {
         return $this->belongsTo('\App\Models\JenisKegiatan', 'id_jenis_kegiatan')->withDefault(['jenis_kegiatan' => '-']);
     }
+    
 }
