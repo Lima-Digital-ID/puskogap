@@ -1,53 +1,17 @@
-<form action="{{ route('user.update', $data->id) }}" method="POST">
+<form action="{{ route('anggota.update', $data->id) }}" method="POST">
     @csrf
     @method('put')
     <div class="form-group row">
         <div class="col-md-6">
             <label>Nama</label>
             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                placeholder="Nama User" value="{{ old('name', $data->nama) }}">
+                placeholder="Nama Anggota" value="{{ old('name', $data->nama) }}">
             @error('name')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
             @enderror
         </div>
-        <div class="col-md-6">
-            <label>Email</label>
-            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                placeholder="Email User" value="{{ old('email', $data->email) }}">
-            @error('email')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <div class="col-md-6">
-            <label>Username</label>
-            <input type="username" name="username" class="form-control @error('username') is-invalid @enderror"
-                placeholder="Username User" value="{{ old('username', $data->username) }}">
-            @error('username')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="col-md-6">
-            <label>No Whatsapp</label>
-            <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror"
-                placeholder="Nomor Whatsapp User" value="{{ old('phone', $data->phone) }}">
-            @error('phone')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="form-group row">
         <div class="col-md-6">
             <label>Golongan</label>
             <select name="id_golongan" id="id_golongan" class="select2 form-control" style="width: 100%;" required>
@@ -62,6 +26,9 @@
                 </div>
             @enderror
         </div>
+    </div>
+
+    <div class="form-group row">
         <div class="col-md-6">
             <label>Jabatan</label>
             <select name="id_jabatan" id="id_jabatan" class="select2 form-control" style="width: 100%;" required>
@@ -76,9 +43,6 @@
                 </div>
             @enderror
         </div>
-    </div>
-
-    <div class="form-group row">
         <div class="col-md-6">
             <label>Kompetensi Khusus</label>
             <select name="id_kompetensi_khusus" id="id_kompetensi_khusus" class="select2 form-control" style="width: 100%;" required>
@@ -93,6 +57,9 @@
                 </div>
             @enderror
         </div>
+    </div>
+
+    <div class="form-group row">
         <div class="col-md-6">
             <label>Unit Kerja</label>
             <select name="id_unit_kerja" id="id_unit_kerja" class="select2 form-control" style="width: 100%;" required>
@@ -107,9 +74,6 @@
                 </div>
             @enderror
         </div>
-    </div>
-
-    <div class="form-group row">
         <div class="col-md-6">
             <label>Jenis Pegawai</label>
             <select name="jenis_pegawai" id="jenis_pegawai" class="form-control @error('jenis_pegawai') is-invalid @enderror">
@@ -124,6 +88,9 @@
                 </div>
             @enderror
         </div>
+    </div>
+
+    <div class="form-group row">
         <div class="col-md-6">
             <label>Jenis Kelamin</label>
             <select name="jenis_kelamin" id="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
@@ -136,34 +103,13 @@
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
-                @enderror
+            @enderror
         </div>
-    </div>
-
-    <div class="form-group row">
         <div class="col-md-6">
             <label>NIP</label>
-                <input type="nip" name="nip" class="form-control @error('nip') is-invalid @enderror"
-                    placeholder="NIP User" value="{{ old('nip', $data->nip) }}">
-                @error('nip')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-        </div>
-        <div class="col-md-6">
-            <label>Level</label>
-            <select name="level" id="level" class="form-control @error('level') is-invalid @enderror">
-                <option value="">Pilih Level</option>
-                <option value="Administrator" {{ old('level', $data->level) == 'Administrator' ? ' selected' : '' }}>Administrator</option>
-                <option value="Kasat" {{ old('level', $data->level) == 'Kasat' ? ' selected' : '' }}>Kasat
-                </option>
-                <option value="Admin" {{ old('level', $data->level) == 'Admin' ? ' selected' : '' }}>Admin
-                </option>
-                <option value="Anggota" {{ old('level', $data->level) == 'Anggota' ? ' selected' : '' }}>Anggota
-                </option>
-            </select>
-            @error('level')
+            <input type="nip" name="nip" class="form-control @error('nip') is-invalid @enderror"
+                placeholder="NIP Anggota" value="{{ old('nip', $data->nip) }}">
+            @error('nip')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

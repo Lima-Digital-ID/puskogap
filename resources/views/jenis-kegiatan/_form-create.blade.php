@@ -1,8 +1,8 @@
 <form action="{{ route('jenis-kegiatan.store') }}" method="POST">
     @csrf
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Kode</label>
-        <div class="col-sm-10">
+        <div class="col-md-6">
+            <label>Kode</label>
             <input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" placeholder="Kode" value="{{old('kode')}}">
             @error('kode')
                 <div class="invalid-feedback">
@@ -10,10 +10,8 @@
                 </div>
             @enderror
         </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Jenis Kegiatan</label>
-        <div class="col-sm-10">
+        <div class="col-md-6">
+            <label>Jenis Kegiatan</label>
             <input type="text" name="jenis_kegiatan" class="form-control @error('jenis_kegiatan') is-invalid @enderror" placeholder="Nama Jenis Kegiatan" value="{{old('jenis_kegiatan')}}">
             @error('jenis_kegiatan')
                 <div class="invalid-feedback">
@@ -22,9 +20,9 @@
             @enderror
         </div>
     </div>
-        <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Jenis</label>
-        <div class="col-sm-10">
+    <div class="form-group row">
+        <div class="col-md-6">
+            <label>Jenis</label>
             <select name="jenis" id="jenis" class="form-control" style="width: 100%;" required>
                 <option value="">Pilih Jenis</option>
                 <option value="PUSKOGAP">PUSKOGAP</option>

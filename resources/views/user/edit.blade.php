@@ -13,19 +13,6 @@
 @section('content')
 
     @include('components.notification')
-
-    <div class="row">
-        <div class="col-sm-12">
-            @include('components.button-list', ['btnText' => $btnText, 'btnLink' => $btnLink])
-            <div class="card">
-                <div class="card-header">
-                    <h5>Edit User</h5>
-                </div>
-                <div class="card-block">
-                    {{-- <h4 class="sub-title">Basic Inputs</h4> --}}
-                    @include('user._form-edit')
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('user._form-edit')
+    
 @endsection

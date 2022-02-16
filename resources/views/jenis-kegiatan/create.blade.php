@@ -13,18 +13,6 @@
 @section('content')
 
     @include('components.notification')
-
-    <div class="row">
-        <div class="col-sm-12">
-            @include('components.button-list', ['btnText' => $btnText, 'btnLink' => $btnLink])
-            <div class="card">
-                <div class="card-header">
-                    <h5>Tambah {{ $pageTitle }}</h5>
-                </div>
-                <div class="card-block">
-                    @include('jenis-kegiatan._form-create')
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('jenis-kegiatan._form-create')
+    
 @endsection

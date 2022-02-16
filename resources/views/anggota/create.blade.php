@@ -13,6 +13,6 @@
 @section('content')
 
     @include('components.notification')
-    @include('golongan._form-create')
-
+    @include('anggota._form-create')
+    
 @endsection
