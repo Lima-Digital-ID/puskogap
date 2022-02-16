@@ -24,11 +24,29 @@
                         {{ $item->nama_kegiatan }}
                     </div>
                     <div class="td-bottom">
-                        {{ $item->jenis_kegiatan->jenis_kegiatan }}
+                        {{ $item->jenis_kegiatan }}
                     </div>
                 </td>
-                <td>{{ $item->waktu_mulai }}</td>
-                <td>{{ $item->waktu_selesai }}</td>
+                <td>
+                    <div class="td-top">
+                        <span class="text-info">{{ date('d F Y',strtotime($item->tanggal_mulai)) }}</span>
+                    </div>
+                    <div class="td-bottom">
+                        <span class="badge badge-info">
+                            {{ date('H:i',strtotime($item->waktu_mulai)) }} WIB
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <div class="td-top">
+                        <span class="text-success">{{ date('d F Y',strtotime($item->tanggal_selesai)) }}</span>
+                    </div>
+                    <div class="td-bottom">
+                        <span class="badge badge-success">
+                        {{ date('H:i',strtotime($item->waktu_selesai)) }} WIB
+                        </span>
+                    </div>
+                </td>
                 <td>{{ $item->lokasi }}</td>
                 <td>
                     @if ($item->status=='Rencana')
@@ -42,16 +60,6 @@
                     @endif
                 </td>
                 <td class="p-0 m-0">
-                    {{-- <div class="dropdown">
-                        <button class="dropdown-toggle btn-custom-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <span class="fa fa-chevron-right"></span>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="#">Detail</a>
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Delete</a>
-                        </div>
-                      </div>                     --}}
                       <div class="form-inline btn-action">
                         <a href="{{ route('penugasan.edit', $item->id) }}" class="mr-2">
                             <button type="button" id="PopoverCustomT-1" class="btn btn-rgb-success btn-sm"

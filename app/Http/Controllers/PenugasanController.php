@@ -41,7 +41,9 @@ class PenugasanController extends Controller
         try {
             $keyword = $request->get('keyword');
             // $getPenugasan = Penugasan::orderBy('id');
-            $getPenugasan = Penugasan::with('jenis_kegiatan')->orderBy('id');
+            $getPenugasan = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->from('penugasan as p')->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
+            ->groupBy('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan')
+            ->orderBy('p.id');
 
             if ($keyword) {
                 $getPenugasan->where('penugasan', 'LIKE', "%{$keyword}%");
