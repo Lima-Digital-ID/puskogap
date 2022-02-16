@@ -5,7 +5,7 @@
               <th class="text-center">#</th>
               <th>Kode</th>
               <th>Kompetensi Khusus</th>
-              <th>Aksi</th>
+              <th></th>
           </tr>
       </thead>
       <tbody>

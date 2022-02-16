@@ -13,6 +13,59 @@
 @section('content')
     @include('components.notification')
     <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard py-2">
+                <div class="card-body">    
+                    <div class="row">
+                        <div class="col-md-8 pr-0">
+                            <h2 class="color-primary font-weight-bold"></h2>
+                            Kategori Barang
+                        </div>
+                        <div class="col-md-4 pl-0 text-center">
+                            <span class="fas fa-fw fa-box-open fa-4x"></span>
+                        </div>
+                    </div>
+                    <hr>
+                    <a href="">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard py-2">
+                <div class="card-body">    
+                    <div class="row">
+                        <div class="col-md-8 pr-0">
+                            <h2 class="color-primary font-weight-bold"></h2>
+                            Kategori Barang
+                        </div>
+                        <div class="col-md-4 pl-0 text-center">
+                            <span class="fas fa-fw fa-box-open fa-4x"></span>
+                        </div>
+                    </div>
+                    <hr>
+                    <a href="">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard py-2">
+                <div class="card-body">    
+                    <div class="row">
+                        <div class="col-md-8 pr-0">
+                            <h2 class="color-primary font-weight-bold"></h2>
+                            Kategori Barang
+                        </div>
+                        <div class="col-md-4 pl-0 text-center">
+                            <span class="fas fa-fw fa-box-open fa-4x"></span>
+                        </div>
+                    </div>
+                    <hr>
+                    <a href="">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-4">
             <div class="card sale-card">
                 <div class="card-header">

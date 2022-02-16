@@ -10,24 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    public function golongan()
+    public function anggota()
     {
-        return $this->belongsTo('\App\Models\Golongan', 'id_golongan')->withDefault(['pangkat' => '-']);
-    }
-
-    public function jabatan()
-    {
-        return $this->belongsTo('\App\Models\Jabatan', 'id_jabatan')->withDefault(['jabatan' => '-']);
-    }
-
-    public function unit_kerja()
-    {
-        return $this->belongsTo('\App\Models\UnitKerja', 'id_unit_kerja')->withDefault(['unit_kerja' => '-']);
-    }
-
-    public function kompetensi_khusus()
-    {
-        return $this->belongsTo('\App\Models\KompetensiKhusus', 'id_kompetensi_khusus')->withDefault(['kompetensi_khusus' => '-']);
+        return $this->belongsTo('\App\Models\Anggota', 'id_anggota')->withDefault(['nama' => '-']);
     }
     
     use HasApiTokens, HasFactory, Notifiable;
@@ -38,12 +23,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'id_anggota',
         'email',
         'password',
-        'jenis_pegawai',
-        'jenis_kelamin',
-        'nip',
         'level'
     ];
 

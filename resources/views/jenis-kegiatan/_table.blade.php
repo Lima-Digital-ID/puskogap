@@ -6,7 +6,7 @@
               <th>Kode</th>
               <th>Jenis Kegiatan</th>
               <th>Jenis</th>
-              <th>Aksi</th>
+              <th></th>
           </tr>
       </thead>
       <tbody>

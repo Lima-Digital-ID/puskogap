@@ -4,7 +4,7 @@
           <tr class="table-primary">
               <th class="text-center">#</th>
               <th>Jabatan</th>
-              <th>Aksi</th>
+              <th></th>
           </tr>
       </thead>
       <tbody>

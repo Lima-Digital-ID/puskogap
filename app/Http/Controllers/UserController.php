@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use \App\Http\Requests\StoreRequest;
+use App\Models\Anggota;
 use \App\Models\User;
 use \App\Models\Golongan;
 use \App\Models\Jabatan;
@@ -35,7 +36,7 @@ class UserController extends Controller
 
         try {
             $keyword = $request->get('keyword');
-            $getUsers = User::with('golongan', 'jabatan', 'kompetensi_khusus', 'unit_kerja')->orderBy('id', 'ASC');
+            $getUsers = User::with('anggota')->orderBy('id', 'ASC');
 
             if ($keyword) {
                 $getUsers->where('name', 'LIKE', "%{$keyword}%")->orWhere('email', 'LIKE', "%{$keyword}%");
@@ -61,11 +62,16 @@ class UserController extends Controller
         $this->param['pageTitle'] = 'Tambah User';
         $this->param['btnText'] = 'List User';
         $this->param['btnLink'] = route('user.index');
-        $this->param['allGol'] = Golongan::get();
-        $this->param['allJab'] = Jabatan::get();
-        $this->param['allKhs'] = KompetensiKhusus::get();
-        $this->param['allUnt'] = UnitKerja::get();
-
+        // $this->param['allAng'] = Anggota::get();
+        $this->param['allAng'] = \DB::table('anggota as a')
+                                    ->select(
+                                        'a.*',
+                                    )
+                                    ->whereNotIn('a.id',function($query){
+                                        $query->select('id')
+                                            ->from('users')
+                                            ->get();
+                                })->get();
         return \view('user.create', $this->param);
     }
 
@@ -80,19 +86,11 @@ class UserController extends Controller
         $validated = $request->validated();
         try {
             $user = new User;
-            $user->nama = $validated['name'];
+            $user->id_anggota = $validated['id_anggota'];
             $user->email = $validated['email'];
             $user->username = $validated['username'];
-            $user->phone = $validated['phone'];
             $user->password = Hash::make('password');
-            $user->id_golongan = $request->get('id_golongan');
-            $user->id_jabatan = $request->get('id_jabatan');
-            $user->id_kompetensi_khusus = $request->get('id_kompetensi_khusus');
-            $user->id_unit_kerja = $request->get('id_unit_kerja');
-            $user->jenis_pegawai = $request->get('jenis_pegawai');
-            $user->jenis_kelamin = $request->get('jenis_kelamin');
-            $user->nip = $request->get('nip');
-            $user->level = $request->get('level');
+            $user->level = $validated['level'];
             $user->save();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.' . $e->getMessage());
@@ -124,10 +122,7 @@ class UserController extends Controller
     {
         $this->param['pageTitle'] = 'Edit User';
         $this->param['data'] = User::find($id);
-        $this->param['allGol'] = Golongan::get();
-        $this->param['allJab'] = Jabatan::get();
-        $this->param['allKhs'] = KompetensiKhusus::get();
-        $this->param['allUnt'] = UnitKerja::get();
+        $this->param['allAng'] = Anggota::get();
         $this->param['btnText'] = 'List User';
         $this->param['btnLink'] = route('user.index');
 
@@ -147,43 +142,32 @@ class UserController extends Controller
             $user = User::find($id);
             $isEmailUnique = $request->get('email') != null && $request->get('email') != $user->email ? '|unique:users,email' : '';
             $isUsernameUnique = $request->get('username') != null && $request->get('username') != $user->username ? '|unique:users,username' : '';
-            $isPhoneUnique = $request->get('phone') != null && $request->get('phone') != $user->phone ? '|unique:users,phone' : '';
 
             $requestValid = $request->validate(
                 [
-                    'name' => 'required|max:191',
+                    'id_anggota' => 'required',
                     'email' => 'required|email'.$isEmailUnique,
                     'username' => 'required'.$isUsernameUnique,
-                    'phone' => 'required'.$isPhoneUnique,
                 ],
                 [
-                    'name.required' => 'Nama harus diisi.',
+                    'id_anggota.required' => 'Nama harus diisi.',
                     'email.required' => 'Email harus diisi.',
                     'username.required' => 'Username harus diisi.',
-                    'name.max' => 'Nama tidak boleh lebih dari 191 karakter.',
                     'email.unique' => 'Email telah digunakan.',
                     'username.unique' => 'Username telah digunakan.',
                 ]
             );
             $validated = $requestValid;
 
-            $user->nama = $validated['name'];
+            $user->id_anggota = $validated['id_anggota'];
             $user->email = $validated['email'];
             $user->username = $validated['username'];
-            $user->phone = $validated['phone'];
-            $user->id_golongan = $request->get('id_golongan');
-            $user->id_jabatan = $request->get('id_jabatan');
-            $user->id_kompetensi_khusus = $request->get('id_kompetensi_khusus');
-            $user->id_unit_kerja = $request->get('id_unit_kerja');
-            $user->jenis_pegawai = $request->get('jenis_pegawai');
-            $user->jenis_kelamin = $request->get('jenis_kelamin');
-            $user->nip = $request->get('nip');
             $user->level = $request->get('level');
             $user->save();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.' . $e->getMessage());
         } catch (QueryException $e) {
-            return back()->withError('Terjadi kesalahan.' . $e->getMessage());
+            return back()->withError('Terjadi kesalahan Database.' . $e->getMessage());
         }
 
         return redirect()->route('user.index')->withStatus('Data berhasil disimpan.');

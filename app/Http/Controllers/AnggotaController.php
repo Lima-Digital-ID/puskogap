@@ -91,6 +91,7 @@ class AnggotaController extends Controller
             $anggota->id_unit_kerja = $request->get('id_unit_kerja');
             $anggota->jenis_pegawai = $request->get('jenis_pegawai');
             $anggota->jenis_kelamin = $request->get('jenis_kelamin');
+            $anggota->phone = $request->get('phone');
             $anggota->nip = $request->get('nip');
             $anggota->save();
         } catch (Exception $e) {
@@ -166,8 +167,8 @@ class AnggotaController extends Controller
             $anggota->id_unit_kerja = $request->get('id_unit_kerja');
             $anggota->jenis_pegawai = $request->get('jenis_pegawai');
             $anggota->jenis_kelamin = $request->get('jenis_kelamin');
+            $anggota->phone = $request->get('phone');
             $anggota->nip = $request->get('nip');
-            // ddd($anggota);
             $anggota->save();
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.' . $e->getMessage());

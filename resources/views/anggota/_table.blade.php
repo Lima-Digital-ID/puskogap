@@ -10,8 +10,9 @@
                 <th>Kompetensi Khusus</th>
                 <th>Jenis Pegawai</th>
                 <th>Jenis Kelamin</th>
+                <th>No Handphone</th>
                 <th>NIP</th>
-                <th>Aksi</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,7 @@
                     <td>{{ $item->kompetensi_khusus->kompetensi_khusus }}</td>
                     <td>{{ $item->jenis_pegawai }}</td>
                     <td>{{ $item->jenis_kelamin }}</td>
+                    <td>{{ $item->phone }}</td>
                     <td>{{ $item->nip }}</td>
                     <td>
                         <div class="form-inline btn-action">

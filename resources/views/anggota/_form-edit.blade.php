@@ -117,6 +117,19 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        <div class="col-md-6">
+            <label>No Handphone</label>
+            <input type="phone" name="phone" class="form-control @error('phone') is-invalid @enderror"
+                placeholder="Phone Anggota" value="{{ old('phone', $data->phone) }}" maxlength="15">
+            @error('phone')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+    </div>
+
     <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-save"></i> Simpan</button>
     <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Reset</button>
 </form>
