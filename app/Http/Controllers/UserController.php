@@ -62,16 +62,16 @@ class UserController extends Controller
         $this->param['pageTitle'] = 'Tambah User';
         $this->param['btnText'] = 'List User';
         $this->param['btnLink'] = route('user.index');
-        // $this->param['allAng'] = Anggota::get();
-        $this->param['allAng'] = \DB::table('anggota as a')
-                                    ->select(
-                                        'a.*',
-                                    )
-                                    ->whereNotIn('a.id',function($query){
-                                        $query->select('id')
-                                            ->from('users')
-                                            ->get();
-                                })->get();
+        $this->param['allAng'] = Anggota::get();
+        // $this->param['allAng'] = \DB::table('anggota as a')
+        //                             ->select(
+        //                                 'a.*',
+        //                             )
+        //                             ->whereNotIn('a.id',function($query){
+        //                                 $query->select('id')
+        //                                     ->from('users')
+        //                                     ->get();
+        //                         })->get();
         return \view('user.create', $this->param);
     }
 
