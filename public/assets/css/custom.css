@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 :root{
     --colorPrimary : #1a55e7;
-    --colorDark : #050d34;
+    --colorDark : hsl(230, 82%, 11%);
     --colorDarkBlue : #1f1d62;
 }
 body,html{
@@ -198,3 +198,27 @@ label{
     color : red;
     cursor: pointer !important;
 }
+.fc-event{
+    background : var(--colorPrimary) !important;
+    color : white !important;
+}
+.fc-button-group button{
+    background: rgba(71, 145,254,0.2);
+    color : var(--colorPrimary);
+}
+.fc-today-button{
+    background: var(--colorPrimary);
+    color : white;
+}
+.fc-center h2{
+    font-size: 1.25rem;    
+    font-weight: bold;
+    color : var(--colorDark);
+}
+.fc-unthemed td.fc-today{
+    background: rgba(71, 145,254,0.05) !important;    
+}
+.fc-day-grid-event{
+    padding : 3px 8px
+}
+

@@ -348,7 +348,10 @@ class PenugasanController extends Controller
         $this->param['btnText'] = 'Tambah';
         $this->param['btnLink'] = '';
         $this->param['pageTitle'] = 'Jadwal';
-        $this->param['penugasan'] = Penugasan::select("id","nama_kegiatan","waktu_mulai","waktu_selesai")->get();
+        $this->param['penugasan'] = \DB::table('waktu_penugasan as wp')
+                                    ->select('wp.id',"nama_kegiatan","tanggal","waktu_mulai","waktu_selesai")
+                                    ->join('penugasan as p',"wp.id_penugasan","p.id")
+                                    ->get();
 
         return \view('penugasan.jadwal', $this->param);
     }

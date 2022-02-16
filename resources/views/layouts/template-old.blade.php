@@ -43,11 +43,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     {{-- <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="{{ asset('') }}js/popper.min.js"></script> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
-    <script src="https://unpkg.com/popper.js@1.12.8/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tooltip.js@1.3.1/dist/umd/tooltip.min.js"></script>
-
     @yield("full-calendar")
     @stack('custom-styles')
 </head>

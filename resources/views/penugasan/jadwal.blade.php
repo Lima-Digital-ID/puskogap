@@ -13,18 +13,11 @@
 @section('content')
 
     @include('components.notification')
-    
-    <div class="card">
-        <div class="card-header">
-            <h5>{{ $pageTitle }} Penugasan</h5>
-        </div>
-        <div class="card-block table-border-style">
-            <div id="calendar"></div>
-        </div>
-    </div>
+
+    <div id="calendar"></div>
 
 @endsection
-@section("full-calendar")
+@push("custom-script")
 <script>
     $(document).ready(function() {
          $('#calendar').fullCalendar({
@@ -38,7 +31,7 @@
              timeFormat: 'H:mm',
              displayEventEnd : true,
              eventMouseover: function (data, event, view) {
-                tooltip = '<div class="tooltiptopicevent" style="width:auto;height:auto;background:#f4f4f4;position:absolute;z-index:10001;padding:7px 15px 7px 15px ;  line-height: 200%;border-radius:10px">' + data.title + '</div>';
+                tooltip = '<div class="tooltiptopicevent" style="width:auto;height:auto;background:#1a55e7;color:white;position:absolute;z-index:10001;padding:0px 10px ;  line-height: 200%;border-radius:3px">' + data.title + '</div>';
                 $("body").append(tooltip);
                 $(this).mouseover(function (e) {
                     $(this).css('z-index', 10000);
@@ -74,8 +67,8 @@
                         id: {{$data->id}},
                         title: '{{$data->nama_kegiatan}}',
                         description : '{{$data->nama_kegiatan}}',
-                        start: '{{$data->waktu_mulai}}',
-                        end: '{{$data->waktu_selesai}}',
+                        start: '{{$data->tanggal}} {{$data->waktu_mulai}}',
+                        end: '{{$data->tanggal}} {{$data->waktu_selesai}}',
                     },
                  @endforeach
              ]
@@ -84,4 +77,4 @@
      });
     
    </script>    
- @endsection
+ @endpush
