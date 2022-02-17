@@ -66,6 +66,7 @@
                                 data-toggle="tooltip" title="Detail" data-placement="top"><span
                                     class="fa fa-table fa-sm"></span></button>
                         </a>
+                        @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
                         <a href="{{ route('penugasan.edit', $item->id) }}" class="mr-2">
                             <button type="button" id="PopoverCustomT-1" class="btn btn-rgb-primary btn-sm"
                                 data-toggle="tooltip" title="Edit" data-placement="top"><span
@@ -80,6 +81,7 @@
                                 <span class="fa fa-trash fa-sm"></span>
                             </button>
                         </form>
+                        @endif
                     </div>
                 </td>
               </tr>
@@ -90,6 +92,6 @@
       </tbody>
   </table>
   <div class="pull-right">
-    {{$data->appends(Request::all())->links('vendor.pagination.custom')}}
+    {{-- {{$data->appends(Request::all())->links('vendor.pagination.custom')}} --}}
   </div>
 </div>
