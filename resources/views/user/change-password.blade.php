@@ -2,7 +2,7 @@
 
 @section('page-header')
     @include('components.page-header', [
-    'pageTitle' => 'Ganti Password',
+    'pageTitle' => $pageTitle,
     'pageSubtitle' => '',
     'pageIcon' => $pageIcon,
     'parentMenu' => $parentMenu,
@@ -13,18 +13,6 @@
 @section('content')
 
     @include('components.notification')
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Ganti Password</h5>
-                </div>
-                <div class="card-block">
-                    {{-- <h4 class="sub-title">Basic Inputs</h4> --}}
-                    @include('user._form-change-password')
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('user._form-change-password')
+    
 @endsection

@@ -55,7 +55,8 @@ class PenugasanController extends Controller
                 $getPenugasan->where('p.status', $status);
             }
             if ($keyword) {
-                $getPenugasan->where('penugasan', 'LIKE', "%{$keyword}%");
+                $getPenugasan->where('nama_kegiatan', 'LIKE', "%{$keyword}%");
+                $getPenugasan->orWhere('lokasi', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['data'] = $getPenugasan->paginate(10);

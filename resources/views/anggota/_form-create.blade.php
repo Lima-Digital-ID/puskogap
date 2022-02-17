@@ -16,7 +16,7 @@
             <select name="id_golongan" id="id_golongan" class="select2 form-control" style="width: 100%;" required>
                 <option value="">Pilih Golongan</option>
                 @foreach ($allGol as $gol)
-                    <option value="{{ $gol->id }}">{{ $gol->pangkat }}</option>
+                    <option value="{{ $gol->id }}" {{ old('id_golongan') == $gol->id ? ' selected' : '' }}>{{ $gol->pangkat }}</option>
                 @endforeach
             </select>
             @error('id_golongan')
@@ -33,7 +33,7 @@
             <select name="id_jabatan" id="id_jabatan" class="select2 form-control" style="width: 100%;" required>
                 <option value="">Pilih Jabatan</option>
                 @foreach ($allJab as $jab)
-                    <option value="{{ $jab->id }}">{{ $jab->jabatan }}</option>
+                    <option value="{{ $jab->id }}" {{ old('id_jabatan') == $jab->id ? ' selected' : '' }}>{{ $jab->jabatan }}</option>
                 @endforeach
             </select>
             @error('id_jabatan')
@@ -47,7 +47,7 @@
             <select name="id_kompetensi_khusus" id="id_kompetensi_khusus" class="select2 form-control" style="width: 100%;" required>
                 <option value="">Pilih Kompetensi Khusus</option>
                 @foreach ($allKhs as $khs)
-                    <option value="{{ $khs->id }}">{{ $khs->kompetensi_khusus }}</option>
+                    <option value="{{ $khs->id }}" {{ old('id_kompetensi_khusus') == $khs->id ? ' selected' : '' }}>{{ $khs->kompetensi_khusus }}</option>
                 @endforeach
             </select>
             @error('id_kompetensi_khusus')
@@ -64,7 +64,7 @@
             <select name="id_unit_kerja" id="id_unit_kerja" class="select2 form-control" style="width: 100%;" required>
                 <option value="">Pilih Unit Kerja</option>
                 @foreach ($allUnt as $unt)
-                    <option value="{{ $unt->id }}">{{ $unt->unit_kerja }}</option>
+                    <option value="{{ $unt->id }}" {{ old('id_unit_kerja') == $unt->id ? ' selected' : '' }}>{{ $unt->unit_kerja }}</option>
                 @endforeach
             </select>
             @error('id_unit_kerja')

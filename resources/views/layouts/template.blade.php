@@ -74,7 +74,7 @@
                       <span class="fa fa-user"></span> {{ucwords(auth()->user()->username)}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      {{-- <a class="dropdown-item" href="{{ url('logout') }}">Logout</a> --}}
+                      <a class="dropdown-item" href="{{ route('change_password') }}">Ganti Password</a>
                       <a class="dropdown-item logout" href="#" >Logout</a>
                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf

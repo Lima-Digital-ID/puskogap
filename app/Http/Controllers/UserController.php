@@ -192,4 +192,55 @@ class UserController extends Controller
 
         return redirect()->route('user.index')->withStatus('Data berhasil dihapus.');
     }
+
+    public function changePassword()
+    {
+        $this->param['pageTitle'] = 'Edit Password';
+        $this->param['user'] = User::find(auth()->user()->id);
+        return view('user.change-password', $this->param);
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        $user = User::findOrFail($id);;
+        $old = $request->old_pass;
+        $new = $request->password;
+
+        if(!Hash::check($old, $user->password))
+            return back()->withError('Password lama tidak cocok.');
+
+        if(Hash::check($new, $user->password))
+            return back()->withError('Password baru tidak boleh sama dengan password lama.');
+
+        $validatedData = $request->validate(
+            [
+                'old_pass' => 'required',
+                'password' => 'required',
+                'confirmation' => 'required|same:password'
+            ],
+            [
+                'required' => ':attribute harus diisi.',
+                'password.unique' => 'Password baru tidak boleh sama dengan password lama.',
+                'same' => 'Konfirmasi password harus sesuai.'
+            ],
+            [
+                'old_pass' => 'Password lama',
+                'password' => 'Password baru',
+                'confirmation' => 'Konfirmasi password baru',
+            ]
+        );
+
+        try {
+            $user->password = Hash::make($request->get('password'));
+            $user->save();
+
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.');
+        }
+
+        return back()->withStatus('Password berhasil diperbarui.');
+    }
 }
