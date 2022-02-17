@@ -41,8 +41,9 @@ class PenugasanController extends Controller
         try {
             $keyword = $request->get('keyword');
             $status = $request->get('status');
-            // $getPenugasan = Penugasan::orderBy('id');
-            $getPenugasan = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->from('penugasan as p')->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
+            // $getPenugasan = Penugasan::with('jenis_kegiatan')->orderBy('id');
+            $getPenugasan = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->from('penugasan as p')->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan')->join('detail_anggota as da','da.id_penugasan','p.id')
+            ->where('da.id_anggota', auth()->user()->id_anggota)
             ->groupBy('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan')
             ->orderBy('p.id');
 
@@ -361,6 +362,8 @@ class PenugasanController extends Controller
         $this->param['penugasan'] = \DB::table('waktu_penugasan as wp')
                                     ->select('wp.id',"nama_kegiatan","tanggal","waktu_mulai","waktu_selesai")
                                     ->join('penugasan as p',"wp.id_penugasan","p.id")
+                                    ->join('detail_anggota as da','da.id_penugasan','p.id')
+                                    ->where('da.id_anggota', auth()->user()->id_anggota)
                                     ->get();
 
         return \view('penugasan.jadwal', $this->param);
