@@ -10,7 +10,8 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
-    />    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />    
+    />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />    
     <link rel="stylesheet" href="{{ asset('') }}css/select2.min.css" />
     <link rel="stylesheet" href="{{ asset('') }}vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="{{ asset('') }}vendor/sweetalert-master/dist/sweetalert.css" />
@@ -43,7 +44,10 @@
                     <a class="nav-link {{ Request::segment(2) == 'jadwal' ? 'active' : '' }}" href="{{url('penugasan/jadwal')}}"><span class="fa fa-calendar mr-1"></span> Schedule</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::segment(1) == 'penugasan' && Request::segment(2) != 'jadwal' ? 'active' : '' }}" href="{{url('penugasan')}}"><span class="fa fa-car mr-1"></span> Penugasan</a>
+                    <a class="nav-link {{ Request::segment(2) == 'cek-anggota' ? 'active' : '' }}" href="{{url('penugasan/cek-anggota')}}"><span class="fa fa-users mr-1"></span> Cek Anggota</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::segment(1) == 'penugasan' && Request::segment(2) != 'jadwal'  && Request::segment(2) != 'cek-anggota' ? 'active' : '' }}" href="{{url('penugasan')}}"><span class="fa fa-car mr-1"></span> Penugasan</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -77,6 +81,7 @@
         </div>
     </div>
     </nav> 
+    @yield('dashboard')
     <div class="box-content px-3 py-4 my-4">
         <div class="container cusutom">
 
@@ -112,7 +117,10 @@
             $('[data-toggle="tooltip"]').tooltip()
         })
         $(".select2").select2()
-        $(".datepicker").datepicker();
+        $(".datepicker").datepicker({
+            format: 'yyyy-mm-dd',
+            todayHighlight: true,
+        });
     // })
 </script>
 @stack('custom-script')

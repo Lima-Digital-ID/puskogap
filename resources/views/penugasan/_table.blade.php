@@ -50,7 +50,7 @@
                 <td>{{ $item->lokasi }}</td>
                 <td>
                     @if ($item->status=='Rencana')
-                        <span class="badge badge-warning">{{$item->status}}</span>
+                        <span class="badge badge-info">{{$item->status}}</span>
                         @elseif ($item->status=='Pelaksanaan')
                         <span class="badge badge-primary">{{$item->status}}</span>
                         @elseif ($item->status=='Selesai')

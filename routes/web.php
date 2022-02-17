@@ -40,7 +40,8 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('penugasan')->group(function () {
         Route::resource('master-penugasan', PenugasanController::class);
         Route::get('jadwal', [PenugasanController::class, 'jadwal']);
-        Route::get('cek-anggota', [PenugasanController::class, 'getAnggota']);
+        Route::get('get-anggota', [PenugasanController::class, 'getAnggota']);
+        Route::get('cek-anggota', [PenugasanController::class, 'CekAnggota']);
         Route::get('filter-anggota-free', [PenugasanController::class, 'filterAnggotaFree']);
         Route::post('send-whatsapp', [PenugasanController::class, 'sendWhatsapp'])->name('penugasan.send-wa');
     });

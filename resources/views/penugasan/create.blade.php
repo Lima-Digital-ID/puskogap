@@ -99,7 +99,7 @@
                 $.ajax({
                     type: "GET",
                     data : dataSend,
-                    url:"{{ url('penugasan/cek-anggota') }}",
+                    url:"{{ url('penugasan/get-anggota') }}",
                     dataType : "json",
                     beforeSend : function(){
                         $(parent+" .loop-anggota-free").prepend('<p>Loading....</p>')

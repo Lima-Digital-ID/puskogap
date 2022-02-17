@@ -10,245 +10,101 @@
     ])
 @endsection
 
+@include('components.notification')
 @section('content')
-    @include('components.notification')
+    <div class="row mt-4">
+        <div class="col">
+            <div class="alert alert-primary font-weight-bold">Selamat Datang Di Aplikasi PUSKOGAP</div>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-md-3 mb-4">
-            <div class="card card-dashboard py-2">
-                <div class="card-body">    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-rgb-info border border-info">
+            <div class="card-body py-4">  
+                <span class="fa fa-calendar sticky-fa-card"></span>  
+                <div class="row align-items-center">
+                    <div class="col-md-8 pr-0 font-weight-bold">
+                        Rencana Penugasan
+                    </div>
+                    <div class="col-md-4 pr-0 text-center">
+                        <h1>{{ \App\Models\Penugasan::where('status','Rencana')->count() }}</h1>
+                    </div>
+                </div>
+                <hr>
+                <a href="{{url('penugasan?status=Rencana')}}" class="btn btn-info btn-sm b-radius-3 px-3">Lihat Detail</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card bg-rgb-primary border border-primary">
+            <div class="card-body py-4">    
+                    <i class="fas fa-car sticky-fa-card"></i>  
                     <div class="row">
-                        <div class="col-md-8 pr-0">
-                            <h2 class="color-primary font-weight-bold"></h2>
-                            Kategori Barang
+                        <div class="col-md-8 pr-0 font-weight-bold">
+                            Penugasan Berlangsung
                         </div>
-                        <div class="col-md-4 pl-0 text-center">
-                            <span class="fas fa-fw fa-box-open fa-4x"></span>
+                        <div class="col-md-4 pl-0 text-center font-weight-bold">
+                            <h1>{{ \App\Models\Penugasan::where('status','Pelaksanaan')->count() }}</h1>
                         </div>
                     </div>
                     <hr>
-                    <a href="">Lihat Detail</a>
+                    <a href="{{url('penugasan?status=Pelaksanaan')}}" class="btn btn-primary btn-sm b-radius-3 px-3">Lihat Detail</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-4">
-            <div class="card card-dashboard py-2">
-                <div class="card-body">    
-                    <div class="row">
+            <div class="card bg-rgb-success border border-success">
+                <div class="card-body py-4">    
+                    <i class="fas fa-calendar-check sticky-fa-card"></i>  
+                    <div class="row font-weight-bold">
                         <div class="col-md-8 pr-0">
-                            <h2 class="color-primary font-weight-bold"></h2>
-                            Kategori Barang
+                            Penugasan Telah Selesai
                         </div>
                         <div class="col-md-4 pl-0 text-center">
-                            <span class="fas fa-fw fa-box-open fa-4x"></span>
+                            <h1>{{ \App\Models\Penugasan::where('status','Selesai')->count() }}</h1>
                         </div>
                     </div>
                     <hr>
-                    <a href="">Lihat Detail</a>
+                    <a href="{{url('penugasan?status=Selesai')}}" class="btn btn-success btn-sm b-radius-3 px-3">Lihat Detail</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-4">
-            <div class="card card-dashboard py-2">
-                <div class="card-body">    
-                    <div class="row">
+            <div class="card bg-rgb-danger border border-danger">
+                <div class="card-body py-4">    
+                    <i class="fa fa-ban sticky-fa-card"></i>  
+                    <div class="row font-weight-bold">
                         <div class="col-md-8 pr-0">
-                            <h2 class="color-primary font-weight-bold"></h2>
-                            Kategori Barang
+                            Penugasan Dibatalkan
                         </div>
                         <div class="col-md-4 pl-0 text-center">
-                            <span class="fas fa-fw fa-box-open fa-4x"></span>
+                            <h1>{{ \App\Models\Penugasan::where('status','Batal')->count() }}</h1>
                         </div>
                     </div>
                     <hr>
-                    <a href="">Lihat Detail</a>
+                    <a href="{{url('penugasan?status=Batal')}}" class="btn btn-danger btn-sm b-radius-3 px-3">Lihat Detail</a>
                 </div>
             </div>
         </div>
     </div>
+    <br>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card sale-card">
-                <div class="card-header">
-                    <h5>Golongan</h5>
-                </div>
-                <div class="card-block">
-                    <figure class="highcharts-figure">
-                        <div id="container-hls"></div>
-                        <p class="highcharts-description">
-                            Jumlah Golongan : {{ \App\Models\Golongan::count() }}
-                        </p>
-                    </figure>                    
-                </div>
-            </div>
+        <div class="col-md-6">
+            <h5 class="font-weight-bold color-darkBlue">Kegiatan Penugasan Hari Ini</h5>
         </div>
-        <div class="col-md-4">
-            <div class="card sale-card">
-                <div class="card-header">
-                    <h5>Jabatan</h5>
-                </div>
-                <div class="card-block">
-                    <figure class="highcharts-figure">
-                        <div id="container-hls"></div>
-                        <p class="highcharts-description">
-                            Jumlah Jabatan : {{ \App\Models\Jabatan::count() }}
-                        </p>
-                    </figure>                    
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card sale-card">
-                <div class="card-header">
-                    <h5>Unit Kerja</h5>
-                </div>
-                <div class="card-block">
-                    <figure class="highcharts-figure">
-                        <div id="container-hls"></div>
-                        <p class="highcharts-description">
-                            Jumlah Unit Kerja : {{ \App\Models\UnitKerja::count() }}
-                        </p>
-                    </figure>                    
-                </div>
-            </div>
+        <div class="col-md-6 text-right">
+            <a href="{{url('penugasan')}}">Lihat Semua Penugasan</a>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card sale-card">
-                <div class="card-header">
-                    <h5>Kompetensi Khusus</h5>
-                </div>
-                <div class="card-block">
-                    <figure class="highcharts-figure">
-                        <div id="container-hls"></div>
-                        <p class="highcharts-description">
-                            Jumlah Kompetensi Khusus : {{ \App\Models\KompetensiKhusus::count() }}
-                        </p>
-                    </figure>                    
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card sale-card">
-                <div class="card-header">
-                    <h5>Jenis Kegiatan</h5>
-                </div>
-                <div class="card-block">
-                    <figure class="highcharts-figure">
-                        <div id="container-hls"></div>
-                        <p class="highcharts-description">
-                            Jumlah Jenis Kegiatan : {{ \App\Models\JenisKegiatan::count() }}
-                        </p>
-                    </figure>                    
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card sale-card">
-                <div class="card-header">
-                    <h5>User</h5>
-                </div>
-                <div class="card-block">
-                    <figure class="highcharts-figure">
-                        <div id="container-hls"></div>
-                        <p class="highcharts-description">
-                            Jumlah User : {{ \App\Models\User::count() }}
-                        </p>
-                    </figure>                    
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <hr class="mt-2">
     @php
-    $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
-
-    $getPenugasan = \App\Models\Penugasan::with('jenis_kegiatan')->orderBy('id');
-
-    if ($keyword) {
-        $getPenugasan->where('penugasan', 'LIKE', "%{$keyword}%");
-    }
-
-    $getPenugasan->limit(5);
+    $getPenugasan = \App\Models\Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->from('penugasan as p')->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
+    ->where('wp.tanggal',date('Y-m-d'))
+    ->groupBy('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan')
+    ->orderBy('p.id');
 
     $data = $getPenugasan->paginate(10);
     @endphp
+    @include('penugasan._table')
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card sale-card">
-                <div class="card-header">
-                    <h5>Penugasan</h5>
-                </div>
-                <div class="card-block">
-                    <figure class="highcharts-figure">
-                        <div id="container-hls"></div>
-                        <div class="table-responsive">
-                            <table class="table table-hover table-custom">
-                                <thead>
-                                    <tr class="table-primary">
-                                        <th class="text-center">#</th>
-                                        <th>Nama Kegiatan</th>
-                                        <th>Jenis Kegiatan</th>
-                                        <th>Waktu Mulai</th>
-                                        <th>Waktu Selesai</th>
-                                        <th>Lokasi</th>
-                                        <th>Tamu VVIP</th>
-                                        <th>Biaya</th>
-                                        <th>Jumlah Roda 4</th>
-                                        <th>Jumlah Roda 2</th>
-                                        <th>POC</th>
-                                        <th>Jumlah HT</th>
-                                        <th>Penyelenggara</th>
-                                        <th>Jumlah Peserta</th>
-                                        <th>Penanggung Jawab</th>
-                                        <th>Lampiran</th>
-                                        <th>Status</th>
-                                        <th>Keterangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $page = Request::get('page');
-                                        $no = !$page || $page == 1 ? 1 : ($page - 1) * 10 + 1;
-                                    @endphp
-                                    @foreach ($data as $item)
-                                        <tr class="border-bottom-primary">
-                                          <td class="text-center text-muted">{{ $no }}</td>
-                                          <td>{{ $item->nama_kegiatan }}</td>
-                                          <td>{{ $item->jenis_kegiatan->jenis_kegiatan }}</td>
-                                          <td>{{ $item->waktu_mulai }}</td>
-                                          <td>{{ $item->waktu_selesai }}</td>
-                                          <td>{{ $item->lokasi }}</td>
-                                          <td>{{ $item->tamu_vvip }}</td>
-                                          <td>{{ "Rp. " . number_format($item->biaya,2,',','.') }}</td>
-                                          <td>{{ $item->jumlah_roda_4 }}</td>
-                                          <td>{{ $item->jumlah_roda_2 }}</td>
-                                          <td>{{ $item->poc }}</td>
-                                          <td>{{ $item->jumlah_ht }}</td>
-                                          <td>{{ $item->penyelenggara }}</td>
-                                          <td>{{ $item->jumlah_peserta }}</td>
-                                          <td>{{ $item->penanggung_jawab }}</td>
-                                          <td align="center"><a href="{{ "upload/lampiran/".$item->lampiran }}" target="_blank" class="btn btn-info btn-sm mr-2"><i class="fa fa-file"></i></a></td>
-                                          <td>{{ $item->status }}</td>
-                                          <td>{{ $item->keterangan }}</td>
-                                        </tr>
-                                        @php
-                                            $no++;
-                                        @endphp
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="pull-right">
-                              {{$data->appends(Request::all())->links('vendor.pagination.custom')}}
-                            </div>
-                          </div>
-                    </figure>                    
-                </div>
-            </div>
-        </div>
-    </div>
-
-    </div>
 @endsection

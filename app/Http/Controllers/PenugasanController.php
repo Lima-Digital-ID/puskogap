@@ -40,11 +40,15 @@ class PenugasanController extends Controller
 
         try {
             $keyword = $request->get('keyword');
+            $status = $request->get('status');
             // $getPenugasan = Penugasan::orderBy('id');
             $getPenugasan = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->from('penugasan as p')->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
             ->groupBy('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan')
             ->orderBy('p.id');
 
+            if ($status) {
+                $getPenugasan->where('status', $status);
+            }
             if ($keyword) {
                 $getPenugasan->where('penugasan', 'LIKE', "%{$keyword}%");
             }
@@ -70,11 +74,9 @@ class PenugasanController extends Controller
         $this->param['jabatan'] = Jabatan::get();
         $this->param['kompetensi'] = KompetensiKhusus::get();
         $this->param['unitkerja'] = UnitKerja::get();
-        $this->param['pageTitle'] = 'Tambah Penugasan';
-
-        $this->param['btnText'] = 'List Penugasan Kerja';
-        $this->param['btnLink'] = route('penugasan.index');
+        
         $this->param['allJen'] = JenisKegiatan::get();
+        $this->param['pageTitle'] = 'Tambah Penugasan';
 
         return \view('penugasan.create', $this->param);
     }
@@ -160,6 +162,12 @@ class PenugasanController extends Controller
             'tugas' => $this->anggotaNotFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'])
         );
         echo json_encode($data);
+    }
+    public function cekAnggota()
+    {
+        $this->param['pageTitle'] = 'Cek Anggota Bertugas dan Tidak';
+
+        return \view('penugasan.cek-anggota', $this->param);
     }
 
     /**

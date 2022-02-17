@@ -93,6 +93,13 @@ body,html{
     font-weight: 500;
     color : var(--colorPrimary);
 }
+.b-radius-3{
+    border-radius: 3px !important;
+}
+.badge-lg{
+    font-size: 15px;
+    padding : 7px 14px !important;
+}
 .badge{
     padding : 4px 8px;
     font-weight: 500;
@@ -101,19 +108,23 @@ body,html{
     background: var(--colorPrimary) !important;
     color : white;
 }
-.badge-primary,.btn-rgb-primary{
+.bg-rgb-info,.badge-info{
+    background: rgba(23, 162,184,0.2);
+    color : #17a2b8;
+}
+.badge-primary,.btn-rgb-primary,.bg-rgb-primary{
     background: rgba(71, 145,254,0.2);
     color : var(--colorPrimary);
 }
-.badge-warning,.btn-rgb-warning{
+.badge-warning,.btn-rgb-warning,.bg-rgb-warning{
     background: rgba(255, 193,7,0.2);
     color : #ffc107;
 }
-.badge-success,.btn-rgb-success{
+.badge-success,.btn-rgb-success,.bg-rgb-success{
     background: rgba(40, 167,69,0.2);
     color : #28a745;
 }
-.badge-danger,.btn-rgb-danger{
+.badge-danger,.btn-rgb-danger,.bg-rgb-danger{
     background: rgba(220, 53,69,0.2);
     color : #dc3545;
 }
@@ -223,4 +234,19 @@ label{
 }
 .table td, .table th{
     padding :1rem;
+}
+.card-body{
+    overflow: hidden;
+    position: relative;
+}
+.sticky-fa-card{
+    position : absolute;
+    left : 0;
+    top : 0;
+    font-size: 100px;
+    opacity: 0.2;
+    transform: translate(-20%,-20%);
+}
+.alert{
+    padding : 1rem 1.25rem;
 }
