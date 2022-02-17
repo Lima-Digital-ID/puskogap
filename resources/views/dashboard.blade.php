@@ -17,6 +17,7 @@
             <div class="alert alert-primary font-weight-bold">Selamat Datang Di Aplikasi PUSKOGAP</div>
         </div>
     </div>
+    @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
     <div class="row">
     <div class="col-md-3 mb-4">
         <div class="card bg-rgb-info border border-info">
@@ -88,6 +89,7 @@
         </div>
     </div>
     <br>
+    @endif
     <div class="row">
         <div class="col-md-6">
             <h5 class="font-weight-bold color-darkBlue">Kegiatan Penugasan Hari Ini</h5>

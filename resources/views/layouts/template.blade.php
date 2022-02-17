@@ -43,12 +43,15 @@
                 <li class="nav-item">
                     <a class="nav-link {{ Request::segment(2) == 'jadwal' ? 'active' : '' }}" href="{{url('penugasan/jadwal')}}"><span class="fa fa-calendar mr-1"></span> Schedule</a>
                 </li>
+                @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::segment(2) == 'cek-anggota' ? 'active' : '' }}" href="{{url('penugasan/cek-anggota')}}"><span class="fa fa-users mr-1"></span> Cek Anggota</a>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link {{ Request::segment(1) == 'penugasan' && Request::segment(2) != 'jadwal'  && Request::segment(2) != 'cek-anggota' ? 'active' : '' }}" href="{{url('penugasan')}}"><span class="fa fa-car mr-1"></span> Penugasan</a>
                 </li>
+                @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="fa fa-database"></span> Data Master
@@ -63,6 +66,7 @@
                       <a class="dropdown-item" href="{{ route('kompetensi-khusus.index') }}">Master Kompetensi Khusus</a>
                     </div>
                 </li>
+                @endif
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
