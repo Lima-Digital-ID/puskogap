@@ -75,7 +75,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                       {{-- <a class="dropdown-item" href="{{ url('logout') }}">Logout</a> --}}
-                      <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                      <a class="dropdown-item logout" href="#" >Logout</a>
                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
@@ -125,6 +125,22 @@
             format: 'yyyy-mm-dd',
             todayHighlight: true,
         });
+        $(".logout").click(function(e){
+            e.preventDefault()
+            swal({
+                    title: "Apakah anda yakin?",
+                    text: 'Anda akan keluar dari aplikasi PUSKOGAP',
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#dc3545",
+                    confirmButtonText: 'Logout',
+                    closeOnConfirm: false,
+                },
+                function() {
+                    $("#logout-form").submit()
+                }
+            );
+        })        
     // })
 </script>
 @stack('custom-script')

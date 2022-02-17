@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PenugasanRequest;
 use App\Models\User;
+use App\Models\Anggota;
 use App\Models\Penugasan;
 use App\Models\JenisKegiatan;
 use \App\Models\Jabatan;
@@ -107,17 +108,17 @@ class PenugasanController extends Controller
     }
     public function anggotaFree($tanggal,$dari,$sampai,$filter="")
     {
-        $anggotaFree = User::from('users as u')
+        $anggotaFree = Anggota::from('anggota as a')
                             ->select(
-                                'u.id',
-                                'u.nama',
-                            )
-                            ->where('level','Anggota');
+                                'a.id',
+                                'a.nama',
+                            );
+                            // ->where('level','Anggota');
                             if($filter!=""){
                                 $anggotaFree = $anggotaFree->where($filter);
                             }
-                            $anggotaFree = $anggotaFree->whereNotIn('u.id',function($query) use ($tanggal,$dari,$sampai) {
-                                $query->select('da.id_user')
+                            $anggotaFree = $anggotaFree->whereNotIn('a.id',function($query) use ($tanggal,$dari,$sampai) {
+                                $query->select('da.id_anggota')
                                         ->from('detail_anggota as da')
                                         ->join('penugasan as p', 'da.id_penugasan', 'p.id')
                                         ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
@@ -129,11 +130,11 @@ class PenugasanController extends Controller
 
     public function anggotaNotFree($tanggal,$dari,$sampai)
     {
-        $anggotaNotFree = \DB::table('detail_anggota as da')->select('u.id','u.nama','p.nama_kegiatan')
-                                        ->join('users as u', 'da.id_user', 'u.id')
+        $anggotaNotFree = \DB::table('detail_anggota as da')->select('a.id','a.nama','p.nama_kegiatan')
+                                        ->join('anggota as a', 'da.id_anggota', 'a.id')
                                         ->join('penugasan as p', 'da.id_penugasan', 'p.id')
                                         ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
-                                        ->where('u.level','Anggota')
+                                        // ->where('a.level','Anggota')
                                         ->whereRaw("(p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")
                                         ->get();
         return $anggotaNotFree;

@@ -108,6 +108,9 @@ body,html{
     background: var(--colorPrimary) !important;
     color : white;
 }
+.bg-darkBlue{
+    background: var(--colorDarkBlue) !important;
+}
 .bg-rgb-info,.badge-info{
     background: rgba(23, 162,184,0.2);
     color : #17a2b8;
@@ -246,7 +249,33 @@ label{
     font-size: 100px;
     opacity: 0.2;
     transform: translate(-20%,-20%);
+    -webkit-transform: translate(-20%,-20%);
+    -moz-transform: translate(-20%,-20%);
+    -o-transform: translate(-20%,-20%);
 }
 .alert{
     padding : 1rem 1.25rem;
+}
+#login .input{
+    position: relative;
+}
+#login .input input:focus{
+    box-shadow: none;
+}
+#login .input input{
+    position: relative;
+    border : none;
+    border-bottom :1px solid #ced4da;
+    padding-left : 2rem;
+}
+#login .input span{
+    z-index: 2;
+    position: absolute;
+    font-size: 18px;
+    top : 50%;
+    left : 2px;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
 }
