@@ -32,8 +32,9 @@ class RemoveIdUserOnDetailAnggota extends Migration
         Schema::table('detail_anggota', function (Blueprint $table) {            
             $table->bigInteger('id_user', false, true)->nullable()->after('id');
             $table->foreign('id_user')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->dropColumn('id_anggota');
+            
             $table->dropForeign('detail_anggota_id_anggota_foreign');
+            $table->dropColumn('id_anggota');
         }); 
     }
 }
