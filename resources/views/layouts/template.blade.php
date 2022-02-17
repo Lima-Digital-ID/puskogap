@@ -71,7 +71,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="fa fa-user"></span> User
+                      <span class="fa fa-user"></span> {{ucwords(auth()->user()->username)}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                       {{-- <a class="dropdown-item" href="{{ url('logout') }}">Logout</a> --}}
