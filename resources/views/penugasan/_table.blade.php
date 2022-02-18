@@ -72,14 +72,16 @@
                                 data-toggle="tooltip" title="Edit" data-placement="top"><span
                                     class="fa fa-edit fa-sm"></span></button>
                         </a>
-                        <form action="{{ route('penugasan.destroy', $item->id) }}" method="post">
-                            @csrf
-                            @method('delete')
-                            <button type="button" class="btn btn-rgb-danger btn-sm" data-toggle="tooltip"
-                                title="Hapus" data-placement="top"
-                                onclick="confirm('{{ __('Apakah anda yakin ingin menghapus?') }}') ? this.parentElement.submit() : ''">
+                        <button type="submit" class="btn btn-rgb-danger btn-sm delete" data-toggle="tooltip"
+                                title="Hapus" data-placement="top">
+                                {{-- onclick="confirm('{{ __('Apakah anda yakin ingin menghapus?') }}') ? this.parentElement.submit() : ''"> --}}
                                 <span class="fa fa-trash fa-sm"></span>
                             </button>
+                        {{-- <a href="#" type="button" class="btn btn-rgb-danger btn-sm delete" data-toggle="tooltip"
+                        title="Hapus" data-placement="top"><span class="fa fa-trash fa-sm"></span></a> --}}
+                        <form id="delete-penugasan" action="{{ route('penugasan.destroy', $item->id) }}" method="post">
+                            @csrf
+                            @method('delete')
                         </form>
                         @endif
                     </div>

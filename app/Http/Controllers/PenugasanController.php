@@ -56,7 +56,8 @@ class PenugasanController extends Controller
                 $getPenugasan->where('p.status', $status);
             }
             if ($keyword) {
-                $getPenugasan->where('penugasan', 'LIKE', "%{$keyword}%");
+                $getPenugasan->where('nama_kegiatan', 'LIKE', "%{$keyword}%");
+                $getPenugasan->orWhere('lokasi', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['data'] = $getPenugasan->paginate(10);
@@ -344,12 +345,20 @@ class PenugasanController extends Controller
     {
         try {
             $data = Penugasan::findOrFail($id);
+            $detail = \DB::table('detail_anggota')
+                            ->where('id_penugasan',$data->id);
+            $waktu = \DB::table('waktu_penugasan')
+                    ->where('id_penugasan',$data->id);
             $lampiran = 'upload/lampiran/'.$data->lampiran;
             if($data->lampiran != '' && $data->lampiran != null){
                 unlink($lampiran);
                 $data->delete();
+                $detail->delete();
+                $waktu->delete();
             }else{
                 $data->delete();
+                $detail->delete();
+                $waktu->delete();
             }
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.'.$e);

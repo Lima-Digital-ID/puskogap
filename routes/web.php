@@ -47,6 +47,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('send-whatsapp', [PenugasanController::class, 'sendWhatsapp'])->name('penugasan.send-wa');
     });
     Route::resource('penugasan', PenugasanController::class);
+    Route::prefix('user')->group(function(){
+        Route::resource('user', UserController::class);
+        Route::get('change-password', [UserController::class, 'changePassword'])->name('change_password');
+        Route::put('change-password/{id}', [UserController::class, 'updatePassword'])->name('update_password');
+    });
     Route::resource('user', UserController::class);
     Route::resource('anggota', AnggotaController::class);
 });
