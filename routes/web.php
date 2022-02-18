@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('jenis-kegiatan', JenisKegiatanController::class);
     Route::prefix('penugasan')->group(function () {
         Route::resource('master-penugasan', PenugasanController::class);
+        Route::get('detail', [PenugasanController::class, 'detail']);
         Route::get('jadwal', [PenugasanController::class, 'jadwal']);
         Route::get('get-anggota', [PenugasanController::class, 'getAnggota']);
         Route::get('cek-anggota', [PenugasanController::class, 'CekAnggota']);

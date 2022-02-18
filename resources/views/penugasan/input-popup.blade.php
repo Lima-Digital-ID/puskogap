@@ -74,7 +74,7 @@
             <div class="col-md-6">
                 <div class="card card-free">
                     <div class="card-header btn-rgb-primary">
-                        <h6 class="mb-0">Anggota Free</h6>
+                        <h6 class="mb-0">Anggota Bertugas</h6>
                     </div>
                     <div class="card-body">
                         <div class="row">

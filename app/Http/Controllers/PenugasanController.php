@@ -6,6 +6,7 @@ use App\Http\Requests\PenugasanRequest;
 use App\Models\User;
 use App\Models\Anggota;
 use App\Models\Penugasan;
+use App\Models\WaktuPenugasan;
 use App\Models\JenisKegiatan;
 use \App\Models\Jabatan;
 use \App\Models\KompetensiKhusus;
@@ -124,8 +125,8 @@ class PenugasanController extends Controller
                             $anggotaFree = $anggotaFree->whereNotIn('a.id',function($query) use ($tanggal,$dari,$sampai) {
                                 $query->select('da.id_anggota')
                                         ->from('detail_anggota as da')
-                                        ->join('penugasan as p', 'da.id_penugasan', 'p.id')
-                                        ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
+                                        ->join('waktu_penugasan as wp','da.id_waktu_penugasan','wp.id')
+                                        ->join('penugasan as p', 'wp.id_penugasan', 'p.id')
                                         ->whereRaw("(p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")->get();
                             });
         $anggotaFree = $anggotaFree->get();
@@ -136,8 +137,8 @@ class PenugasanController extends Controller
     {
         $anggotaNotFree = \DB::table('detail_anggota as da')->select('a.id','a.nama','p.nama_kegiatan')
                                         ->join('anggota as a', 'da.id_anggota', 'a.id')
-                                        ->join('penugasan as p', 'da.id_penugasan', 'p.id')
-                                        ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
+                                        ->join('waktu_penugasan as wp','da.id_waktu_penugasan','wp.id')
+                                        ->join('penugasan as p', 'wp.id_penugasan', 'p.id')
                                         // ->where('a.level','Anggota')
                                         ->whereRaw("(p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")
                                         ->get();
@@ -373,5 +374,21 @@ class PenugasanController extends Controller
                         $getPenugasan = $getPenugasan->groupBy('wp.id',"nama_kegiatan","tanggal","waktu_mulai","waktu_selesai")->get();
         $this->param['penugasan'] = $getPenugasan;
         return \view('penugasan.jadwal', $this->param);
+    }
+    public function detail()
+    {
+        $id = $_GET['id'];
+        $data['general'] = Penugasan::from('penugasan as p')->select('p.id','p.nama_kegiatan','p.lokasi','j.jenis_kegiatan','p.tamu_vvip','penyelenggara','penanggung_jawab','p.status','p.keterangan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->join('jenis_kegiatan as j','p.id_jenis_kegiatan','j.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan')->where('p.id',$id)->groupBy('p.id','p.nama_kegiatan','p.lokasi','j.jenis_kegiatan','p.tamu_vvip','penyelenggara','penanggung_jawab','p.status','p.keterangan')->first();
+
+        $waktuPenugasan = WaktuPenugasan::where('id_penugasan',$id)->orderBy('tanggal','asc')->orderBy('waktu_mulai','asc')->get();
+
+        $arr = [];
+        foreach ($waktuPenugasan as $key => $value) {
+            $anggota = \DB::table('detail_anggota as da')->select('a.nama','da.status')->join('anggota as a','da.id_anggota','a.id')->where('da.id_waktu_penugasan',$value->id)->get();
+            $arr[$key]['waktu'] = $value;
+            $arr[$key]['anggota'] = $anggota;
+        }
+        $data['detail'] = $arr;
+        echo json_encode($data);
     }
 }

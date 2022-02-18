@@ -24,5 +24,4 @@
     @endif   
     @include('penugasan._table')
 
-
 @endsection
