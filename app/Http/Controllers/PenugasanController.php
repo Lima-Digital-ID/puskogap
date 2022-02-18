@@ -374,13 +374,13 @@ class PenugasanController extends Controller
         $this->param['btnLink'] = '';
         $this->param['pageTitle'] = 'Jadwal';
         $getPenugasan = \DB::table('waktu_penugasan as wp')
-                        ->select('wp.id',"nama_kegiatan","tanggal","waktu_mulai","waktu_selesai")
+                        ->select('wp.id','wp.id_penugasan',"nama_kegiatan","tanggal","waktu_mulai","waktu_selesai")
                         ->join('penugasan as p',"wp.id_penugasan","p.id");
                         if(auth()->user()->level=='Anggota'){
                             $getPenugasan = $getPenugasan->leftJoin('detail_anggota as da','da.id_penugasan','p.id')
                             ->where('da.id_anggota', auth()->user()->id_anggota);
                         }
-                        $getPenugasan = $getPenugasan->groupBy('wp.id',"nama_kegiatan","tanggal","waktu_mulai","waktu_selesai")->get();
+                        $getPenugasan = $getPenugasan->groupBy('wp.id','wp.id_penugasan',"nama_kegiatan","tanggal","waktu_mulai","waktu_selesai")->get();
         $this->param['penugasan'] = $getPenugasan;
         return \view('penugasan.jadwal', $this->param);
     }
@@ -389,7 +389,11 @@ class PenugasanController extends Controller
         $id = $_GET['id'];
         $data['general'] = Penugasan::from('penugasan as p')->select('p.id','p.nama_kegiatan','p.lokasi','j.jenis_kegiatan','p.tamu_vvip','penyelenggara','penanggung_jawab','p.status','p.keterangan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->join('jenis_kegiatan as j','p.id_jenis_kegiatan','j.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan')->where('p.id',$id)->groupBy('p.id','p.nama_kegiatan','p.lokasi','j.jenis_kegiatan','p.tamu_vvip','penyelenggara','penanggung_jawab','p.status','p.keterangan')->first();
 
-        $waktuPenugasan = WaktuPenugasan::where('id_penugasan',$id)->orderBy('tanggal','asc')->orderBy('waktu_mulai','asc')->get();
+        $waktuPenugasan = WaktuPenugasan::where('id_penugasan',$id);
+        if(isset($_GET['id_waktu_penugasan'])){
+            $waktuPenugasan = $waktuPenugasan->where('id',$_GET['id_waktu_penugasan']);
+        }
+        $waktuPenugasan = $waktuPenugasan->orderBy('tanggal','asc')->orderBy('waktu_mulai','asc')->get();
 
         $arr = [];
         foreach ($waktuPenugasan as $key => $value) {

@@ -218,6 +218,7 @@ label{
 .fc-event{
     background : var(--colorPrimary) !important;
     color : white !important;
+    cursor: pointer;
 }
 .fc-button-group button{
     background: rgba(71, 145,254,0.2);

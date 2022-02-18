@@ -16,7 +16,9 @@
 
     <div id="calendar"></div>
 
+    @include('penugasan.popup-detail')
 @endsection
+
 @push("custom-script")
 <script>
     $(document).ready(function() {
@@ -48,6 +50,11 @@
                 $('.tooltiptopicevent').remove();
 
             },
+            eventClick: function(data,event,view){
+                var paramData = {id : data.id_penugasan,id_waktu_penugasan : data.id}
+                openPopUp(paramData)
+
+            },
             dayClick: function () {
                 tooltip.hide()
             },
@@ -65,6 +72,7 @@
                  @foreach($penugasan as $data)
                     {
                         id: {{$data->id}},
+                        id_penugasan :{{$data->id_penugasan}},
                         title: '{{$data->nama_kegiatan}}',
                         description : '{{$data->nama_kegiatan}}',
                         start: '{{$data->tanggal}} {{$data->waktu_mulai}}',
