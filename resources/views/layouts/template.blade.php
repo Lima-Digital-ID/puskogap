@@ -142,6 +142,24 @@
             );
         })        
     // })
+    $(".delete").click(function(e){
+            e.preventDefault()
+            swal({
+                    title: "Apakah anda yakin?",
+                    text: 'Anda akan menghapus penugasan',
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#dc3545",
+                    confirmButtonText: 'Yakin',
+                    closeOnConfirm: false,
+                    cancelButtonText: 'Batal',
+                },
+                function() {
+                    $("#delete-penugasan").submit()
+                }
+            );
+            console.log('bisa');
+        })  
 </script>
 @stack('custom-script')
 </body>
