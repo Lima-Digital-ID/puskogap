@@ -40,7 +40,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('data-master/jenis-kegiatan', JenisKegiatanController::class);
     Route::prefix('penugasan')->group(function () {
         Route::resource('master-penugasan', PenugasanController::class);
-        Route::get('detail', [PenugasanController::class, 'detail']);
         Route::get('jadwal', [PenugasanController::class, 'jadwal']);
         Route::get('get-anggota', [PenugasanController::class, 'getAnggota']);
         Route::get('cek-anggota', [PenugasanController::class, 'CekAnggota']);
@@ -48,8 +47,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('send-whatsapp', [PenugasanController::class, 'sendWhatsapp'])->name('penugasan.send-wa');
     });
     Route::resource('penugasan', PenugasanController::class);
+    Route::prefix('rekap')->group(function(){
+        Route::get('rekap-penugasan', [RekapController::class, 'rekapPenugasan']);
+        Route::get('penugasan-anggota', [RekapController::class, 'penugasanAnggota']);
+    });
     Route::prefix('data-master/user')->group(function(){
-        Route::resource('user', UserController::class);
+        Route::resource('data-master/user', UserController::class);
         Route::get('change-password', [UserController::class, 'changePassword'])->name('change_password');
         Route::put('change-password/{id}', [UserController::class, 'updatePassword'])->name('update_password');
     });
