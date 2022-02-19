@@ -3,33 +3,35 @@
 @section('content')
 
     @include('components.notification')
-    <div class="row">
-        <div class="col-md-6">
-        <label>Dari Tanggal</label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <button class=" input-group-text">
-                    <span class="fa fa-calendar"></span>
-                </button>
-            </div>
-            <input type="text" name='dari' class="form-control datepicker" id="dari" value="{{isset($_GET['dari']) ? $_GET['dari'] : ''}}">
-        </div>
-        </div>
-        <div class="col-md-6">
-            <label>Sampai Tanggal</label>
+    <form action="" method="get">
+        <div class="row">
+            <div class="col-md-6">
+            <label>Dari Tanggal</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <button class=" input-group-text">
                         <span class="fa fa-calendar"></span>
                     </button>
                 </div>
-                <input type="text" name='sampai' class="form-control datepicker" id="sampai" value="{{isset($_GET['sampai']) ? $_GET['sampai'] : ''}}">
+                <input type="text" name='dari' class="form-control datepicker" value="{{isset($_GET['dari']) ? $_GET['dari'] : ''}}">
+            </div>
+            </div>
+            <div class="col-md-6">
+                <label>Sampai Tanggal</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class=" input-group-text">
+                            <span class="fa fa-calendar"></span>
+                        </button>
+                    </div>
+                    <input type="text" name='sampai' class="form-control datepicker" value="{{isset($_GET['sampai']) ? $_GET['sampai'] : ''}}">
+                </div>
+            </div>
+            <div class="col mt-3">
+                <button class="btn btn-primary"><span class="fa fa-filter"></span> Filter</button>
             </div>
         </div>
-        <div class="col mt-3">
-            <button class="btn btn-primary" onclick="getRekap()"><span class="fa fa-filter"></span> Filter</button>
-        </div>
-    </div>
+    </form>
     <br>
     <div class="table-responsive">
         <table class="table table-hover table-custom">
@@ -41,8 +43,9 @@
                     <th>Jumlah Bertugas</th>
                 </tr>
             </thead>
+            @if(isset($data))
             <tbody id="myBody">
-                {{-- @php
+                @php
                     $page = Request::get('page');
                     $no = !$page || $page == 1 ? 1 : ($page - 1) * 10 + 1;
                 @endphp
@@ -55,8 +58,15 @@
                     @php
                         $no++;
                     @endphp
-                @endforeach --}}
+                @endforeach
             </tbody>
+            @else
+            <tbody id="myBody">
+                <tr class="border-bottom-primary">
+                    <td class="text-center text-muted" colspan="12">Tidak Ada Data</td>
+                </tr>
+            </tbody>
+            @endif
         </table>
         <div class="pull-right">
             {{-- {{ $user->appends(Request::all())->links('vendor.pagination.custom') }} --}}
