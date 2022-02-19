@@ -66,23 +66,25 @@
                                 data-toggle="tooltip" title="Detail" data-placement="top"><span
                                     class="fa fa-table fa-sm"></span></button>
                         </a>
-                        @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
-                        <a href="{{ route('penugasan.edit', $item->id) }}" class="mr-2">
-                            <button type="button" id="PopoverCustomT-1" class="btn btn-rgb-primary btn-sm"
-                                data-toggle="tooltip" title="Edit" data-placement="top"><span
-                                    class="fa fa-edit fa-sm"></span></button>
-                        </a>
-                        <button type="submit" class="btn btn-rgb-danger btn-sm delete" data-toggle="tooltip"
-                                title="Hapus" data-placement="top">
-                                {{-- onclick="confirm('{{ __('Apakah anda yakin ingin menghapus?') }}') ? this.parentElement.submit() : ''"> --}}
-                                <span class="fa fa-trash fa-sm"></span>
-                            </button>
-                        {{-- <a href="#" type="button" class="btn btn-rgb-danger btn-sm delete" data-toggle="tooltip"
-                        title="Hapus" data-placement="top"><span class="fa fa-trash fa-sm"></span></a> --}}
-                        <form id="delete-penugasan" action="{{ route('penugasan.destroy', $item->id) }}" method="post">
-                            @csrf
-                            @method('delete')
-                        </form>
+                        @if(isset($viewOption) && $viewOption!='detail')
+                            @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
+                            <a href="{{ route('penugasan.edit', $item->id) }}" class="mr-2">
+                                <button type="button" id="PopoverCustomT-1" class="btn btn-rgb-primary btn-sm"
+                                    data-toggle="tooltip" title="Edit" data-placement="top"><span
+                                        class="fa fa-edit fa-sm"></span></button>
+                            </a>
+                            <button type="submit" class="btn btn-rgb-danger btn-sm delete" data-toggle="tooltip"
+                                    title="Hapus" data-placement="top">
+                                    {{-- onclick="confirm('{{ __('Apakah anda yakin ingin menghapus?') }}') ? this.parentElement.submit() : ''"> --}}
+                                    <span class="fa fa-trash fa-sm"></span>
+                                </button>
+                            {{-- <a href="#" type="button" class="btn btn-rgb-danger btn-sm delete" data-toggle="tooltip"
+                            title="Hapus" data-placement="top"><span class="fa fa-trash fa-sm"></span></a> --}}
+                            <form id="delete-penugasan" action="{{ route('penugasan.destroy', $item->id) }}" method="post">
+                                @csrf
+                                @method('delete')
+                            </form>
+                            @endif
                         @endif
                     </div>
                 </td>
@@ -94,7 +96,7 @@
       </tbody>
   </table>
   <div class="pull-right">
-    {{-- {{$data->appends(Request::all())->links('vendor.pagination.custom')}} --}}
+    {{$data->appends(Request::all())->links('vendor.pagination.custom')}}
   </div>
 </div>
 @include('penugasan.popup-detail')
