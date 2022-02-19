@@ -8,6 +8,7 @@ use App\Http\Controllers\KompetensiKhususController;
 use App\Http\Controllers\PenugasanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\RekapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +48,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('send-whatsapp', [PenugasanController::class, 'sendWhatsapp'])->name('penugasan.send-wa');
     });
     Route::resource('penugasan', PenugasanController::class);
+    Route::prefix('rekap')->group(function(){
+        Route::get('rekap-penugasan', [RekapController::class, 'rekapPenugasan']);
+        Route::get('penugasan-anggota', [RekapController::class, 'penugasanAnggota']);
+    });
     Route::prefix('user')->group(function(){
         Route::resource('user', UserController::class);
         Route::get('change-password', [UserController::class, 'changePassword'])->name('change_password');
