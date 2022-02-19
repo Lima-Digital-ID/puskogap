@@ -30,8 +30,7 @@ class RekapController extends Controller
             $param['data'] = \DB::table('detail_anggota as da')
                                 ->join('anggota as a','a.id','da.id_anggota')                    
                                 ->select('a.nama', 'a.nip', \DB::raw('COUNT(da.id_anggota) as total'))
-                                ->groupBy('a.nama')
-                                ->groupBy('a.nip')
+                                ->groupBy('a.nama','a.nip')
                                 ->whereBetween('da.created_at', [$request->get('dari')." 00:00:00", $request->get('sampai')." 23:59:59"])
                                 ->orderBy('total', 'desc')     
                                 ->get();
@@ -46,8 +45,7 @@ class RekapController extends Controller
         $data = \DB::table('detail_anggota as da')
                             ->join('anggota as a','a.id','da.id_anggota')                    
                             ->select('a.nama', 'a.nip', \DB::raw('COUNT(da.id_anggota) as total'))
-                            ->groupBy('a.nama')
-                            ->groupBy('a.nip')
+                            ->groupBy('a.nama', 'a.nip')
                             ->whereBetween('da.created_at', [$dari." 00:00:00", $sampai." 23:59:59"])
                             ->orderBy('total', 'desc')     
                             ->get();
