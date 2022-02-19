@@ -32,11 +32,11 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard',$param);
     })->middleware(['auth'])->name('dashboard');
 
-    Route::resource('golongan', GolonganController::class);
-    Route::resource('jabatan', JabatanController::class);
-    Route::resource('unit-kerja', UnitKerjaController::class);
-    Route::resource('kompetensi-khusus', KompetensiKhususController::class);
-    Route::resource('jenis-kegiatan', JenisKegiatanController::class);
+    Route::resource('data-master/golongan', GolonganController::class);
+    Route::resource('data-master/jabatan', JabatanController::class);
+    Route::resource('data-master/unit-kerja', UnitKerjaController::class);
+    Route::resource('data-master/kompetensi-khusus', KompetensiKhususController::class);
+    Route::resource('data-master/jenis-kegiatan', JenisKegiatanController::class);
     Route::prefix('penugasan')->group(function () {
         Route::resource('master-penugasan', PenugasanController::class);
         Route::get('jadwal', [PenugasanController::class, 'jadwal']);
@@ -46,13 +46,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('send-whatsapp', [PenugasanController::class, 'sendWhatsapp'])->name('penugasan.send-wa');
     });
     Route::resource('penugasan', PenugasanController::class);
-    Route::prefix('user')->group(function(){
+    Route::prefix('data-master/user')->group(function(){
         Route::resource('user', UserController::class);
         Route::get('change-password', [UserController::class, 'changePassword'])->name('change_password');
         Route::put('change-password/{id}', [UserController::class, 'updatePassword'])->name('update_password');
     });
-    Route::resource('user', UserController::class);
-    Route::resource('anggota', AnggotaController::class);
+    Route::resource('data-master/user', UserController::class);
+    Route::resource('data-master/anggota', AnggotaController::class);
 });
 
 require __DIR__.'/auth.php';
