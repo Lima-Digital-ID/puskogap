@@ -22,4 +22,10 @@ class RekapController extends Controller
 
         return view('penugasan/rekap-penugasan',$param);
     }
+
+    public function penugasanAnggota()
+    {
+        $param['pageTitle'] = "Rekap Penugasan";
+        return view('penugasan/rekap-penugasan',$param);
+    }
 }
