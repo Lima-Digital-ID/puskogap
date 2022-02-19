@@ -31,7 +31,7 @@
         <nav class="navbar navbar-expand-lg py-3 navbar-light mt-4">
             <div class="container custom">
 
-                <a class="navbar-brand font-weight-bold" href="#"><img src="{{ asset('') }}png/satpol-pp.png" width="40px" class="mr-2" alt=""> PUSKOGAP</a>
+                <a class="navbar-brand font-weight-bold" href="#"><img src="{{ asset('') }}png/satpol-pp.png" width="40px" class="mr-2" alt=""></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -50,6 +50,15 @@
                 @endif
                 <li class="nav-item">
                     <a class="nav-link {{ Request::segment(1) == 'penugasan' && Request::segment(2) != 'jadwal'  && Request::segment(2) != 'cek-anggota' ? 'active' : '' }}" href="{{url('penugasan')}}"><span class="fa fa-car mr-1"></span> Penugasan</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="fa fa-file"></span> Rekap
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="{{ url('rekap/rekap-penugasan') }}">Rekap Penugasan</a>
+                      <a class="dropdown-item" href="{{ url('rekap/penugasan-anggota') }}">Rekap Penugasan Per Anggota</a>
+                    </div>
                 </li>
                 @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
                 <li class="nav-item dropdown">

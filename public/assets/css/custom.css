@@ -10,6 +10,9 @@ body,html{
     color : rgba(0,0,0,.5);
     font-weight: 400;
 }
+a{
+    color : var(--colorPrimary);
+}
 .btn-back{
     background : var(--colorPrimary);
     color : white;
@@ -215,6 +218,7 @@ label{
 .fc-event{
     background : var(--colorPrimary) !important;
     color : white !important;
+    cursor: pointer;
 }
 .fc-button-group button{
     background: rgba(71, 145,254,0.2);
@@ -278,4 +282,19 @@ label{
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -o-transform: translateY(-50%);
+}
+.content-detail{
+    position: relative;
+}
+.loading-content-detail{
+    background: #f0f1f3;
+    padding : 5px 10px;
+    border-radius: 3px;
+    display: inline-block;
+}
+p .loading-content-detail{
+    min-width: 300px;
+}
+#modalDetail .modal-body{
+    padding : 0px;
 }

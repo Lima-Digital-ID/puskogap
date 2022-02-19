@@ -8,6 +8,7 @@ use App\Http\Controllers\KompetensiKhususController;
 use App\Http\Controllers\PenugasanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\RekapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('data-master/jenis-kegiatan', JenisKegiatanController::class);
     Route::prefix('penugasan')->group(function () {
         Route::resource('master-penugasan', PenugasanController::class);
+        Route::get('detail', [PenugasanController::class, 'detail']);
         Route::get('jadwal', [PenugasanController::class, 'jadwal']);
         Route::get('get-anggota', [PenugasanController::class, 'getAnggota']);
         Route::get('cek-anggota', [PenugasanController::class, 'CekAnggota']);

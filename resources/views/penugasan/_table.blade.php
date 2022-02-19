@@ -61,7 +61,7 @@
                 </td>
                 <td class="p-0 m-0">
                       <div class="form-inline btn-action">
-                        <a href="{{ route('penugasan.edit', $item->id) }}" class="mr-2">
+                        <a href="#" class="mr-2 btn-detail" data-id="{{$item->id}}">
                             <button type="button" id="PopoverCustomT-1" class="btn btn-rgb-success btn-sm"
                                 data-toggle="tooltip" title="Detail" data-placement="top"><span
                                     class="fa fa-table fa-sm"></span></button>
@@ -97,3 +97,14 @@
     {{-- {{$data->appends(Request::all())->links('vendor.pagination.custom')}} --}}
   </div>
 </div>
+@include('penugasan.popup-detail')
+@push('custom-script')
+<script>
+    $(".btn-detail").click(function(e){
+        e.preventDefault();
+        var id = $(this).data('id')
+        var paramData = {id : id}
+        openPopUp(paramData)
+    })
+</script>
+@endpush
