@@ -23,9 +23,32 @@ class RekapController extends Controller
         return view('penugasan/rekap-penugasan',$param);
     }
 
-    public function penugasanAnggota()
+    public function penugasanAnggota(Request $request)
     {
-        $param['pageTitle'] = "Rekap Penugasan";
-        return view('penugasan/rekap-penugasan',$param);
+        $param['pageTitle'] = "Rekap Anggota Penugasan";
+        if($request->get('dari')){
+            $param['data'] = \DB::table('detail_anggota as da')
+                                ->join('anggota as a','a.id','da.id_anggota')                    
+                                ->select('a.nama', 'a.nip', \DB::raw('COUNT(da.id_anggota) as total'))
+                                ->groupBy('a.nama','a.nip')
+                                ->whereBetween('da.created_at', [$request->get('dari')." 00:00:00", $request->get('sampai')." 23:59:59"])
+                                ->orderBy('total', 'desc')     
+                                ->get();
+        }
+        return view('penugasan/rekap-anggota',$param);
+    }
+
+    public function getTotalAnggota(Request $request)
+    {
+        $dari = $request->get('dari');
+        $sampai = $request->get('sampai');
+        $data = \DB::table('detail_anggota as da')
+                            ->join('anggota as a','a.id','da.id_anggota')                    
+                            ->select('a.nama', 'a.nip', \DB::raw('COUNT(da.id_anggota) as total'))
+                            ->groupBy('a.nama', 'a.nip')
+                            ->whereBetween('da.created_at', [$dari." 00:00:00", $sampai." 23:59:59"])
+                            ->orderBy('total', 'desc')     
+                            ->get();
+        echo json_encode($data);
     }
 }

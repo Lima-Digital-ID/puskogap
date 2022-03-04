@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('rekap')->group(function(){
         Route::get('rekap-penugasan', [RekapController::class, 'rekapPenugasan']);
         Route::get('penugasan-anggota', [RekapController::class, 'penugasanAnggota']);
+        Route::get('get-anggota-bertugas', [RekapController::class, 'getTotalAnggota']);
     });
     Route::prefix('data-master/user')->group(function(){
         Route::resource('data-master/user', UserController::class);
