@@ -13,7 +13,7 @@
                         <span class="fa fa-calendar"></span>
                     </button>
                 </div>
-                <input type="text" name='dari' class="form-control datepicker" value="{{isset($_GET['dari']) ? $_GET['dari'] : ''}}">
+                <input type="text" name='dari' class="form-control datepicker" value="{{isset($_GET['dari']) ? $_GET['dari'] : date('Y-m-d')}}">
             </div>
             </div>
             <div class="col-md-6">
@@ -24,7 +24,7 @@
                             <span class="fa fa-calendar"></span>
                         </button>
                     </div>
-                    <input type="text" name='sampai' class="form-control datepicker" value="{{isset($_GET['sampai']) ? $_GET['sampai'] : ''}}">
+                    <input type="text" name='sampai' class="form-control datepicker" value="{{isset($_GET['sampai']) ? $_GET['sampai'] : date('Y-m-d')}}">
                 </div>
             </div>
             <div class="col mt-3">

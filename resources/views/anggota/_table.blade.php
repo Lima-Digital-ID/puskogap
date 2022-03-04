@@ -3,6 +3,7 @@
         <thead>
             <tr class="table-primary">
                 <th class="text-center">#</th>
+                <th>NIP</th>
                 <th>Nama</th>
                 <th>Golongan</th>
                 <th>Jabatan</th>
@@ -11,7 +12,6 @@
                 <th>Jenis Pegawai</th>
                 <th>Jenis Kelamin</th>
                 <th>No Handphone</th>
-                <th>NIP</th>
                 <th></th>
             </tr>
         </thead>
@@ -23,6 +23,7 @@
             @foreach ($anggota as $item)
                 <tr class="border-bottom-primary">
                     <td class="text-center text-muted">{{ $no }}</td>
+                    <td>{{ $item->nip }}</td>
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->golongan->pangkat }}</td>
                     <td>{{ $item->jabatan->jabatan }}</td>
@@ -31,7 +32,6 @@
                     <td>{{ $item->jenis_pegawai }}</td>
                     <td>{{ $item->jenis_kelamin }}</td>
                     <td>{{ $item->phone }}</td>
-                    <td>{{ $item->nip }}</td>
                     <td>
                         <div class="form-inline btn-action">
                             <a href="{{ route('anggota.edit', $item->id) }}" class="mr-2">

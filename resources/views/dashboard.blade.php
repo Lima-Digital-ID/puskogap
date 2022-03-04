@@ -22,7 +22,7 @@
     <div class="col-md-3 mb-4">
         <div class="card bg-rgb-info border border-info">
             <div class="card-body py-4">  
-                <span class="fa fa-calendar sticky-fa-card"></span>  
+                <span class="fa fa-calendar-alt sticky-fa-card"></span>  
                 <div class="row align-items-center">
                     <div class="col-md-8 pr-0 font-weight-bold">
                         Rencana Penugasan

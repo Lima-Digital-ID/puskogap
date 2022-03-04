@@ -66,7 +66,7 @@
                                 data-toggle="tooltip" title="Detail" data-placement="top"><span
                                     class="fa fa-table fa-sm"></span></button>
                         </a>
-                        @if(isset($viewOption) && $viewOption!='detail')
+                        @if(empty($viewOption))
                             @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
                             <a href="{{ route('penugasan.edit', $item->id) }}" class="mr-2">
                                 <button type="button" id="PopoverCustomT-1" class="btn btn-rgb-primary btn-sm"

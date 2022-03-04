@@ -41,7 +41,7 @@
                     <a class="nav-link {{ Request::segment(1) == 'dashboard' ? 'active' : '' }}" href="{{url('/dashboard')}}"><span class="fa fa-home mr-1"></span> Dashboard <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::segment(2) == 'jadwal' ? 'active' : '' }}" href="{{url('penugasan/jadwal')}}"><span class="fa fa-calendar mr-1"></span> Schedule</a>
+                    <a class="nav-link {{ Request::segment(2) == 'jadwal' ? 'active' : '' }}" href="{{url('penugasan/jadwal')}}"><span class="fa fa-calendar-alt mr-1"></span> Schedule</a>
                 </li>
                 @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
                 <li class="nav-item">
@@ -52,8 +52,8 @@
                     <a class="nav-link {{ Request::segment(1) == 'penugasan' && Request::segment(2) != 'jadwal'  && Request::segment(2) != 'cek-anggota' ? 'active' : '' }}" href="{{url('penugasan')}}"><span class="fa fa-car mr-1"></span> Penugasan</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="fa fa-file"></span> Rekap
+                    <a class="nav-link dropdown-toggle {{ Request::segment(1) == 'rekap' ? 'active' : '' }}" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="fa fa-file-alt"></span> Rekap
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                       <a class="dropdown-item" href="{{ url('rekap/rekap-penugasan') }}">Rekap Penugasan</a>
@@ -62,7 +62,7 @@
                 </li>
                 @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle {{ Request::segment(1) == 'data-master' ? 'active' : '' }}" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="fa fa-database"></span> Data Master
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -104,10 +104,10 @@
                         <a @if(Request::segment(1)!='dashboard') onclick="window.history.back()" @endif>
                             @if(Request::segment(1)!='dashboard') <span class="fa fa-arrow-left mr-3 btn-rgb-primary fa-sm p-2 "></span> @endif </span> 
                         </a>
-                        {{ ucwords(Request::segment(1)) }}</h5>
+                        {{ ucwords(str_replace('-',' ',Request::segment(1))) }}</h5>
                 </div>
                 <div class="col-md-6 text-right">
-                    <h6>{{ ucwords(Request::segment(1)) }} / {{$pageTitle}}</h6>
+                    <h6>{{ ucwords(str_replace('-',' ',Request::segment(1))) }} / {{$pageTitle}}</h6>
                 </div>
             </div>
             <hr class="mt-4">
