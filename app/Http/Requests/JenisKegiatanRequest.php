@@ -25,7 +25,7 @@ class JenisKegiatanRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode' => 'required|max:30|unique:jenis_kegiatan,kode',
+            'kode' => 'required|max:30',
             'jenis_kegiatan' => 'required|max:191',
             'jenis' => 'required',
         ];

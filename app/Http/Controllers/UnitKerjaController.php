@@ -124,17 +124,18 @@ class UnitKerjaController extends Controller
     {
         $data = UnitKerja::findOrFail($id);
 
+        $kodeUnique = $request['kode'] != null && $request['kode'] != $data->kode ? '|unique:unit_kerja,kode' : '';
         $unitUnique = $request['unit_kerja'] != null && $request['unit_kerja'] != $data->unit_kerja ? '|unique:unit_kerja,unit_kerja' : '';
 
         $request = $request->validate(
             [
-                'kode' => 'required|max:30',
+                'kode' => 'required|max:30'.$kodeUnique,
                 'unit_kerja' => 'required|max:191'.$unitUnique,
             ],
             [
             'kode.required' => 'Kode harus diisi.',
             'kode.max' => 'Maksimal jumlah karakter 30.',
-            'kode.unique' => 'Nama telah digunakan.',
+            'kode.unique' => 'Kode telah digunakan.',
             'unit_kerja.required' => 'Unit kerja harus diisi.',
             'unit_kerja.max' => 'Maksimal jumlah karakter 191.'
             ]

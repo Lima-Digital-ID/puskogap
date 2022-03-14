@@ -122,18 +122,19 @@ class JenisKegiatanController extends Controller
     {
         $data = JenisKegiatan::findOrFail($id);
 
-        $unitUnique = $request['jenis_kegiatan'] != null && $request['jenis_kegiatan'] != $data->jenis_kegiatan ? '|unique:jenis_kegiatan,jenis_kegiatan' : '';
+        $kodeUnique = $request['kode'] != null && $request['kode'] != $data->kode ? '|unique:jenis_kegiatan,kode' : '';
+        $kegiatanUnique = $request['jenis_kegiatan'] != null && $request['jenis_kegiatan'] != $data->jenis_kegiatan ? '|unique:jenis_kegiatan,jenis_kegiatan' : '';
 
         $request = $request->validate(
             [
-                'kode' => 'required|max:30',
-                'jenis_kegiatan' => 'required|max:191'.$unitUnique,
+                'kode' => 'required|max:30'.$kodeUnique,
+                'jenis_kegiatan' => 'required|max:191'.$kegiatanUnique,
                 'jenis' => 'required',
             ],
             [
             'kode.required' => 'Kode harus diisi.',
             'kode.max' => 'Maksimal jumlah karakter 30.',
-            'kode.unique' => 'Nama telah digunakan.',
+            'kode.unique' => 'Kode telah digunakan.',
             'jenis_kegiatan.required' => 'Jenis Kegiatan harus diisi.',
             'jenis_kegiatan.max' => 'Maksimal jumlah karakter 191.',
             'jenis.required' => 'Jenis harus diisi.',

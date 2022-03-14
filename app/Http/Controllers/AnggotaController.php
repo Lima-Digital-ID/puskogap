@@ -80,7 +80,7 @@ class AnggotaController extends Controller
      */
     public function store(AnggotaRequest $request)
     {
-        
+
         $validated = $request->validated();
         try {
             $anggota = new Anggota;
@@ -144,7 +144,7 @@ class AnggotaController extends Controller
     public function update(AnggotaRequest $request, $id)
     {
         $anggota = Anggota::findOrFail($id);
-        $namaUnique = $request['name'] != null && $request['name'] != $anggota->nama ? '|unique:anggota,nama' : '';
+        $namaUnique = $request['name'] != $anggota->nama ? '|unique:anggota,nama' : '';
 
         $valid = $request->validate(
             [
@@ -158,7 +158,7 @@ class AnggotaController extends Controller
 
         $validated = $valid;
         // $validated = $request->validated();
-        
+
         try{
             $anggota->nama = $validated['name'];
             $anggota->id_golongan = $request->get('id_golongan');

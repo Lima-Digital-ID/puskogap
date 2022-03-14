@@ -77,9 +77,9 @@ class GolonganController extends Controller
                 'pangkat' => 'required|max:100|unique:golongan,pangkat',
             ],
             [
-                'pangkat.required' => 'Pangkat harus diisi.', 
-                'pangkat.max' => 'Maksimal jumlah karakter 100.', 
-                'pangkat.unique' => 'Nama telah digunakan.', 
+                'pangkat.required' => 'Pangkat harus diisi.',
+                'pangkat.max' => 'Maksimal jumlah karakter 100.',
+                'pangkat.unique' => 'Nama telah digunakan.',
             ]
         );
 
@@ -134,17 +134,17 @@ class GolonganController extends Controller
     public function update(GolonganRequest $request, $id)
     {
         $golongan = Golongan::findOrFail($id);
-        
-        $pangkatUnique = $request['pangkat'] != null && $request['pangkat'] != $golongan->pangkat ? '|unique:golongan,pangkat' : '';
+
+        $pangkatUnique = $request['pangkat'] != $golongan->pangkat ? '|unique:golongan,pangkat' : '';
 
         $request = $request->validate(
             [
                 'pangkat' => 'required|max:100'.$pangkatUnique,
             ],
             [
-                'pangkat.required' => 'Pangkat harus diisi.', 
-                'pangkat.max' => 'Maksimal jumlah karakter 100.', 
-                'pangkat.unique' => 'Nama telah digunakan.', 
+                'pangkat.required' => 'Pangkat harus diisi.',
+                'pangkat.max' => 'Maksimal jumlah karakter 100.',
+                'pangkat.unique' => 'Nama telah digunakan.',
             ]
         );
 
