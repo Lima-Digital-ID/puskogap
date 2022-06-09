@@ -25,7 +25,7 @@ class UnitKerjaRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode' => 'required|max:30|unique:unit_kerja,kode',
+            'kode' => 'required|max:30',
             'unit_kerja' => 'required|max:191',
         ];
     }
