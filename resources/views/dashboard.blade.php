@@ -102,7 +102,7 @@
     @php
     $getPenugasan = \App\Models\Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->from('penugasan as p')->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan');
     if(auth()->user()->level=='Anggota'){
-        $getPenugasan->leftJoin('detail_anggota as da','da.id_penugasan','p.id')
+        $getPenugasan->leftJoin('detail_anggota as da','wp.id','da.id_waktu_penugasan')
         ->where('da.id_anggota', auth()->user()->id_anggota);
     }
     $getPenugasan->where('wp.tanggal',date('Y-m-d'))

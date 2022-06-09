@@ -1,4 +1,4 @@
-<form action="{{ route('penugasan.store') }}" method="POST"  enctype="multipart/form-data">
+<form action="{{ route('penugasan.store') }}" method="POST"  enctype="multipart/form-data" id="form-penugasan">
     @csrf
     <div class="form-group row">
         <div class="col-md-6">
@@ -10,10 +10,10 @@
                 </div>
             @enderror
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" id="col-jenis">
             <label>Jenis Kegiatan</label>
-            <select name="id_jenis_kegiatan" class="select2 form-control" style="width: 100%;" required>
-                <option value="0">Pilih Jenis Kegiatan</option>
+            <select name="id_jenis_kegiatan" class="select2 form-control" style="width: 100%;">
+                <option value="">Pilih Jenis Kegiatan</option>
                 @foreach ($allJen as $jen)
                     <option value="{{ $jen->id }}">{{ $jen->jenis_kegiatan }}</option>
                 @endforeach
@@ -34,7 +34,7 @@
         </div>
         <div class="col-md-6">
             <label>Tamu VVIP</label>
-            <input type="input" name="tamu_vvip" class="form-control @error('tamu_vvip') is-invalid @enderror" placeholder="Nama Tamu VVIP" value="{{old('tamu_vvip')}}">
+            <input type="input" name="tamu_vvip" class="form-control @error('tamu_vvip') is-invalid @enderror" placeholder="Nama Tamu VVIP" value="{{old('tamu_vvvip')}}">
             @error('tamu_vvip')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -101,8 +101,8 @@
         </div>
         <div class="col-md-6">
             <label>Tanggal Kegiatan</label>
-            <div class="input-group">
-                <input type="text" id="pilih-tanggal" class="form-control datepicker-multi" placeholder="Pilih Tanggal Kegiatan" readonly>
+            <div class="input-group input-group-tanggal">
+                <input type="text" id="pilih-tanggal" class="form-control" placeholder="Belum ada tanggal yang dipilih" name="tanggal_kegiatan" readonly>
                 <div class="input-group-append">
                     <button type="button" class="btn btn-success btn-tanggal"><span class="fa fa-calendar"></span> Jadwalkan</button>
                 </div>
@@ -117,8 +117,9 @@
             </div>
             <div class="modal-body">
                 <div class="container custom">
-                    <div id="list-tanggal">
+                    <div id="list-tanggal" class="d-inline">
                     </div>
+                    {{-- <button class="btn btn-success btn-add-tanggal" type="button" onclick="newItemTanggal()"><span class="fa fa-plus"></span></button> --}}
                     <hr>
                 </div>
                 @include('penugasan.input-popup')
@@ -127,8 +128,11 @@
                 <div class="container custom">
                     <div class="row form-group justify-content-end">
                         <div class="col text-right">
-                            <button type="button" class="btn btn-default reset-popup"><i class="fa fa-times"></i> Reset</button>
-                            <button type="button" class="btn btn-success next-popup mr-2"><i class="fa fa-save"></i> Simpan</button>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-default reset-popup"><i class="fa fa-times"></i> Reset</button>
+                                <button type="button" class="btn btn-primary" onclick="save(true)"><i class="fa fa-save"></i> Simpan dan Tambah Tanggal Baru</button>
+                                <button type="button" class="btn btn-success" onclick="save()"><i class="fa fa-save"></i> Simpan</button>
+                            </div>
                         </div>
                     </div>
                 </div>

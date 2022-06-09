@@ -87,7 +87,7 @@
               $.ajax({
                   type : 'get',
                   data : paramData,
-                  url : "{{url('penugasan/detail')}}",
+                  url : "{{ url('penugasan/detail')}}",
                   dataType : 'json',
                   beforeSend : function(){
                         $(".content-detail").empty()
@@ -100,7 +100,6 @@
                         $("#status").removeClass("badge-danger")
                         $("#place-detail").empty()
                         $("#place-detail").append('Loading....')
-
                   },
                   success : function(res){
                     //   $("#modalDetail .modal-body").empty()

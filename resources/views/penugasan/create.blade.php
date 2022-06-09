@@ -10,6 +10,40 @@
 @endsection
 @push('custom-script')
     <script>
+        $("#form-penugasan").submit(function(e){
+            e.preventDefault()
+            var action = $(this).attr('action')
+            var formData = $(this).serialize()
+
+            $(".text-error").remove()
+            $.ajax({
+                type : 'post',
+                data : formData,
+                url : action,
+                success : function(res) {
+                },
+                error : function(err) {
+                    $(".loading").removeClass('show')
+                    $.each(err.responseJSON.errors,function(i,v) {
+                        var after 
+                        if(i=='tanggal_kegiatan'){
+                            after = ".input-group-tanggal"
+                        }
+                        else if(i=='id_jenis_kegiatan'){
+                            after = "#col-jenis .select2-container"
+                        }
+                        else{
+                            after = "[name='"+i+"']"
+                        }
+                        $("<small class='text-error'>"+v+"</small>").insertAfter(after)
+                        // console.log(i)
+                    })
+                }
+            })
+
+        })
+
+
         function funcBtnTanggal(thisParam){
             var index = $(thisParam).closest('.loop-tanggal').attr('data-index')
             nextButton(index)
@@ -20,8 +54,6 @@
                 $("#modalTanggal").modal('hide')
             }
             else{
-                $(".loop-tanggal.active a").removeClass('btn-success')
-                $(".loop-tanggal.active a").addClass('btn-default')
 
                 $(".loop-tanggal.active").removeClass('active')
                 $(".input-penugasan-popup.active").removeClass('active')
@@ -30,8 +62,6 @@
                 $(".input-penugasan-popup[data-index='"+destinationIndex+"']").addClass('active')
 
                 $(".loop-tanggal[data-index='"+destinationIndex+"'] a").removeClass('disabled')
-                $(".loop-tanggal[data-index='"+destinationIndex+"'] a").removeClass('btn-default')
-                $(".loop-tanggal[data-index='"+destinationIndex+"'] a").addClass('btn-success')
                 $(".loop-tanggal[data-index='"+destinationIndex+"'] a").attr('onclick','funcBtnTanggal(this)')
             }
         }
@@ -96,20 +126,28 @@
                     var id_kompetensi_khusus = $(parent+" #id_kompetensi_khusus").val()
                     var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai,id_jabatan : id_jabatan, id_unit_kerja : id_unit_kerja, id_kompetensi_khusus : id_kompetensi_khusus} 
                 }
-                $.ajax({
-                    type: "GET",
-                    data : dataSend,
-                    url:"{{ url('penugasan/get-anggota') }}",
-                    dataType : "json",
-                    beforeSend : function(){
-                        $(parent+" .loop-anggota-free").prepend('<p>Loading....</p>')
-                        $(parent+" .loop-anggota-bertugas").prepend('<p>Loading....</p>')
-                    },
-                    success : function(response){
-                        appendAnggotaFree(parent,response.free);
-                        appendAnggotaNotFree(parent,response.tugas);
-                    } 
-                })
+                if(tanggal==""){
+                    $(parent+" .loop-anggota-free").prepend('<p class="error" style="color:red">Pilih Tanggal Terlebih Dahulu</p>')
+                    $(parent+" .loop-anggota-bertugas").prepend('<p  class="error" style="color:red">Pilih Tanggal Terlebih Dahulu</p>')
+                }
+                else{
+                    $(parent+" .loop-anggota-bertugas .error").remove()
+                    $(parent+" .loop-anggota-free .error").remove()
+                    $.ajax({
+                        type: "GET",
+                        data : dataSend,
+                        url:"{{ url('penugasan/get-anggota') }}",
+                        dataType : "json",
+                        beforeSend : function(){
+                            $(parent+" .loop-anggota-free").prepend('<p>Loading....</p>')
+                            $(parent+" .loop-anggota-bertugas").prepend('<p>Loading....</p>')
+                        },
+                        success : function(response){
+                            appendAnggotaFree(parent,response.free);
+                            appendAnggotaNotFree(parent,response.tugas);
+                        } 
+                    })
+                }
             }
             $('.datepicker-multi').datepicker({
                 format: 'yyyy-mm-dd',
@@ -118,48 +156,80 @@
                 todayHighlight: true,
             });
 
+            function newItemTanggal(first=false) {
+
+                var index = first ? 0 : parseInt($(".loop-tanggal:last-child").attr('data-index')) + 1 
+                $(".loop-tanggal").removeClass('active')
+                $(".loop-tanggal[data-index='"+index+"']").addClass('active')
+
+                var hapus = ""
+                if(index!=0){
+                    hapus = `<a onclick="removeTanggal(${index})" class="dropdown-item btn-pointer remove-tanggal">Hapus</a>`;
+                }
+
+                $("#list-tanggal").append(`
+                    <div class='loop-tanggal active mb-2' data-index='${index}'>
+                        <div class="input-group">
+                            <input type='text' placeholder="Masukkan Tanggal" class="form-control hidden_tanggal datepicker btn-pointer" onchange="ajaxAmbilAnggota()" name='tanggal[]' readonly>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item btn-pointer" onclick="changeActiveTanggal(${index})">Detail</a>
+                                    ${hapus}
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                `)
+                $(".input-penugasan-popup").removeClass('active')
+
+                if(index!=0){
+                    $(".input-penugasan-popup[data-index='0']").clone().appendTo('.modal-body')
+                    
+                    $(".input-penugasan-popup:last-child").attr('data-index',index)
+                    $(".input-penugasan-popup[data-index='"+index+"'] input, .input-penugasan-popup[data-index='"+index+"'] select").val('')
+                    
+                    $(".input-penugasan-popup:last-child .select2-container").remove()
+
+
+                    $(".input-penugasan-popup:last-child .loop-anggota-free").empty()
+                    $(".input-penugasan-popup:last-child #error-anggota").remove()
+                    $(".input-penugasan-popup:last-child input").removeClass("is-invalid")
+                    $(".input-penugasan-popup:last-child .error").remove()
+                }
+                $(".input-penugasan-popup[data-index='"+index+"']").addClass('active')
+
+                $(".select2").select2()
+                $(".datepicker").datepicker()
+            }
+
+            function changeActiveTanggal(index) {
+                $(".loop-tanggal").removeClass('active')
+                $(".loop-tanggal[data-index='"+index+"']").addClass('active')
+
+                $(".input-penugasan-popup").removeClass('active')
+                $(".input-penugasan-popup[data-index='"+index+"']").addClass('active')
+            }
+
+            function updateTanggalInputValue() {
+                var tanggal = $(".hidden")
+            }
+
             $(".btn-tanggal").click(function(e){
                 e.preventDefault()
                 var valueTanggal = $("#pilih-tanggal").val()
-                if(valueTanggal==''){
-                    $("#pilih-tanggal").addClass("is-invalid")
-                    $("#pilih-tanggal").closest('.col-md-6').append(`
-                    <small style="color:red">
-                        Pilih Tanggal Terlebih Dahulu
-                    </small>
-                    `)
-                }
-                else{
                     $("#pilih-tanggal").removeClass("is-invalid")
                     $("#pilih-tanggal small").remove()
                     $("#modalTanggal").modal('show')
                     $("#modalTanggal").off()
-                    var tanggal = valueTanggal.split(',')
-                    $.each(tanggal,function(i,v){
-                        var tgl = moment(v).format('DD MMMM')
-                        var classBtn = i==0 ? 'success' : 'default disabled';
-                        var classLoop = i==0 ? 'active' : ''
-                        var nextButton = i==0 ? "onclick='funcBtnTanggal(this)'" : ''
 
-                        $("#list-tanggal").append(`
-                            <div class='loop-tanggal ${classLoop}' data-index='${i}'>
-                                <a class="btn-pointer btn btn-${classBtn} mr-2" ${nextButton}>${tgl} <span class="fa fa-times ml-4 remove-tanggal" onclick="removeTanggal(${i})"></span> </a>
-                                <input type='hidden' class="hidden_tanggal" name='tanggal[]' value='${v}'>
-                            </div>
-                        `)
-                        if(i==0){
-                            $(".input-penugasan-popup").addClass('active')
-                        }
-                        else{
-                            $(".input-penugasan-popup[data-index='0']").clone().appendTo('.modal-body')
-                            $(".input-penugasan-popup:last-child").attr('data-index',i)
-                            $(".input-penugasan-popup:last-child").removeClass('active')
+                    if($(".loop-tanggal").length==0){
+                        newItemTanggal(true)
 
-                            $(".input-penugasan-popup:last-child .select2-container").remove()
-                        }
-                    })
-                    $(".select2").select2()
-                }
+                        $(".select2").select2()
+                        $(".datepicker").datepicker()
+                    }
             })
             function removeTanggal(index){
                 swal({
@@ -172,23 +242,14 @@
                     closeOnConfirm: false,
                 },
                     function() {
-                        var tanggal = $(".loop-tanggal[data-index='"+index+"'] .hidden_tanggal").val()
                         $(".loop-tanggal[data-index='"+index+"']").remove()
                         $(".input-penugasan-popup[data-index='"+index+"']").remove()
 
-                        var inputTanggal = $("#pilih-tanggal").val().split(',')
-
-                        $.each(inputTanggal,function(i,v){
-                            if(v==tanggal){
-                                inputTanggal.splice(i,1)
-                                return false
-                            }
-                        })                
-                        $("#pilih-tanggal").val(inputTanggal.join())
                         var numOfTanggal = parseInt($(".loop-tanggal").length)-1
                         var nextIndex = index-1
                         var destinationIndex = nextIndex>numOfTanggal ? 0 : nextIndex
-                        nextButton(destinationIndex)
+                        changeActiveTanggal(destinationIndex)
+
                         swal.close();
                     }
                 );
@@ -219,13 +280,14 @@
                 $(".loop-anggota-free").empty()
                 $(".loop-anggota-bertugas").empty()
             })
-            $(".next-popup").click(function(){
+
+            function save(addNew=false) {
                 var parent = ".input-penugasan-popup.active";
                 var countCheck = $(parent+' .check-free:checked').length
                 var input = $(parent+" input:not(.check-free)");
                 var nextInput = 0
                 if(countCheck==0 && $(parent+" .card-free .card-body #error-anggota").length==0){
-                    $(parent+" .card-free .card-body").append("<small style='color:red' id='error-anggota'>Pilih Minimal 1 Anggota</small>")
+                    $(parent+" .card-free .card-body").append("<small class='error' style='color:red' id='error-anggota'>Pilih Minimal 1 Anggota</small>")
                 }
                 else{
                     $(parent+" .card-free .card-body #error-anggota").remove()
@@ -237,10 +299,10 @@
                         if(!$(this).hasClass('hidden_ketua') && !$(this).hasClass('is-invalid')){
                             $(this).addClass('is-invalid')
                             var label = $(this).prev('label').html()
-                            $(this).closest('.col-md-6').append("<small style='color:red'>"+label+" Harap Diisi</small>")
+                            $(this).closest('.col-md-6').append("<small class='error' style='color:red'>"+label+" Harap Diisi</small>")
                         }
                         else if($(parent+" .card-free .card-body #error-ketua").length==0 && $(parent+" .card-free .card-body #error-anggota").length==0){
-                            $(parent+" .card-free .card-body").append("<small style='color:red' id='error-ketua'>Pilih Ketua</small>")
+                            $(parent+" .card-free .card-body").append("<small class='error' style='color:red' id='error-ketua'>Pilih Ketua</small>")
                         }
                         // return false
                     }
@@ -254,12 +316,19 @@
                         }
                     }
                 })
+                
 
                 if(nextInput==0 && countCheck!=0){
-                    var indexActive = $(".loop-tanggal.active").attr('data-index')
-                    var nextIndexActive = parseInt(indexActive)+1
-                    nextButton(nextIndexActive)
+                    if(addNew){
+                        newItemTanggal()
+                    }
+                    else{
+                        var indexActive = $(".loop-tanggal.active").attr('data-index')
+                        var nextIndexActive = parseInt(indexActive)+1
+                        nextButton(nextIndexActive)
+                    }
                 }
-            })
+            }
+
     </script>
 @endpush

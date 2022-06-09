@@ -27,6 +27,12 @@
 
 </head>
 <body>
+    <div class="loading">
+        <div class="info">
+          <img src="{{asset('gif/loading.gif')}}" alt="">
+          <p>Loading...</p>
+        </div>
+    </div>
     <div class="container custom">
         <nav class="navbar navbar-expand-lg py-3 navbar-light mt-4">
             <div class="container custom">
@@ -169,6 +175,9 @@
             );
             console.log('bisa');
         })  
+    $("form").submit(function() {
+        $(".loading").addClass('show')
+    })
 </script>
 @stack('custom-script')
 </body>

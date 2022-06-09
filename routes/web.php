@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('penugasan')->group(function () {
         Route::resource('master-penugasan', PenugasanController::class);
         Route::get('jadwal', [PenugasanController::class, 'jadwal']);
+        Route::get('detail', [PenugasanController::class, 'detail']);
         Route::get('get-anggota', [PenugasanController::class, 'getAnggota']);
         Route::get('cek-anggota', [PenugasanController::class, 'CekAnggota']);
         Route::get('filter-anggota-free', [PenugasanController::class, 'filterAnggotaFree']);

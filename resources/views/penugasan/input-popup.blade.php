@@ -74,7 +74,7 @@
             <div class="col-md-6">
                 <div class="card card-free">
                     <div class="card-header btn-rgb-primary">
-                        <h6 class="mb-0">Anggota Bertugas</h6>
+                        <h6 class="mb-0">Anggota Tidak Bertugas</h6>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -117,7 +117,7 @@
             <div class="col-md-6">
                 <div class="card card-bertugas" style="height:100%">
                     <div class="card-header btn-rgb-success">
-                        <h6 class="mb-0">Anggota Bertugas</h6>
+                        <h6 class="mb-0">Anggota Sedang Bertugas</h6>
                     </div>
                     <div class="card-body">
                         <div class="loop-anggota-bertugas"></div>
