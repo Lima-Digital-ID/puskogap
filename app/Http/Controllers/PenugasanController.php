@@ -28,7 +28,7 @@ class PenugasanController extends Controller
         $this->param['parentMenu'] = '/penugasan';
         $this->param['current'] = 'Penugasan';
     }
-    
+
     /**
     * Display a listing of the resource.
     *
@@ -47,7 +47,7 @@ class PenugasanController extends Controller
             $getPenugasan = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->from('penugasan as p')->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan');
             if(auth()->user()->level=='Anggota'){
                 $getPenugasan->leftJoin('detail_anggota as da','wp.id','da.id_waktu_penugasan')
-                ->where('da.id_anggota', auth()->user()->id_anggota);                    
+                ->where('da.id_anggota', auth()->user()->id_anggota);
             }
             $getPenugasan->groupBy('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan')
             ->orderBy('p.id');
@@ -81,7 +81,7 @@ class PenugasanController extends Controller
         $this->param['jabatan'] = Jabatan::get();
         $this->param['kompetensi'] = KompetensiKhusus::get();
         $this->param['unitkerja'] = UnitKerja::get();
-        
+
         $this->param['allJen'] = JenisKegiatan::get();
         $this->param['pageTitle'] = 'Tambah Penugasan';
 
@@ -151,15 +151,15 @@ class PenugasanController extends Controller
         if(isset($_GET['id_jabatan'])){
             $filter = [];
             if($_GET['id_jabatan']!=''){
-                $filter['id_jabatan'] = $_GET['id_jabatan'];                
+                $filter['id_jabatan'] = $_GET['id_jabatan'];
             }
             if($_GET['id_unit_kerja']!=''){
-                $filter['id_unit_kerja'] = $_GET['id_unit_kerja'];                
+                $filter['id_unit_kerja'] = $_GET['id_unit_kerja'];
             }
             if($_GET['id_kompetensi_khusus']!=''){
-                $filter['id_kompetensi_khusus'] = $_GET['id_kompetensi_khusus'];                
+                $filter['id_kompetensi_khusus'] = $_GET['id_kompetensi_khusus'];
             }
-            
+
         }
         else{
             $filter = "";
@@ -186,7 +186,7 @@ class PenugasanController extends Controller
     public function store(PenugasanRequest $request, Request $input)
     {
         $validated = $request->validated();
-        // DB::beginTransaction();        
+        // DB::beginTransaction();
         // try {
         //     $arrUser = $request->input('id_user');
 
@@ -249,7 +249,7 @@ class PenugasanController extends Controller
         //         }
         //     }
 
-        //     for ($i=0; $i < count($arrUser); $i++) { 
+        //     for ($i=0; $i < count($arrUser); $i++) {
         //         DB::table('detail_anggota')->insert(
         //             array(
         //                 'id_penugasan' => $penugasan->id,
@@ -272,20 +272,20 @@ class PenugasanController extends Controller
         //                     'id_user' => $value,
         //                     'status' => 'Anggota'
         //                     )
-        //             );   
+        //             );
         //         }
         //     }
-        //     DB::commit();  
+        //     DB::commit();
         //     $scanLampiran->move($uploadPath,$newScanLampiran);
         //     /* Send Whatsapp Message */
         //     $message = "Jangan lupa saksikan acara ".$request->nama_kegiatan." pada ".$validated['waktu_mulai']." hingga ".$validated['waktu_selesai']." bertempatan di ".$validated['lokasi'].".";
-        //     for ($i=0; $i < count($arrUser); $i++) { 
+        //     for ($i=0; $i < count($arrUser); $i++) {
         //         $user = User::find($arrUser[$i]);
         //         if($user && isset($user->phone)) {
         //             $response = Http::post($this->whatsapp_api_url, [
         //                 'number' => $user->phone,
         //                 'message' => $message,
-        //             ]);        
+        //             ]);
         //             return $response;
         //         }
         //     }
@@ -293,10 +293,10 @@ class PenugasanController extends Controller
 
         //     return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
         // } catch (Exception $e) {
-        //     DB::rollback();            
+        //     DB::rollback();
         //     return back()->withError('Terjadi kesalahan.'. $e);
         // } catch (QueryException $e) {
-        //     DB::rollback();            
+        //     DB::rollback();
         //     return back()->withError('Terjadi kesalahan pada database.'.$e);
         // }
     }
@@ -403,5 +403,10 @@ class PenugasanController extends Controller
         }
         $data['detail'] = $arr;
         echo json_encode($data);
+    }
+
+    public function baganPenugasan()
+    {
+        return \view('penugasan.bagan');
     }
 }

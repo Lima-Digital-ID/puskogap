@@ -13,6 +13,7 @@ use \App\Models\Golongan;
 use \App\Models\Jabatan;
 use \App\Models\KompetensiKhusus;
 use App\Models\UnitKerja;
+use Illuminate\Support\Facades\DB;
 
 class AnggotaController extends Controller
 {
@@ -38,7 +39,6 @@ class AnggotaController extends Controller
         try {
             $keyword = $request->get('keyword');
             $getAnggota = Anggota::orderBy('id');
-            // ddd($getAnggota);
 
             if ($keyword) {
                 $getAnggota->where('anggota', 'LIKE', "%{$keyword}%");
@@ -169,13 +169,19 @@ class AnggotaController extends Controller
             $anggota->nama = $validated['name'];
             $anggota->id_golongan = $request->get('id_golongan');
             $anggota->id_jabatan = $request->get('id_jabatan');
-            $anggota->id_kompetensi_khusus = $request->get('id_kompetensi_khusus');
             $anggota->id_unit_kerja = $request->get('id_unit_kerja');
             $anggota->jenis_pegawai = $request->get('jenis_pegawai');
             $anggota->jenis_kelamin = $request->get('jenis_kelamin');
             $anggota->phone = $request->get('phone');
             $anggota->nip = $request->get('nip');
             $anggota->save();
+            foreach ($request->get('id_kompetensi_khusus') as $key => $value) {
+                $kompetensi = [
+                    'id_kompetensi' => $value
+                ];
+                DB::table('detail_kompetensi_anggotas')->where('id_anggota', $anggota->id)
+                ->update($kompetensi);
+            }
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.' . $e->getMessage());
         } catch (QueryException $e) {
