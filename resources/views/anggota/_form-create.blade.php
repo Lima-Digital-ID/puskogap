@@ -44,7 +44,7 @@
         </div>
         <div class="col-md-6">
             <label>Kompetensi Khusus</label>
-            <select name="id_kompetensi_khusus" id="id_kompetensi_khusus" class="select2 form-control" style="width: 100%;" required>
+            <select name="id_kompetensi_khusus[]" id="id_kompetensi_khusus" class="select2 form-control" style="width: 100%;" multiple="multiple" required>
                 <option value="">Pilih Kompetensi Khusus</option>
                 @foreach ($allKhs as $khs)
                     <option value="{{ $khs->id }}" {{ old('id_kompetensi_khusus') == $khs->id ? ' selected' : '' }}>{{ $khs->kompetensi_khusus }}</option>

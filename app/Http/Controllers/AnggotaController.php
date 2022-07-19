@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AnggotaRequest;
 use App\Models\Anggota;
+use App\Models\DetailKompetensiAnggota;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -87,13 +88,18 @@ class AnggotaController extends Controller
             $anggota->nama = $validated['name'];
             $anggota->id_golongan = $request->get('id_golongan');
             $anggota->id_jabatan = $request->get('id_jabatan');
-            $anggota->id_kompetensi_khusus = $request->get('id_kompetensi_khusus');
             $anggota->id_unit_kerja = $request->get('id_unit_kerja');
             $anggota->jenis_pegawai = $request->get('jenis_pegawai');
             $anggota->jenis_kelamin = $request->get('jenis_kelamin');
             $anggota->phone = $request->get('phone');
             $anggota->nip = $request->get('nip');
             $anggota->save();
+            foreach ($request->get('id_kompetensi_khusus') as $key => $value) {
+                $kompetensi = new DetailKompetensiAnggota;
+                $kompetensi->id_anggota = $anggota->id;
+                $kompetensi->id_kompetensi = $value;
+                $kompetensi->save();
+            }
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.' . $e->getMessage());
         } catch (QueryException $e) {
