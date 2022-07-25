@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Anggota;
 use App\Models\Penugasan;
 use App\Models\WaktuPenugasan;
+use App\Models\DetailAnggota;
 use App\Models\JenisKegiatan;
 use \App\Models\Jabatan;
 use \App\Models\KompetensiKhusus;
@@ -114,6 +115,11 @@ class PenugasanController extends Controller
     }
     public function anggotaFree($tanggal,$dari,$sampai,$filter="")
     {
+        if(isset($filter['id_kompetensi_khusus'])){
+            $komptensi = $filter['id_kompetensi_khusus'];
+            unset($filter['id_kompetensi_khusus']);
+        }
+
         $anggotaFree = Anggota::from('anggota as a')
                             ->select(
                                 'a.id',
@@ -122,6 +128,14 @@ class PenugasanController extends Controller
                             // ->where('level','Anggota');
                             if($filter!=""){
                                 $anggotaFree = $anggotaFree->where($filter);
+                            }
+                            if(isset($komptensi) && $komptensi!=''){
+                                $anggotaFree = $anggotaFree->whereIn('a.id',function($query) use($komptensi){
+                                    $query->select('id_anggota')
+                                            ->from('detail_kompetensi_anggotas')
+                                            ->where('id_kompetensi',$komptensi)
+                                            ->get();
+                                });
                             }
                             $anggotaFree = $anggotaFree->whereNotIn('a.id',function($query) use ($tanggal,$dari,$sampai) {
                                 $query->select('da.id_anggota')
@@ -159,7 +173,6 @@ class PenugasanController extends Controller
             if($_GET['id_kompetensi_khusus']!=''){
                 $filter['id_kompetensi_khusus'] = $_GET['id_kompetensi_khusus'];
             }
-
         }
         else{
             $filter = "";
@@ -183,122 +196,82 @@ class PenugasanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PenugasanRequest $request, Request $input)
+    public function store(PenugasanRequest $request)
     {
         $validated = $request->validated();
-        // DB::beginTransaction();
-        // try {
-        //     $arrUser = $request->input('id_user');
+        DB::beginTransaction();
+        try {
+            $penugasan = new Penugasan;
 
-        //     $penugasan = new Penugasan();
+            $uploadPath = 'upload/lampiran/';
+            $scanLampiran = $validated['lampiran'];
+            $newScanLampiran = time().'_'.$scanLampiran->getClientOriginalName();
 
-        //     $uploadPath = 'upload/lampiran/';
-        //     $scanLampiran = $validated['lampiran'];
-        //     $newScanLampiran = time().'_'.$scanLampiran->getClientOriginalName();
+            $penugasan->nama_kegiatan = $validated['nama_kegiatan'];
+            $penugasan->id_jenis_kegiatan = $validated['id_jenis_kegiatan'];
+            $penugasan->lokasi = $validated['lokasi'];
+            $penugasan->tamu_vvip = $validated['tamu_vvip'];
+            $penugasan->penyelenggara = $validated['penyelenggara'];
+            $penugasan->penanggung_jawab = $validated['penanggung_jawab'];
+            $penugasan->lampiran = $newScanLampiran;
+            $penugasan->status = $validated['status'];
+            $penugasan->keterangan = $validated['keterangan'];
+            $penugasan->save();
+            
+            foreach ($request->tanggal as $key => $value) {
+                $waktuPenugasan = new WaktuPenugasan;
+                $waktuPenugasan->id_penugasan = $penugasan->id;
+                $waktuPenugasan->tanggal = $request->get('tanggal')[$key];
+                $waktuPenugasan->waktu_mulai = $request->get('waktu_mulai')[$key];
+                $waktuPenugasan->waktu_selesai = $request->get('waktu_selesai')[$key];
+                $waktuPenugasan->biaya = $request->get('biaya')[$key];
+                $waktuPenugasan->jumlah_roda_4 = $request->get('jumlah_roda_4')[$key];
+                $waktuPenugasan->jumlah_roda_2 = $request->get('jumlah_roda_2')[$key];
+                $waktuPenugasan->poc = $request->get('poc')[$key];
+                $waktuPenugasan->jumlah_ht = $request->get('jumlah_ht')[$key];
+                $waktuPenugasan->jumlah_peserta = $request->get('jumlah_peserta')[$key];
+                $waktuPenugasan->save();
+                
+                foreach ($request->get('id_user')[$key] as $i => $v) {
+                    $anggota =  new DetailAnggota;
+                    $anggota->id_anggota = $v;
+                    $anggota->id_waktu_penugasan = $waktuPenugasan->id;
+                    $anggota->status = 'Anggota';
+                    $anggota->save();
+                }
+                
+                $ketua =  new DetailAnggota;
+                $ketua->id_anggota = $request->get('ketua')[$key];
+                $ketua->id_waktu_penugasan = $waktuPenugasan->id;
+                $ketua->status = 'Kepala';
+                $ketua->save();
+            }
 
-        //     $penugasan->nama_kegiatan = $validated['nama_kegiatan'];
-        //     $penugasan->id_jenis_kegiatan = $validated['id_jenis_kegiatan'];
-        //     $penugasan->waktu_mulai = $validated['waktu_mulai'];
-        //     $penugasan->waktu_selesai = $validated['waktu_selesai'];
-        //     $penugasan->lokasi = $validated['lokasi'];
-        //     $penugasan->tamu_vvip = $validated['tamu_vvip'];
-        //     $penugasan->biaya = $validated['biaya'];
-        //     $penugasan->jumlah_roda_4 = $validated['jumlah_roda_4'];
-        //     $penugasan->jumlah_roda_2 = $validated['jumlah_roda_2'];
-        //     $penugasan->poc = $validated['poc'];
-        //     $penugasan->jumlah_ht = $validated['jumlah_ht'];
-        //     $penugasan->penyelenggara = $validated['penyelenggara'];
-        //     $penugasan->jumlah_peserta = $validated['jumlah_peserta'];
-        //     $penugasan->penanggung_jawab = $validated['penanggung_jawab'];
-        //     $penugasan->lampiran = $newScanLampiran;
-        //     $penugasan->status = $validated['status'];
-        //     $penugasan->keterangan = $validated['keterangan'];
-        //     $penugasan->model_penugasan = $validated['model_kegiatan'];
-        //     $penugasan->save();
+            DB::commit();
+            // $scanLampiran->move($uploadPath,$newScanLampiran);
+            /* Send Whatsapp Message */
+            // $message = "Jangan lupa saksikan acara ".$request->nama_kegiatan." pada ".$validated['waktu_mulai']." hingga ".$validated['waktu_selesai']." bertempatan di ".$validated['lokasi'].".";
+            // for ($i=0; $i < count($arrUser); $i++) {
+            //     $user = User::find($arrUser[$i]);
+            //     if($user && isset($user->phone)) {
+            //         $response = Http::post($this->whatsapp_api_url, [
+            //             'number' => $user->phone,
+            //             'message' => $message,
+            //         ]);
+            //         return $response;
+            //     }
+            // }
+            /* End Send Whatsapp Message */
 
-        //     if($validated['model_kegiatan']=='1'){
-        //         DB::table('waktu_penugasan')->insert([
-        //             'id_penugasan' => $penugasan->id,
-        //             'is_dari' => $validated['tanggal_mulai'],
-        //             'is_sampai' => $validated['tanggal_selesai'],
-        //             'is_tanggal' => 0,
-        //             'is_hari' => 0,
-        //             ]);
-        //         }
-        //     else if($validated['model_kegiatan']=='2'){
-        //         foreach($validated['is_mingguan'] as $key => $value){
-        //             DB::table('waktu_penugasan')->insert([
-        //                 'id_penugasan' => $penugasan->id,
-        //                 'is_hari' => $value,
-        //                 'is_dari' =>'0000-00-00 00:00',
-        //                 'is_sampai' => '0000-00-00 00:00',
-        //                 'is_tanggal' => 0,
-        //                 ]);
-        //             }
-        //     }
-        //     else if($validated['model_kegiatan']=='3'){
-        //         $ex = explode(',',$validated['is_tanggal']);
-        //         foreach ($ex as $key => $value) {
-        //             DB::table('waktu_penugasan')->insert([
-        //                 'id_penugasan' => $penugasan->id,
-        //                 'is_tanggal' => $value,
-        //                 'is_hari' => 0,
-        //                 'is_dari' =>'0000-00-00 00:00',
-        //                 'is_sampai' => '0000-00-00 00:00',
-        //             ]);
-        //         }
-        //     }
+            return response()->json(['type' => 'success','msg' => 'Data Berhasil Disimpan']);
 
-        //     for ($i=0; $i < count($arrUser); $i++) {
-        //         DB::table('detail_anggota')->insert(
-        //             array(
-        //                 'id_penugasan' => $penugasan->id,
-        //                 'id_user' => $arrUser[$i],
-        //                 'status' => 'Anggota'
-        //             )
-        //         );
-        //     }
-        //     DB::table('detail_anggota',[
-        //         'id_penugasan' => $penugasan->id,
-        //         'id_user' => $input->input('ketua'),
-        //         'status' => "Kepala",
-        //     ]);
-        //     foreach($input->input('id_user') as $key => $value)
-        //     {
-        //         if($value!=$input->input('ketua')){
-        //             DB::table('detail_anggota')->insert(
-        //                 array(
-        //                     'id_penugasan' => $penugasan->id,
-        //                     'id_user' => $value,
-        //                     'status' => 'Anggota'
-        //                     )
-        //             );
-        //         }
-        //     }
-        //     DB::commit();
-        //     $scanLampiran->move($uploadPath,$newScanLampiran);
-        //     /* Send Whatsapp Message */
-        //     $message = "Jangan lupa saksikan acara ".$request->nama_kegiatan." pada ".$validated['waktu_mulai']." hingga ".$validated['waktu_selesai']." bertempatan di ".$validated['lokasi'].".";
-        //     for ($i=0; $i < count($arrUser); $i++) {
-        //         $user = User::find($arrUser[$i]);
-        //         if($user && isset($user->phone)) {
-        //             $response = Http::post($this->whatsapp_api_url, [
-        //                 'number' => $user->phone,
-        //                 'message' => $message,
-        //             ]);
-        //             return $response;
-        //         }
-        //     }
-        //     /* End Send Whatsapp Message */
-
-        //     return redirect()->route('penugasan.index')->withStatus('Data berhasil disimpan.');
-        // } catch (Exception $e) {
-        //     DB::rollback();
-        //     return back()->withError('Terjadi kesalahan.'. $e);
-        // } catch (QueryException $e) {
-        //     DB::rollback();
-        //     return back()->withError('Terjadi kesalahan pada database.'.$e);
-        // }
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['type' => 'error','msg' => 'Terjadi kesalahan.'. $e]);
+        } catch (QueryException $e) {
+            DB::rollback();
+            return response()->json(['type' => 'error','msg' => 'Terjadi kesalahan pada database.'.$e]);
+        }
     }
 
     /**

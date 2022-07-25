@@ -47,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('filter-anggota-free', [PenugasanController::class, 'filterAnggotaFree']);
         Route::post('send-whatsapp', [PenugasanController::class, 'sendWhatsapp'])->name('penugasan.send-wa');
     });
-    Route::resource('penugasan', PenugasanController::class);
     Route::prefix('rekap')->group(function(){
         Route::get('rekap-penugasan', [RekapController::class, 'rekapPenugasan']);
         Route::get('penugasan-anggota', [RekapController::class, 'penugasanAnggota']);
@@ -60,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::resource('data-master/user', UserController::class);
     Route::resource('data-master/anggota', AnggotaController::class);
+    Route::resource('penugasan', PenugasanController::class);
 });
 
 require __DIR__.'/auth.php';

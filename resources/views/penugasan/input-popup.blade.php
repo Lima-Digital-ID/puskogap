@@ -2,7 +2,7 @@
     <div class="row form-group">
         <div class="col-md-6">
             <label>Biaya</label>
-            <input type="number" name="biaya" class="form-control @error('biaya') is-invalid @enderror" placeholder="Jumlah Biaya" value="{{old('biaya')}}">
+            <input type="number" name="biaya[]" class="form-control @error('biaya') is-invalid @enderror" placeholder="Jumlah Biaya" value="{{old('biaya')}}">
             @error('biaya')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -11,7 +11,7 @@
         </div>
         <div class="col-md-6">
             <label>Jumlah Roda 4</label>
-            <input type="number" name="jumlah_roda_4" class="form-control @error('jumlah_roda_4') is-invalid @enderror" placeholder="Jumlah Roda 4" value="{{old('jumlah_roda_4')}}">
+            <input type="number" name="jumlah_roda_4[]" class="form-control @error('jumlah_roda_4') is-invalid @enderror" placeholder="Jumlah Roda 4" value="{{old('jumlah_roda_4')}}">
             @error('jumlah_roda_4')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -22,7 +22,7 @@
     <div class="row form-group">
         <div class="col-md-6">
             <label>Jumlah Roda 2</label>
-            <input type="number" name="jumlah_roda_2" class="form-control @error('jumlah_roda_2') is-invalid @enderror" placeholder="Jumlah Roda 2" value="{{old('jumlah_roda_2')}}">
+            <input type="number" name="jumlah_roda_2[]" class="form-control @error('jumlah_roda_2') is-invalid @enderror" placeholder="Jumlah Roda 2" value="{{old('jumlah_roda_2')}}">
             @error('jumlah_roda_2')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -31,7 +31,7 @@
         </div>
         <div class="col-md-6">
             <label>Jumlah POC</label>
-            <input type="number" name="poc" class="form-control @error('poc') is-invalid @enderror" placeholder="Jumlah POC" value="{{old('poc')}}">
+            <input type="number" name="poc[]" class="form-control @error('poc') is-invalid @enderror" placeholder="Jumlah POC" value="{{old('poc')}}">
             @error('poc')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -42,7 +42,7 @@
     <div class="row form-group">
         <div class="col-md-6">
             <label>Jumlah HT</label>
-            <input type="number" name="jumlah_ht" class="form-control @error('jumlah_ht') is-invalid @enderror" placeholder="Jumlah HT" value="{{old('jumlah_ht')}}">
+            <input type="number" name="jumlah_ht[]" class="form-control @error('jumlah_ht') is-invalid @enderror" placeholder="Jumlah HT" value="{{old('jumlah_ht')}}">
             @error('jumlah_ht')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -51,7 +51,7 @@
         </div>
         <div class="col-md-6">
             <label>Jumlah Peserta</label>
-            <input type="number" name="jumlah_peserta" class="form-control @error('jumlah_peserta') is-invalid @enderror" placeholder="Jumlah Peserta" value="{{old('jumlah_peserta')}}">
+            <input type="number" name="jumlah_peserta[]" class="form-control @error('jumlah_peserta') is-invalid @enderror" placeholder="Jumlah Peserta" value="{{old('jumlah_peserta')}}">
             @error('jumlah_peserta')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -62,11 +62,11 @@
     <div class="form-group row">
         <div class="col-md-6">
             <label>Waktu Mulai</label>
-            <input type="time" class="form-control waktu-mulai" onchange="getAnggota()">
+            <input type="time" name="waktu_mulai[]" class="form-control waktu-mulai" onchange="getAnggota()">
         </div>
         <div class="col-md-6">
             <label>Waktu Selesai</label>
-            <input type="time" class="form-control  waktu-sampai" onchange="getAnggota()">
+            <input type="time" name="waktu_selesai[]" class="form-control  waktu-sampai" onchange="getAnggota()">
         </div>
     </div>
     <div class="form-group">
@@ -110,7 +110,7 @@
                         <button class="btn btn-rgb-primary" onclick="filterAnggota(event)" id="btn-filter"><span class="fa fa-filter"></span> Filter</button>
                         <hr>
                         <div class="loop-anggota-free"></div>
-                        <input type="hidden" name="ketua" class="hidden_ketua">
+                        <input type="hidden" name="ketua[]" class="hidden_ketua">
                     </div>
                 </div>
             </div>

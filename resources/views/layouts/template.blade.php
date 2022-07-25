@@ -173,7 +173,6 @@
                     $("#delete-penugasan").submit()
                 }
             );
-            console.log('bisa');
         })  
     $("form").submit(function() {
         $(".loading").addClass('show')

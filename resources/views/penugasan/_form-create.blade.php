@@ -66,7 +66,7 @@
     <div class="row form-group">
         <div class="col-md-6">
             <label>Lampiran</label>
-            <input type="file" name="lampiran" class="form-control @error('lampiran') is-invalid @enderror" placeholder="Lampiran" value="{{old('lampiran')}}">
+            <input type="file" id="lampiran" name="lampiran" class="form-control @error('lampiran') is-invalid @enderror" placeholder="Lampiran" value="{{old('lampiran')}}">
             @error('penanggung_jawab')
                 <div class="invalid-feedback">
                     {{ $message }}
