@@ -85,6 +85,9 @@ class PenugasanController extends Controller
 
         $this->param['allJen'] = JenisKegiatan::get();
         $this->param['pageTitle'] = 'Tambah Penugasan';
+        $this->param['selectedAnggota'] = [];
+        $this->param['selectedKetua'] = [];
+
 
         return \view('penugasan.create', $this->param);
     }
@@ -113,7 +116,7 @@ class PenugasanController extends Controller
             break;
         }
     }
-    public function anggotaFree($tanggal,$dari,$sampai,$filter="")
+    public function anggotaFree($tanggal,$dari,$sampai,$filter="",$id_penugasan)
     {
         if(isset($filter['id_kompetensi_khusus'])){
             $komptensi = $filter['id_kompetensi_khusus'];
@@ -137,25 +140,28 @@ class PenugasanController extends Controller
                                             ->get();
                                 });
                             }
-                            $anggotaFree = $anggotaFree->whereNotIn('a.id',function($query) use ($tanggal,$dari,$sampai) {
+                            $anggotaFree = $anggotaFree->whereNotIn('a.id',function($query) use ($tanggal,$dari,$sampai,$id_penugasan) {
+                                $wherePenugasan = $id_penugasan!="" ? "p.id != '$id_penugasan' and " : '';
                                 $query->select('da.id_anggota')
                                         ->from('detail_anggota as da')
                                         ->join('waktu_penugasan as wp','da.id_waktu_penugasan','wp.id')
                                         ->join('penugasan as p', 'wp.id_penugasan', 'p.id')
-                                        ->whereRaw("(p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")->get();
+                                        ->whereRaw("$wherePenugasan (p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")->get();
                             });
         $anggotaFree = $anggotaFree->get();
         return $anggotaFree;
     }
 
-    public function anggotaNotFree($tanggal,$dari,$sampai)
+    public function anggotaNotFree($tanggal,$dari,$sampai,$id_penugasan)
     {
+        $wherePenugasan = $id_penugasan!="" ? "p.id != '$id_penugasan' and " : '';
+
         $anggotaNotFree = \DB::table('detail_anggota as da')->select('a.id','a.nama','p.nama_kegiatan')
                                         ->join('anggota as a', 'da.id_anggota', 'a.id')
                                         ->join('waktu_penugasan as wp','da.id_waktu_penugasan','wp.id')
                                         ->join('penugasan as p', 'wp.id_penugasan', 'p.id')
                                         // ->where('a.level','Anggota')
-                                        ->whereRaw("(p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")
+                                        ->whereRaw("$wherePenugasan da.status = 'Anggota' and (p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")
                                         ->get();
         return $anggotaNotFree;
     }
@@ -178,8 +184,8 @@ class PenugasanController extends Controller
             $filter = "";
         }
         $data = array(
-            'free' => $this->anggotaFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$filter),
-            'tugas' => $this->anggotaNotFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'])
+            'free' => $this->anggotaFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$filter,$_GET['id_penugasan']),
+            'tugas' => $this->anggotaNotFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$_GET['id_penugasan'])
         );
         echo json_encode($data);
     }
@@ -248,7 +254,7 @@ class PenugasanController extends Controller
             }
 
             DB::commit();
-            // $scanLampiran->move($uploadPath,$newScanLampiran);
+            $scanLampiran->move($uploadPath,$newScanLampiran);
             /* Send Whatsapp Message */
             // $message = "Jangan lupa saksikan acara ".$request->nama_kegiatan." pada ".$validated['waktu_mulai']." hingga ".$validated['waktu_selesai']." bertempatan di ".$validated['lokasi'].".";
             // for ($i=0; $i < count($arrUser); $i++) {
@@ -273,6 +279,10 @@ class PenugasanController extends Controller
             return response()->json(['type' => 'error','msg' => 'Terjadi kesalahan pada database.'.$e]);
         }
     }
+    public function lampiran($id)
+    {
+        $penugasan = Penugasan::findOrFail($id);
+    }
 
     /**
      * Display the specified resource.
@@ -293,7 +303,39 @@ class PenugasanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->param['jabatan'] = Jabatan::get();
+        $this->param['kompetensi'] = KompetensiKhusus::get();
+        $this->param['unitkerja'] = UnitKerja::get();
+
+        $this->param['allJen'] = JenisKegiatan::get();
+        $this->param['pageTitle'] = 'Edit Penugasan';
+        $this->param['penugasan'] = Penugasan::findOrFail($id);
+        $this->param['waktu_penugasan'] = WaktuPenugasan::with('detailAnggota')->with('detailAnggota.anggota')->where('id_penugasan',$id)->get()->toArray();
+        $this->param['selectedTanggal'] = "";
+        $this->param['tanggal'] = [];
+        $this->param['count'] = count($this->param['waktu_penugasan']);
+        $this->param['selectedAnggota'] = [];
+        $this->param['selectedKetua'] = [];
+        foreach ($this->param['waktu_penugasan'] as $key => $value) {
+            $separator = ($key+1) != $this->param['count'] ? ', ' : '';
+            $this->param['selectedTanggal'].=$value['tanggal'].$separator;
+            array_push($this->param['tanggal'],$value['tanggal']);
+            $anggota = [];
+            foreach ($value['detail_anggota'] as $i => $v) {
+                if($v['status']=='Anggota'){
+                    array_push($anggota,$v['anggota']['id']);
+                }else{
+                    array_push($this->param['selectedKetua'],$v['anggota']['id']);
+                }
+            }
+            array_push($this->param['selectedAnggota'],$anggota);
+        }
+
+        // echo "<pre>";
+        // print_r($this->param['selectedKetua']);
+        // echo "<pre>";
+
+        return \view('penugasan.edit', $this->param);
     }
 
     /**

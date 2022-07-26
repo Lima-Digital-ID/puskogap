@@ -28,6 +28,12 @@ class Anggota extends Model
         return $this->belongsTo('\App\Models\KompetensiKhusus', 'id_kompetensi_khusus')->withDefault(['kompetensi_khusus' => '-']);
     }
 
+    public function detailAnggota()
+    {
+        return $this->hasOne('\App\Models\DetailAnggota', 'id_anggota');
+    }
+
+
     use HasFactory;
     protected $table = 'anggota';
 }

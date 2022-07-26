@@ -9,4 +9,10 @@ class WaktuPenugasan extends Model
 {
     use HasFactory;
     protected $table = 'waktu_penugasan';
+
+    public function detailAnggota()
+    {
+        return $this->hasMany('\App\Models\DetailAnggota', 'id_waktu_penugasan');
+    }
+
 }
