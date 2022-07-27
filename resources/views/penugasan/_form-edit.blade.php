@@ -1,4 +1,5 @@
-<form action="{{ route('penugasan.store') }}" method="POST"  enctype="multipart/form-data" id="form-penugasan">
+<form action="{{ route('penugasan.update', $penugasan->id) }}" method="POST"  enctype="multipart/form-data" id="form-penugasan">
+    @method('put')
     @csrf
     <div class="form-group row">
         <div class="col-md-6">
@@ -161,6 +162,7 @@
         </div>
     </div>
     <br>
+    <div id="deleted_id"></div>
     <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-save"></i> Simpan</button>
     <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Reset</button>
 </form>

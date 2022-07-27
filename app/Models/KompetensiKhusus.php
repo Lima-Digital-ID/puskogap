@@ -9,4 +9,10 @@ class KompetensiKhusus extends Model
 {
     use HasFactory;
     protected $table = 'kompetensi_khusus';
+
+    public function detailKompetensiAnggota()
+    {
+        return $this->hasOne('\App\Models\DetailKompetensiAnggota', 'id_kompetensi');
+    }
+
 }

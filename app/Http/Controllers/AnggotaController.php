@@ -38,7 +38,7 @@ class AnggotaController extends Controller
 
         try {
             $keyword = $request->get('keyword');
-            $getAnggota = Anggota::orderBy('id');
+            $getAnggota = Anggota::with('detailKompetensiAnggota')->with('detailKompetensiAnggota.kompetensi')->orderBy('id');
 
             if ($keyword) {
                 $getAnggota->where('anggota', 'LIKE', "%{$keyword}%");
@@ -51,7 +51,7 @@ class AnggotaController extends Controller
         catch (Exception $e) {
             return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
         }
-
+        
         return \view('anggota.index', $this->param);
     }
 
@@ -134,6 +134,11 @@ class AnggotaController extends Controller
         $this->param['allJab'] = Jabatan::get();
         $this->param['allKhs'] = KompetensiKhusus::get();
         $this->param['allUnt'] = UnitKerja::get();
+        $getKompetensiAnggota = DetailKompetensiAnggota::where('id_anggota',$id)->get();
+        $this->param['kompetensiAnggota'] = [];
+        foreach ($getKompetensiAnggota as $key => $value) {
+            array_push($this->param['kompetensiAnggota'],$value->id_kompetensi);
+        }
         $this->param['btnText'] = 'List Anggota';
         $this->param['btnLink'] = route('anggota.index');
 
@@ -175,12 +180,13 @@ class AnggotaController extends Controller
             $anggota->phone = $request->get('phone');
             $anggota->nip = $request->get('nip');
             $anggota->save();
+            DetailKompetensiAnggota::where('id_anggota',$id)->delete();
             foreach ($request->get('id_kompetensi_khusus') as $key => $value) {
-                $kompetensi = [
-                    'id_kompetensi' => $value
-                ];
-                DB::table('detail_kompetensi_anggotas')->where('id_anggota', $anggota->id)
-                ->update($kompetensi);
+                $kompetensi = new DetailKompetensiAnggota;
+                $kompetensi->id_anggota = $id;
+                $kompetensi->id_kompetensi = $value;
+                $kompetensi->save();
+
             }
         } catch (Exception $e) {
             return back()->withError('Terjadi kesalahan.' . $e->getMessage());

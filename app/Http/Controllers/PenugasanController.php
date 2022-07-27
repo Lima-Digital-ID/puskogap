@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PenugasanRequest;
+use App\Http\Requests\UpdatePenugasanRequest;
 use App\Models\User;
 use App\Models\Anggota;
 use App\Models\Penugasan;
@@ -116,7 +117,7 @@ class PenugasanController extends Controller
             break;
         }
     }
-    public function anggotaFree($tanggal,$dari,$sampai,$filter="",$id_penugasan)
+    public function anggotaFree($tanggal,$dari,$sampai,$filter="",$id_waktu_penugasan)
     {
         if(isset($filter['id_kompetensi_khusus'])){
             $komptensi = $filter['id_kompetensi_khusus'];
@@ -140,28 +141,28 @@ class PenugasanController extends Controller
                                             ->get();
                                 });
                             }
-                            $anggotaFree = $anggotaFree->whereNotIn('a.id',function($query) use ($tanggal,$dari,$sampai,$id_penugasan) {
-                                $wherePenugasan = $id_penugasan!="" ? "p.id != '$id_penugasan' and " : '';
+                            $anggotaFree = $anggotaFree->whereNotIn('a.id',function($query) use ($tanggal,$dari,$sampai,$id_waktu_penugasan) {
+                                $whereWaktuPenugasan = $id_waktu_penugasan!="" ? "wp.id != '$id_waktu_penugasan' and " : '';
                                 $query->select('da.id_anggota')
                                         ->from('detail_anggota as da')
                                         ->join('waktu_penugasan as wp','da.id_waktu_penugasan','wp.id')
                                         ->join('penugasan as p', 'wp.id_penugasan', 'p.id')
-                                        ->whereRaw("$wherePenugasan (p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")->get();
+                                        ->whereRaw("$whereWaktuPenugasan (p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")->get();
                             });
         $anggotaFree = $anggotaFree->get();
         return $anggotaFree;
     }
 
-    public function anggotaNotFree($tanggal,$dari,$sampai,$id_penugasan)
+    public function anggotaNotFree($tanggal,$dari,$sampai,$id_waktu_penugasan)
     {
-        $wherePenugasan = $id_penugasan!="" ? "p.id != '$id_penugasan' and " : '';
+        $whereWaktuPenugasan = $id_waktu_penugasan!="" ? "wp.id != '$id_waktu_penugasan' and " : '';
 
         $anggotaNotFree = \DB::table('detail_anggota as da')->select('a.id','a.nama','p.nama_kegiatan')
                                         ->join('anggota as a', 'da.id_anggota', 'a.id')
                                         ->join('waktu_penugasan as wp','da.id_waktu_penugasan','wp.id')
                                         ->join('penugasan as p', 'wp.id_penugasan', 'p.id')
                                         // ->where('a.level','Anggota')
-                                        ->whereRaw("$wherePenugasan da.status = 'Anggota' and (p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")
+                                        ->whereRaw("$whereWaktuPenugasan da.status = 'Anggota' and (p.status = 'Rencana' or p.status = 'Pelaksanaan') and ((wp.tanggal = '$tanggal' and (wp.waktu_mulai <= '$dari:59' or wp.waktu_mulai <= '$sampai:59')) and (wp.tanggal = '$tanggal' and (wp.waktu_selesai >= '$dari:59' or wp.waktu_selesai >= '$sampai:59')))")
                                         ->get();
         return $anggotaNotFree;
     }
@@ -183,9 +184,10 @@ class PenugasanController extends Controller
         else{
             $filter = "";
         }
+        $id_waktu_penugasan = isset($_GET['id_waktu_penugasan']) ? $_GET['id_waktu_penugasan'] : '';
         $data = array(
-            'free' => $this->anggotaFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$filter,$_GET['id_penugasan']),
-            'tugas' => $this->anggotaNotFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$_GET['id_penugasan'])
+            'free' => $this->anggotaFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$filter,$id_waktu_penugasan),
+            'tugas' => $this->anggotaNotFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$id_waktu_penugasan)
         );
         echo json_encode($data);
     }
@@ -269,14 +271,14 @@ class PenugasanController extends Controller
             // }
             /* End Send Whatsapp Message */
 
-            return response()->json(['type' => 'success','msg' => 'Data Berhasil Disimpan']);
+            return response()->json(['type' => 'success','title' => 'Penugasan Berhasil','msg' => 'Data Berhasil Disimpan']);
 
         } catch (Exception $e) {
             DB::rollback();
-            return response()->json(['type' => 'error','msg' => 'Terjadi kesalahan.'. $e]);
+            return response()->json(['type' => 'error','title' => 'Penugasan Gagal','msg' => 'Terjadi kesalahan.'. $e]);
         } catch (QueryException $e) {
             DB::rollback();
-            return response()->json(['type' => 'error','msg' => 'Terjadi kesalahan pada database.'.$e]);
+            return response()->json(['type' => 'error','title' => 'Penugasan Gagal', 'msg' => 'Terjadi kesalahan pada database.'.$e]);
         }
     }
     public function lampiran($id)
@@ -345,9 +347,87 @@ class PenugasanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePenugasanRequest $request, $id)
     {
-        //
+        $validated = $request->validated();
+        DB::beginTransaction();
+        try {
+            $penugasan = Penugasan::findOrFail($id);
+            
+            $penugasan->nama_kegiatan = $validated['nama_kegiatan'];
+            $penugasan->id_jenis_kegiatan = $validated['id_jenis_kegiatan'];
+            $penugasan->lokasi = $validated['lokasi'];
+            $penugasan->tamu_vvip = $validated['tamu_vvip'];
+            $penugasan->penyelenggara = $validated['penyelenggara'];
+            $penugasan->penanggung_jawab = $validated['penanggung_jawab'];
+            
+            if($request->hasFile('lampiran')){
+                $uploadPath = 'upload/lampiran/';
+                $scanLampiran = $validated['lampiran'];
+                $newScanLampiran = time().'_'.$scanLampiran->getClientOriginalName();
+                $scanLampiran->move($uploadPath,$newScanLampiran);
+
+                $penugasan->lampiran = $newScanLampiran;
+            }
+
+            $penugasan->status = $validated['status'];
+            $penugasan->keterangan = $validated['keterangan'];
+            $penugasan->save();
+            if($request->deleted_id){
+                foreach ($request->deleted_id as $key => $value) {
+                    DetailAnggota::where('id_waktu_penugasan',$value)->delete();
+                    WaktuPenugasan::where('id',$value)->delete();
+                }
+            }
+            foreach ($request->tanggal as $key => $value) {
+                if($request->get('id_waktu_penugasan')[$key]!=""){
+                    //update
+                    $waktuPenugasan = WaktuPenugasan::findOrFail($request->get('id_waktu_penugasan')[$key]);
+                }
+                else{
+                    $waktuPenugasan = new WaktuPenugasan;
+                    $waktuPenugasan->id_penugasan = $penugasan->id;
+                    //insert
+                }
+                $waktuPenugasan->tanggal = $request->get('tanggal')[$key];
+                $waktuPenugasan->waktu_mulai = $request->get('waktu_mulai')[$key];
+                $waktuPenugasan->waktu_selesai = $request->get('waktu_selesai')[$key];
+                $waktuPenugasan->biaya = $request->get('biaya')[$key];
+                $waktuPenugasan->jumlah_roda_4 = $request->get('jumlah_roda_4')[$key];
+                $waktuPenugasan->jumlah_roda_2 = $request->get('jumlah_roda_2')[$key];
+                $waktuPenugasan->poc = $request->get('poc')[$key];
+                $waktuPenugasan->jumlah_ht = $request->get('jumlah_ht')[$key];
+                $waktuPenugasan->jumlah_peserta = $request->get('jumlah_peserta')[$key];
+                $waktuPenugasan->save();
+
+                DetailAnggota::where('id_waktu_penugasan',$waktuPenugasan->id)->delete();
+                
+                foreach ($request->get('id_user')[$key] as $i => $v) {
+                    $anggota =  new DetailAnggota;
+                    $anggota->id_anggota = $v;
+                    $anggota->id_waktu_penugasan = $waktuPenugasan->id;
+                    $anggota->status = 'Anggota';
+                    $anggota->save();
+                }
+                
+                $ketua =  new DetailAnggota;
+                $ketua->id_anggota = $request->get('ketua')[$key];
+                $ketua->id_waktu_penugasan = $waktuPenugasan->id;
+                $ketua->status = 'Kepala';
+                $ketua->save();
+            }
+
+            DB::commit();
+
+            return response()->json(['type' => 'success','title' => 'Update Penugasan Berhasil','msg' => 'Data Berhasil Disimpan']);
+
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['type' => 'error','title' => 'Update Penugasan Gagal','msg' => 'Terjadi kesalahan.'. $e]);
+        } catch (QueryException $e) {
+            DB::rollback();
+            return response()->json(['type' => 'error','title' => 'Update Penugasan Gagal', 'msg' => 'Terjadi kesalahan pada database.'.$e]);
+        }
     }
 
     /**
@@ -360,8 +440,9 @@ class PenugasanController extends Controller
     {
         try {
             $data = Penugasan::findOrFail($id);
-            $detail = \DB::table('detail_anggota')
-                            ->where('id_penugasan',$data->id);
+            $detail = \DB::table('detail_anggota as da')
+                            ->join('waktu_penugasan as wp','da.id_waktu_penugasan','wp.id')
+                            ->where('wp.id_penugasan',$data->id);
             $waktu = \DB::table('waktu_penugasan')
                     ->where('id_penugasan',$data->id);
             $lampiran = 'upload/lampiran/'.$data->lampiran;
@@ -402,7 +483,7 @@ class PenugasanController extends Controller
     public function detail()
     {
         $id = $_GET['id'];
-        $data['general'] = Penugasan::from('penugasan as p')->select('p.id','p.nama_kegiatan','p.lokasi','j.jenis_kegiatan','p.tamu_vvip','penyelenggara','penanggung_jawab','p.status','p.keterangan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->join('jenis_kegiatan as j','p.id_jenis_kegiatan','j.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan')->where('p.id',$id)->groupBy('p.id','p.nama_kegiatan','p.lokasi','j.jenis_kegiatan','p.tamu_vvip','penyelenggara','penanggung_jawab','p.status','p.keterangan')->first();
+        $data['general'] = Penugasan::from('penugasan as p')->select('p.lampiran','p.id','p.nama_kegiatan','p.lokasi','j.jenis_kegiatan','p.tamu_vvip','penyelenggara','penanggung_jawab','p.status','p.keterangan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->join('jenis_kegiatan as j','p.id_jenis_kegiatan','j.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan')->where('p.id',$id)->groupBy('p.lampiran','p.id','p.nama_kegiatan','p.lokasi','j.jenis_kegiatan','p.tamu_vvip','penyelenggara','penanggung_jawab','p.status','p.keterangan')->first();
 
         $waktuPenugasan = WaktuPenugasan::where('id_penugasan',$id);
         if(isset($_GET['id_waktu_penugasan'])){

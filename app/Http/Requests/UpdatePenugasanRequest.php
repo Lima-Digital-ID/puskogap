@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+
+class UpdatePenugasanRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return Auth::check();
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'nama_kegiatan' => 'required',
+            'id_jenis_kegiatan' => 'required',
+            'lokasi' => 'required',
+            'tamu_vvip' => 'required',
+            'penyelenggara' => 'required',
+            'penanggung_jawab' => 'required',
+            'lampiran' => 'mimes:pdf',
+            'status' => 'required',
+            'keterangan' => 'required',
+            'tanggal_kegiatan' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'nama_kegiatan.required' => 'Nama Kegiatan harus diisi.',
+            'id_jenis_kegiatan.required' => 'Jenis Kegiatan harus diisi.',
+            'lokasi.required' => 'Lokasi harus diisi.',
+            'tamu_vvip.required' => 'Tamu VVIP harus diisi.',
+            'penyelenggara.required' => 'Penyelenggara harus diisi.',
+            'penanggung_jawab.required' => 'Penanggung jawab harus diisi.',
+            'lampiran.mimes' => 'File harus berupa PDF.',
+            'status.required' => 'Status harus diisi.',
+            'keterangan.required' => 'Ketarangan harus diisi.',
+            'tanggal_kegiatan.required' => 'Tanggal Kegiatan harus diisi.',
+        ];
+    }
+}

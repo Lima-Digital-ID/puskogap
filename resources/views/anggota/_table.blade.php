@@ -28,7 +28,14 @@
                     <td>{{ $item->golongan->pangkat }}</td>
                     <td>{{ $item->jabatan->jabatan }}</td>
                     <td>{{ $item->unit_kerja->unit_kerja }}</td>
-                    <td>{{ $item->kompetensi_khusus->kompetensi_khusus }}</td>
+                    <td>
+                        @foreach ($item->detailKompetensiAnggota as $index => $data)
+                            @php
+                                $separator = count((array)$item->detailKompetensiAnggota) != $index+1 ? ', ' : '';
+                            @endphp
+                            {{$data->kompetensi->kompetensi_khusus}}{{$separator}}
+                        @endforeach
+                    </td>
                     <td>{{ $item->jenis_pegawai }}</td>
                     <td>{{ $item->jenis_kelamin }}</td>
                     <td>{{ $item->phone }}</td>

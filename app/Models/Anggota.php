@@ -27,6 +27,10 @@ class Anggota extends Model
     {
         return $this->belongsTo('\App\Models\KompetensiKhusus', 'id_kompetensi_khusus')->withDefault(['kompetensi_khusus' => '-']);
     }
+    public function detailKompetensiAnggota()
+    {
+        return $this->hasMany('\App\Models\DetailKompetensiAnggota', 'id_anggota');
+    }
 
     public function detailAnggota()
     {

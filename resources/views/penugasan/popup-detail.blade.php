@@ -68,6 +68,12 @@
                             <p class="my-0 content-detail" id="keterangan">Keterangan ini</p>
                         </div>
                     </div>
+                    <hr>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <a href="" target="_blank" id="lampiran"><u> Lihat Lampiran</u></a>
+                        </div>
+                    </div>
                     
                 </div>
                 <div class="tab-pane container fade" id="menu1">
@@ -116,6 +122,7 @@
                     $("#tamu-vvip").html(data.tamu_vvip)
                     $("#penyelenggara").html(data.penyelenggara)
                     $("#penanggung-jawab").html(data.penanggung_jawab)
+                    $("#lampiran").attr('href',"{{url('upload/lampiran/')}}/"+data.lampiran)
                     var badgeClass
                     if (data.status=='Rencana'){
                         badgeClass = "badge-info";
@@ -181,15 +188,21 @@
                                     <hr>
                                     <label>Daftar Anggota Bertugas : </label>
                                     <ol style="padding-left:20px" id="anggota${i}">
+                                        <li></li>
                                     </ol>
                                 </div>
                             </div>
                         `)
                         $.each(v.anggota, function(index,val){
-                            var isKetua = val.status=='Ketua' ? '(Ketua)' : '';
-                            $("#anggota"+i).append(`
-                                <li>${val.nama} ${isKetua}</li> 
-                            `)
+                            if(val.status=='Anggota'){
+                                $("#anggota"+i).append(`
+                                    <li data-id="${val.id}">${val.nama}</li> 
+                                `)
+                            }
+                            else{
+                                $("#anggota"+i).find("li[data-id='"+val.id+"']").remove()
+                                $("#anggota"+i+" li:first").html(val.nama+" (Ketua)")
+                            }
                         })
                     })
                   }

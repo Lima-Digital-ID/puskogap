@@ -32,13 +32,13 @@
                 $(".loading").removeClass('show')
                 if(res.type=='error'){
                     swal({
-                        title: "Penugasan Gagal",
+                        title: res.title,
                         text: res.msg,
                         type: "warning",
                     });
                 }else{
                     swal({
-                            title: "Penugasan Berhasil",
+                            title: res.title,
                             text: res.msg,
                             type: "success",
                         },
@@ -87,15 +87,15 @@
             $(".input-penugasan-popup[data-index='"+destinationIndex+"']").addClass('active')
 
             $(".loop-tanggal[data-index='"+destinationIndex+"'] a").removeClass('disabled')
-            $(".loop-tanggal[data-index='"+destinationIndex+"'] a").attr('onclick','funcBtnTanggal(this)')
+            // $(".loop-tanggal[data-index='"+destinationIndex+"'] a").attr('onclick','funcBtnTanggal(this)')
         }
     }
     function appendAnggotaFree(parent,res){
         $(parent+" .loop-anggota-free").empty()
         var indexActive = $(parent).attr('data-index');
         $.each(res,function(key,val){
-            var checked = $(parent+" .id_waktu_penugasan").length==1 && selectedAnggota[indexActive].includes(val.id) ? 'checked' : ''
-            var isKetua = $(parent+" .id_waktu_penugasan").length==1 && selectedKetua[indexActive] == val.id ? 'selected-ketua' : ''
+            var checked = $(parent+" .id_waktu_penugasan").length==1 && $(parent+" .id_waktu_penugasan").val() != '' && selectedAnggota[indexActive].includes(val.id) ? 'checked' : ''
+            var isKetua = $(parent+" .id_waktu_penugasan").length==1 && $(parent+" .id_waktu_penugasan").val() != '' && selectedKetua[indexActive] == val.id ? 'selected-ketua' : ''
             $(parent+" .loop-anggota-free").append(`
                 <div class="select-anggota ${checked} ${isKetua} mb-2">
                     <label class='check-anggota' for="free${indexActive}${key}">
@@ -107,29 +107,47 @@
             `);
         })
         $(".check-anggota").click(function(){
-            var dataFor = $(this).attr('for')
-            var parentDiv = $(this).closest('.select-anggota');
-
-            if($("#"+dataFor).is(":checked")){
-                $(parentDiv).addClass("checked")
-            }
-            else{
-                $(parentDiv).removeClass("checked")
-                $(parentDiv).removeClass("selected-ketua")
-                if($(parent+" .hidden_ketua").val()==$(parent+" .check-free").val()){
-                    $(parent+" .hidden_ketua").val('')
-                }
-                
-            }
-            $(".isKetua").click(function(){
-                var parentDiv = $(this).closest('.select-anggota');
-                $(".input-penugasan-popup.active .select-anggota").removeClass("selected-ketua")
-                $(parentDiv).addClass("selected-ketua")
-                var id_ketua = $(this).data('id')
-                $(parent+" .hidden_ketua").val(id_ketua)
-            })
+            checkAnggota($(this))
         })
+        $(".isKetua").click(function(){
+            isKetua($(this))
+        })
+
     }
+    $(".check-anggota").click(function(){
+        checkAnggota($(this))
+    })
+    $(".isKetua").click(function(){
+        isKetua($(this))
+    })
+
+    function checkAnggota(thisParam) {
+        var parent =".input-penugasan-popup.active";
+        var dataFor = thisParam.attr('for')
+        var parentDiv = thisParam.closest('.select-anggota');
+
+        if($("#"+dataFor).is(":checked")){
+            $(parentDiv).addClass("checked")
+        }
+        else{
+            $(parentDiv).removeClass("checked")
+            $(parentDiv).removeClass("selected-ketua")
+            if($(parent+" .hidden_ketua").val()==$("#"+dataFor).val()){
+                $(parent+" .hidden_ketua").val('')
+            }
+            
+        }
+    }
+
+    function isKetua(thisParam) {
+        var parent =".input-penugasan-popup.active";
+        var parentDiv = thisParam.closest('.select-anggota');
+        $(parent+" .select-anggota").removeClass("selected-ketua")
+        $(parentDiv).addClass("selected-ketua")
+        var id_ketua = thisParam.data('id')
+        $(parent+" .hidden_ketua").val(id_ketua)
+    }
+
     function appendAnggotaNotFree(parent,res){
         $(parent+" .loop-anggota-bertugas").empty()
         $.each(res,function(key,val){
@@ -147,9 +165,9 @@
         var parent =".input-penugasan-popup.active";
         var dari = $(parent+" .waktu-mulai").val()
         var sampai = $(parent+" .waktu-sampai").val()
-        var id_penugasan = $("#id_penugasan").length==1 ? $("#id_penugasan").val() : '' 
-        var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai,id_penugasan:id_penugasan} 
-        if($(parent+" .id_waktu_penugasan").length==0){
+        var id_waktu_penugasan = $(parent+" .id_waktu_penugasan").length==1 ? $(parent+" .id_waktu_penugasan").val() : '' 
+        var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai,id_waktu_penugasan:id_waktu_penugasan} 
+        if($(parent+" .id_waktu_penugasan").length==0 && $(parent+" .id_waktu_penugasan").val() != ''){
             $(parent+" .hidden_ketua").val('')
         }
 
@@ -157,7 +175,7 @@
             var id_jabatan = $(parent+" #id_jabatan").val()
             var id_unit_kerja = $(parent+" #id_unit_kerja").val()
             var id_kompetensi_khusus = $(parent+" #id_kompetensi_khusus").val()
-            var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai,id_jabatan : id_jabatan, id_unit_kerja : id_unit_kerja, id_kompetensi_khusus : id_kompetensi_khusus,id_penugasan:id_penugasan} 
+            var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai,id_jabatan : id_jabatan, id_unit_kerja : id_unit_kerja, id_kompetensi_khusus : id_kompetensi_khusus,id_waktu_penugasan:id_waktu_penugasan} 
         }
         if(tanggal==""){
             $(parent+" .loop-anggota-free").prepend('<p class="error" style="color:red">Pilih Tanggal Terlebih Dahulu</p>')
@@ -289,6 +307,9 @@
             closeOnConfirm: false,
         },
             function() {
+                if($(".input-penugasan-popup[data-index='"+index+"'] .id_waktu_penugasan").length==1 && $(".input-penugasan-popup[data-index='"+index+"'] .id_waktu_penugasan").val() != ''){
+                    $("#deleted_id").append(`<input type='hidden' name='deleted_id[]' value='${$(".input-penugasan-popup[data-index='"+index+"'] .id_waktu_penugasan").val()}'>`)
+                }
                 $(".loop-tanggal[data-index='"+index+"']").remove()
                 $(".input-penugasan-popup[data-index='"+index+"']").remove()
 
@@ -341,7 +362,7 @@
         }
 
         $.each(input,function(i,v){
-            if(v.value==''){
+            if(v.value=='' && v.classList != 'id_waktu_penugasan'){
                 nextInput++
                 if(!$(this).hasClass('hidden_ketua') && !$(this).hasClass('is-invalid')){
                     $(this).addClass('is-invalid')
@@ -377,7 +398,6 @@
         else{
             $(parent+" .card-free .card-body #error-ketua").remove()
         }
-
         if(theresKetua && nextInput==0 && countCheck!=0){
             if(addNew){
                 newItemTanggal()
