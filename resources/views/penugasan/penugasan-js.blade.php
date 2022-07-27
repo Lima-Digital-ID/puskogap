@@ -175,7 +175,8 @@
             var id_jabatan = $(parent+" #id_jabatan").val()
             var id_unit_kerja = $(parent+" #id_unit_kerja").val()
             var id_kompetensi_khusus = $(parent+" #id_kompetensi_khusus").val()
-            var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai,id_jabatan : id_jabatan, id_unit_kerja : id_unit_kerja, id_kompetensi_khusus : id_kompetensi_khusus,id_waktu_penugasan:id_waktu_penugasan} 
+            var terakhir_bertugas = $(parent+" #terakhir_bertugas").val()
+            var dataSend = {tanggal : tanggal, dari :dari, sampai : sampai,id_jabatan : id_jabatan, id_unit_kerja : id_unit_kerja, id_kompetensi_khusus : id_kompetensi_khusus,id_waktu_penugasan:id_waktu_penugasan,terakhir_bertugas:terakhir_bertugas} 
         }
         if(tanggal==""){
             $(parent+" .loop-anggota-free").prepend('<p class="error" style="color:red">Pilih Tanggal Terlebih Dahulu</p>')

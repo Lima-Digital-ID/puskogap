@@ -14,10 +14,12 @@ class RekapController extends Controller
             $param['data'] = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))
             ->from('penugasan as p')
             ->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')
-            ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')->whereBetween('wp.tanggal', [$request->get('dari'),$request->get('sampai')])
+            ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
+            ->whereBetween('wp.tanggal', [$request->get('dari'),$request->get('sampai')])
             ->groupBy('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan')
-            ->orderBy('p.id')            
+            ->orderBy('p.id')
             ->paginate(10);
+
         }
 
         return view('penugasan/rekap-penugasan',$param);
@@ -31,8 +33,9 @@ class RekapController extends Controller
                                 ->join('anggota as a','a.id','da.id_anggota')                    
                                 ->select('a.nama', 'a.nip', \DB::raw('COUNT(da.id_anggota) as total'))
                                 ->groupBy('a.nama','a.nip')
+                                ->where('da.status','Anggota')
                                 ->whereBetween('da.created_at', [$request->get('dari')." 00:00:00", $request->get('sampai')." 23:59:59"])
-                                ->orderBy('total', 'desc')     
+                                ->orderBy('total', 'desc')
                                 ->get();
         }
         return view('penugasan/rekap-anggota',$param);

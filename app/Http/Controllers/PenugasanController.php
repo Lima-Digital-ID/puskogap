@@ -46,7 +46,10 @@ class PenugasanController extends Controller
             $keyword = $request->get('keyword');
             $status = $request->get('status');
             // $getPenugasan = Penugasan::with('jenis_kegiatan')->orderBy('id');
-            $getPenugasan = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))->from('penugasan as p')->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')->join('waktu_penugasan as wp','p.id','wp.id_penugasan');
+            $getPenugasan = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))
+            ->from('penugasan as p')
+            ->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')
+            ->join('waktu_penugasan as wp','p.id','wp.id_penugasan');
             if(auth()->user()->level=='Anggota'){
                 $getPenugasan->leftJoin('detail_anggota as da','wp.id','da.id_waktu_penugasan')
                 ->where('da.id_anggota', auth()->user()->id_anggota);
@@ -184,10 +187,13 @@ class PenugasanController extends Controller
         else{
             $filter = "";
         }
+
+        $tanggal = isset($_GET['terakhir_bertugas']) && $_GET['terakhir_bertugas']!=''  ? date('Y-m-d',strtotime($_GET['tanggal']." -".$_GET['terakhir_bertugas']." days")) : $_GET['tanggal'];
+
         $id_waktu_penugasan = isset($_GET['id_waktu_penugasan']) ? $_GET['id_waktu_penugasan'] : '';
         $data = array(
-            'free' => $this->anggotaFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$filter,$id_waktu_penugasan),
-            'tugas' => $this->anggotaNotFree($_GET['tanggal'],$_GET['dari'],$_GET['sampai'],$id_waktu_penugasan)
+            'free' => $this->anggotaFree($tanggal,$_GET['dari'],$_GET['sampai'],$filter,$id_waktu_penugasan),
+            'tugas' => $this->anggotaNotFree($tanggal,$_GET['dari'],$_GET['sampai'],$id_waktu_penugasan)
         );
         echo json_encode($data);
     }

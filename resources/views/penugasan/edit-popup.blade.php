@@ -79,7 +79,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6 mb-3">
                                 <label for=""><b>Jabatan</b></label>
                                 <select id="id_jabatan" class="form-control select2">
                                     <option value="">Semua Jabatan</option>
@@ -88,7 +88,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6 mb-3">
                                 <label for=""><b>Unit Kerja</b></label>
                                 <select id="id_unit_kerja" class="form-control select2">
                                     <option value="">Semua Unit Kerja</option>
@@ -97,13 +97,22 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6 mb-3">
                                 <label for="id_kompetensi_khusus"><b>Kompetensi Khusus</b></label>
                                 <select id="id_kompetensi_khusus" class="form-control select2">
                                     <option value="">Semua Kompetensi Khusus</option>
                                     @foreach ($kompetensi as $data)
                                     <option value="{{$data->id}}">{{$data->kompetensi_khusus}}</option>
                                     @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="font-weight-bold">Terakhir Bertugas</label>
+                                <select id="terakhir_bertugas" class="form-control select2">
+                                    <option value="">---Tidak Ada---</option>
+                                    @for ($i = 1; $i <= 7; $i++)
+                                        <option value="{{$i}}">{{$i}} Hari yang lalu </option>
+                                    @endfor
                                 </select>
                             </div>
                         </div>

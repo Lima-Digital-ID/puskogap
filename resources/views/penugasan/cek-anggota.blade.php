@@ -4,17 +4,26 @@
 
     @include('components.notification')
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label>Tanggal</label>
             <input type="text" name="tanggal" class="form-control datepicker" id="tanggal" value="{{date('Y-m-d')}}">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label>Waktu Mulai</label>
             <input type="time" name="waktu_mulai" value='00:00' class="form-control" id="waktu_mulai">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label>Waktu Selesai</label>
             <input type="time" name="waktu_selesai" value="23:59" class="form-control" id="waktu_selesai">
+        </div>
+        <div class="col-md-3">
+            <label>Terakhir Bertugas</label>
+            <select id="terakhir_bertugas" class="form-control select2">
+                <option value="">---Tidak Ada---</option>
+                @for ($i = 1; $i <= 7; $i++)
+                    <option value="{{$i}}">{{$i}} Hari yang lalu </option>
+                @endfor
+            </select>
         </div>
         <div class="col mt-3">
             <button class="btn btn-primary" id="btn-filter"><span class="fa fa-filter"></span> Lihat Anggota</button>
@@ -51,7 +60,8 @@
             var tanggal = $("#tanggal").val()
             var waktu_mulai = $("#waktu_mulai").val()
             var waktu_selesai = $("#waktu_selesai").val()
-            var dataSend = {tanggal : tanggal, dari :waktu_mulai, sampai : waktu_selesai} 
+            var terakhir_bertugas = $("#terakhir_bertugas").val()
+            var dataSend = {tanggal : tanggal, dari :waktu_mulai, sampai : waktu_selesai, terakhir_bertugas:terakhir_bertugas} 
 
             $.ajax({
                 type: "GET",

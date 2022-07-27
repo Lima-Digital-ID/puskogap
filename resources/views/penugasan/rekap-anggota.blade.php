@@ -54,7 +54,7 @@
                         <td class="text-center text-muted">{{ $no }}</td>
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->nip }}</td>
-                        <td>{{ $item->total }}</td>
+                        <td>{{ $item->total }}x</td>
                     @php
                         $no++;
                     @endphp
