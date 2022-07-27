@@ -64,6 +64,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                       <a class="dropdown-item" href="{{ url('rekap/rekap-penugasan') }}">Rekap Penugasan</a>
                       <a class="dropdown-item" href="{{ url('rekap/penugasan-anggota') }}">Rekap Penugasan Per Anggota</a>
+                      <a class="dropdown-item" href="{{ url('rekap/bagan-penugasan') }}">Bagan Penugasan</a>
                     </div>
                 </li>
                 @if (auth()->user()->level == 'Administrator' || auth()->user()->level == 'Admin' || auth()->user()->level == 'Kasat')

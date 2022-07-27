@@ -1,0 +1,144 @@
+body{
+    font-size:14px
+}
+.container{
+    position:relative;
+    margin-bottom:100px;
+}
+.container:after{
+    content:"";
+    height:100%;
+    width:1px;
+    background:red;
+    position:absolute;
+    left:50%;
+    top:0;
+}
+.bagan-center{
+    width:25%;
+    margin:auto;
+}
+.row-bagan{
+    width:100%;
+    display:flex;
+    padding-top:100px;
+    position:relative;
+}
+.container .row-bagan[data-last='true']::before{
+    content:"";
+    position:absolute;
+    bottom:0;
+    left:50%;
+    height:calc(100% - 86px);
+    width:1px;
+    background:white;
+    z-index:2;
+}
+.col-bagan{
+    width:50%;
+    display:flex;
+    justify-content:space-around;
+    position:relative;
+}
+.block-line{
+    position:absolute;
+    height:5px;
+    background:white;
+    top:-16px;
+    width:50%;
+}
+.col-bagan:first-child .block-line{
+    left:0;
+}
+.col-bagan:last-child .block-line{
+    right:0;
+}
+.col-bagan::before{
+    content:"";
+    height:1px;
+    width:100%;
+    background:red;
+    position:absolute;
+    top:-15px;
+}
+.col-bagan::first-child::before{
+    right:0;
+}
+.col-bagan::last-child::before{
+    left:0;
+}
+.bagan{
+    width:30%;
+    border:1px solid black;
+    text-transform:uppercase;
+    position:relative;
+}
+.bagan::before{
+    content:"";
+    height:15px;
+    width:1px;
+    background:red;
+    position:absolute;
+    left:50%;
+    top:-1px;
+    transform:translateY(-100%);
+    -webkit-transform:translateY(-100%);
+    -o-transform:translateY(-100%);
+    -moz-transform:translateY(-100%);
+}
+.bagan .top{
+    border-bottom:1px solid black;
+    text-align:center;
+    background:#0000ff;
+    color:white;
+    padding:3px;
+}
+.bagan .body .row{
+    display:flex;
+}
+.bagan .body .row .left{
+    padding:3px;
+    border-right:1px solid black;
+    text-align:center;
+    background:#c9daf8;
+    color:black;
+    width:35%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.bagan .body .row .right{
+    padding:3px;
+    width:65%;
+}
+.bagan .body .row:first-child .left{
+    border-bottom:1px solid black;
+}
+.bagan .body .row:first-child .right{
+    border-bottom:1px solid black;
+    background:red;
+}
+.bagan-center{
+    border: 1px solid black;
+    position:relative;
+    z-index:2;
+}
+.bagan-center:not(:first-child){
+    margin-top:30px;
+}
+.bagan-center .content{
+    border-bottom: 1px solid black;
+    text-transform:uppercase;
+    text-align:center;
+    padding:3px;
+    background:#ffc000;
+    color:red;
+}
+.bagan-center .content:nth-child(odd){
+    background:red;
+    color:white;
+}
+.bagan-center .content:last-child{
+    border-bottom: none;
+}
+

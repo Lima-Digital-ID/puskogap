@@ -54,4 +54,26 @@ class RekapController extends Controller
                             ->get();
         echo json_encode($data);
     }
+
+    public function baganPenugasan(Request $request)
+    {
+        $param['pageTitle'] = "Bagan Penugasan";
+        if($request->get('tanggal')){
+            $param['data'] = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))
+            ->from('penugasan as p')
+            ->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')
+            ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
+            ->where('wp.tanggal', $request->get('tanggal'))
+            ->groupBy('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan')
+            ->orderBy('p.id')->get()->toArray();
+            // echo "<pre>";
+            // print_r($param['data']);
+            // echo "</pre>";
+            $param['count'] = count($param['data']);
+            $param['row'] = ceil($param['count']/6);
+            return view('penugasan/bagan-penugasan',$param);
+        }else{
+            return view('penugasan/filter-bagan-penugasan',$param);
+        }
+    }
 }
