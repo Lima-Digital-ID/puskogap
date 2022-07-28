@@ -14,5 +14,8 @@ class Penugasan extends Model
     {
         return $this->belongsTo('\App\Models\JenisKegiatan', 'id_jenis_kegiatan')->withDefault(['jenis_kegiatan' => '-']);
     }
-    
+    public function waktu_penugasan()
+    {
+        return $this->hasMany('\App\Models\WaktuPenugasan', 'id_penugasan');
+    }
 }

@@ -14,5 +14,10 @@ class WaktuPenugasan extends Model
     {
         return $this->hasMany('\App\Models\DetailAnggota', 'id_waktu_penugasan');
     }
+    public function penugasan()
+    {
+        return $this->belongsTo('\App\Models\Penugasan', 'id_penugasan');
+    }
+
 
 }

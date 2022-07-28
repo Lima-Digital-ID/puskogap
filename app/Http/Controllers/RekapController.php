@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Penugasan;
+use App\Models\WaktuPenugasan;
 
 use Illuminate\Http\Request;
 
@@ -59,18 +60,25 @@ class RekapController extends Controller
     {
         $param['pageTitle'] = "Bagan Penugasan";
         if($request->get('tanggal')){
-            $param['data'] = Penugasan::select('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan',\DB::raw("min(wp.tanggal) as tanggal_mulai,max(wp.tanggal) as tanggal_selesai,min(wp.waktu_mulai) as waktu_mulai,max(wp.waktu_selesai) as waktu_selesai"))
-            ->from('penugasan as p')
-            ->join('jenis_kegiatan as jp','p.id_jenis_kegiatan','jp.id')
-            ->join('waktu_penugasan as wp','p.id','wp.id_penugasan')
-            ->where('wp.tanggal', $request->get('tanggal'))
-            ->groupBy('p.id','nama_kegiatan','lokasi','p.status','jp.jenis_kegiatan')
+            $tanggal = $request->tanggal;
+            $param['data'] = Penugasan::from('penugasan as p')
+            ->select('p.id','p.nama_kegiatan')
+            ->with('waktu_penugasan')
+            ->with('waktu_penugasan.detailAnggota')
+            ->with('waktu_penugasan.detailAnggota.anggota')
+            ->join('waktu_penugasan','p.id','waktu_penugasan.id_penugasan')
+            ->where('waktu_penugasan.tanggal', $tanggal)
+            ->groupBy('p.id')
             ->orderBy('p.id')->get()->toArray();
+            $param['waktu_penugasan'] = WaktuPenugasan::with('detailAnggota')->with('penugasan')->with('penugasan.jenis_kegiatan')->where('tanggal',$tanggal)->get()->toArray();
             // echo "<pre>";
-            // print_r($param['data']);
+            // print_r($param['waktu_penugasan']);
             // echo "</pre>";
             $param['count'] = count($param['data']);
             $param['row'] = ceil($param['count']/6);
+            $bulan = array('','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+            $slice = explode('-',$tanggal);
+            $param['text_tanggal'] = $slice[2]." ".$bulan[(int)$slice[1]]." ".$slice[0];
             return view('penugasan/bagan-penugasan',$param);
         }else{
             return view('penugasan/filter-bagan-penugasan',$param);

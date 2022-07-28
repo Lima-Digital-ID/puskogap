@@ -1,9 +1,11 @@
 body{
-    font-size:14px
+    font-size:14px;
+    font-family : 'Calibri';
+    /* width:1920px; */
 }
 .container{
     position:relative;
-    margin-bottom:100px;
+    margin-bottom:50px;
 }
 .container:after{
     content:"";
@@ -39,6 +41,8 @@ body{
     display:flex;
     justify-content:space-around;
     position:relative;
+    align-items:flex-start;
+
 }
 .block-line{
     position:absolute;
@@ -111,7 +115,7 @@ body{
     padding:3px;
     width:65%;
 }
-.bagan .body .row:first-child .left{
+.bagan .body .row .left{
     border-bottom:1px solid black;
 }
 .bagan .body .row:first-child .right{
@@ -131,14 +135,27 @@ body{
     text-transform:uppercase;
     text-align:center;
     padding:3px;
-    background:#ffc000;
-    color:red;
-}
-.bagan-center .content:nth-child(odd){
     background:red;
     color:white;
+}
+.bagan-center .content:nth-child(odd){
+    background:#ffc000;
+    color:red;
 }
 .bagan-center .content:last-child{
     border-bottom: none;
 }
-
+table{
+    width:100%;
+    margin-bottom:100px;
+}
+table thead tr th{
+    color:white;
+}
+table tbody tr td{
+    text-align:center;
+}
+table tbody tr td:first-child{
+    background:#ffc000;
+    font-weight:bold;
+}
