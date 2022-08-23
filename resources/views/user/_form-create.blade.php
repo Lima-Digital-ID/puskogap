@@ -43,10 +43,10 @@
             <select name="level" id="level" class="form-control @error('level') is-invalid @enderror">
                 <option value="">Pilih Level</option>
                 <option value="Administrator" {{ old('level') == 'Administrator' ? ' selected' : '' }}>Administrator</option>
-                <option value="Kasat" {{ old('level') == 'Kasat' ? ' selected' : '' }}>Kasat
+                {{-- <option value="Kasat" {{ old('level') == 'Kasat' ? ' selected' : '' }}>Kasat
                 </option>
                 <option value="Admin" {{ old('level') == 'Admin' ? ' selected' : '' }}>Admin
-                </option>
+                </option> --}}
                 <option value="Anggota" {{ old('level') == 'Anggota' ? ' selected' : '' }}>Anggota
                 </option>
             </select>

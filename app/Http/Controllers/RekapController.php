@@ -31,7 +31,7 @@ class RekapController extends Controller
         $param['pageTitle'] = "Rekap Anggota Penugasan";
         if($request->get('dari')){
             $param['data'] = \DB::table('detail_anggota as da')
-                                ->join('anggota as a','a.id','da.id_anggota')                    
+                                ->join('anggota as a','a.id','da.id_anggota')
                                 ->select('a.nama', 'a.nip', \DB::raw('COUNT(da.id_anggota) as total'))
                                 ->groupBy('a.nama','a.nip')
                                 ->where('da.status','Anggota')
@@ -47,11 +47,11 @@ class RekapController extends Controller
         $dari = $request->get('dari');
         $sampai = $request->get('sampai');
         $data = \DB::table('detail_anggota as da')
-                            ->join('anggota as a','a.id','da.id_anggota')                    
+                            ->join('anggota as a','a.id','da.id_anggota')
                             ->select('a.nama', 'a.nip', \DB::raw('COUNT(da.id_anggota) as total'))
                             ->groupBy('a.nama', 'a.nip')
                             ->whereBetween('da.created_at', [$dari." 00:00:00", $sampai." 23:59:59"])
-                            ->orderBy('total', 'desc')     
+                            ->orderBy('total', 'desc')
                             ->get();
         echo json_encode($data);
     }
@@ -70,7 +70,7 @@ class RekapController extends Controller
             ->where('waktu_penugasan.tanggal', $tanggal)
             ->groupBy('p.id')
             ->orderBy('p.id')->get()->toArray();
-            $param['waktu_penugasan'] = WaktuPenugasan::with('detailAnggota')->with('penugasan')->with('penugasan.jenis_kegiatan')->where('tanggal',$tanggal)->get()->toArray();
+            $param['waktu_penugasan'] = WaktuPenugasan::with('detailAnggota')->with('detailAnggota.anggota')->with('penugasan')->with('penugasan.jenis_kegiatan')->where('tanggal',$tanggal)->get()->toArray();
             // echo "<pre>";
             // print_r($param['waktu_penugasan']);
             // echo "</pre>";
@@ -79,6 +79,7 @@ class RekapController extends Controller
             $bulan = array('','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
             $slice = explode('-',$tanggal);
             $param['text_tanggal'] = $slice[2]." ".$bulan[(int)$slice[1]]." ".$slice[0];
+
             return view('penugasan/bagan-penugasan',$param);
         }else{
             return view('penugasan/filter-bagan-penugasan',$param);

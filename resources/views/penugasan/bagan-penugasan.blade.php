@@ -51,9 +51,11 @@
                                         <div class="row row-anggota">
                                             <div class="left">anggota</div>
                                             <div class="right">
+                                                @php
+                                                    $idKetua = $item['detail_anggota'][count($item['detail_anggota'])-1]['anggota']['id'];
+                                                @endphp
                                                 @for ($n = 0; $n < count($item['detail_anggota'])-1; $n++)
-                                                    {{$item['detail_anggota'][$n]['anggota']['nama']}}
-                                                    <br>
+                                                    <?= $item['detail_anggota'][$n]['anggota']['id'] != $idKetua ? $item['detail_anggota'][$n]['anggota']['nama']."<br>" : ''?>
                                                 @endfor
                                             </div>
                                         </div>
@@ -99,18 +101,18 @@
         <tbody>
             @foreach ($waktu_penugasan as $item)
                 <tr>
-                   <td>{{$loop->iteration}}</td> 
-                   <td>{{date('H:i',strtotime($item['waktu_mulai']))}}</td> 
-                   <td>{{$item['penugasan']['nama_kegiatan']}}</td> 
-                   <td>{{$item['penugasan']['lokasi']}}</td> 
-                   <td>{{$item['penugasan']['tamu_vvip']}}</td> 
-                   <td>{{$item['penugasan']['jenis_kegiatan']['jenis_kegiatan']}}</td> 
-                   <td>{{count($item['detail_anggota']) - 1}}</td> 
-                   <td>Rp {{number_format($item['biaya'],0,',','.')}}</td> 
-                   <td>{{$item['jumlah_roda_4']}}</td> 
-                   <td>{{$item['poc']}}</td> 
-                   <td>{{$item['jumlah_ht']}}</td> 
-                   <td>{{$item['penugasan']['keterangan']}}</td> 
+                   <td>{{$loop->iteration}}</td>
+                   <td>{{date('H:i',strtotime($item['waktu_mulai']))}}</td>
+                   <td>{{$item['penugasan']['nama_kegiatan']}}</td>
+                   <td>{{$item['penugasan']['lokasi']}}</td>
+                   <td>{{$item['penugasan']['tamu_vvip']}}</td>
+                   <td>{{$item['penugasan']['jenis_kegiatan']['jenis_kegiatan']}}</td>
+                   <td>{{count($item['detail_anggota']) - 1}}</td>
+                   <td>Rp {{number_format($item['biaya'],0,',','.')}}</td>
+                   <td>{{$item['jumlah_roda_4']}}</td>
+                   <td>{{$item['poc']}}</td>
+                   <td>{{$item['jumlah_ht']}}</td>
+                   <td>{{$item['penugasan']['keterangan']}}</td>
                 </tr>
             @endforeach
             <tr></tr>

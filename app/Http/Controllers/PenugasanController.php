@@ -231,7 +231,7 @@ class PenugasanController extends Controller
             $penugasan->status = $validated['status'];
             $penugasan->keterangan = $validated['keterangan'];
             $penugasan->save();
-            
+
             foreach ($request->tanggal as $key => $value) {
                 $waktuPenugasan = new WaktuPenugasan;
                 $waktuPenugasan->id_penugasan = $penugasan->id;
@@ -245,7 +245,7 @@ class PenugasanController extends Controller
                 $waktuPenugasan->jumlah_ht = $request->get('jumlah_ht')[$key];
                 $waktuPenugasan->jumlah_peserta = $request->get('jumlah_peserta')[$key];
                 $waktuPenugasan->save();
-                
+
                 foreach ($request->get('id_user')[$key] as $i => $v) {
                     $anggota =  new DetailAnggota;
                     $anggota->id_anggota = $v;
@@ -253,7 +253,7 @@ class PenugasanController extends Controller
                     $anggota->status = 'Anggota';
                     $anggota->save();
                 }
-                
+
                 $ketua =  new DetailAnggota;
                 $ketua->id_anggota = $request->get('ketua')[$key];
                 $ketua->id_waktu_penugasan = $waktuPenugasan->id;
@@ -359,14 +359,14 @@ class PenugasanController extends Controller
         DB::beginTransaction();
         try {
             $penugasan = Penugasan::findOrFail($id);
-            
+
             $penugasan->nama_kegiatan = $validated['nama_kegiatan'];
             $penugasan->id_jenis_kegiatan = $validated['id_jenis_kegiatan'];
             $penugasan->lokasi = $validated['lokasi'];
             $penugasan->tamu_vvip = $validated['tamu_vvip'];
             $penugasan->penyelenggara = $validated['penyelenggara'];
             $penugasan->penanggung_jawab = $validated['penanggung_jawab'];
-            
+
             if($request->hasFile('lampiran')){
                 $uploadPath = 'upload/lampiran/';
                 $scanLampiran = $validated['lampiran'];
@@ -407,7 +407,7 @@ class PenugasanController extends Controller
                 $waktuPenugasan->save();
 
                 DetailAnggota::where('id_waktu_penugasan',$waktuPenugasan->id)->delete();
-                
+
                 foreach ($request->get('id_user')[$key] as $i => $v) {
                     $anggota =  new DetailAnggota;
                     $anggota->id_anggota = $v;
@@ -415,7 +415,7 @@ class PenugasanController extends Controller
                     $anggota->status = 'Anggota';
                     $anggota->save();
                 }
-                
+
                 $ketua =  new DetailAnggota;
                 $ketua->id_anggota = $request->get('ketua')[$key];
                 $ketua->id_waktu_penugasan = $waktuPenugasan->id;
@@ -499,9 +499,15 @@ class PenugasanController extends Controller
 
         $arr = [];
         foreach ($waktuPenugasan as $key => $value) {
-            $anggota = \DB::table('detail_anggota as da')->select('a.nama','da.status')->join('anggota as a','da.id_anggota','a.id')->where('da.id_waktu_penugasan',$value->id)->get();
+            $anggota = \DB::table('detail_anggota as da')->select('a.id','a.nama','da.status')->join('anggota as a','da.id_anggota','a.id')->where('da.id_waktu_penugasan',$value->id)->where('status', 'Anggota')->get();
+
+            $getKetua = \DB::table('detail_anggota as da')->select('a.id')->join('anggota as a','da.id_anggota','a.id')->where('da.id_waktu_penugasan',$value->id)->where('status', 'Kepala')->first();
+
+            $ketua = $getKetua->id;
+
             $arr[$key]['waktu'] = $value;
             $arr[$key]['anggota'] = $anggota;
+            $arr[$key]['ketua'] = $ketua;
         }
         $data['detail'] = $arr;
         echo json_encode($data);

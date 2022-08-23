@@ -11,14 +11,14 @@
             </div>
             <div class="mt-2">
             <div class="btn btn-sm btn-rgb-primary">
-                <span class="fa fa-map-marker-alt"></span> 
+                <span class="fa fa-map-marker-alt"></span>
                 <span class="content-detail" id="lokasi">Gedung Sate Bandung</span>
             </div>
             <div class="btn btn-sm btn-rgb-success">
-                <span class="fa fa-calendar-alt"></span> 
+                <span class="fa fa-calendar-alt"></span>
                 <span>
                     <span class="content-detail" id="dari">27 Jan 2022 20:00 </span>
-                    s/d 
+                    s/d
                     <span class="content-detail" id="sampai">30 Jan 2022 20:00</span>
                 </span>
             </div>
@@ -32,7 +32,7 @@
                   <a class="nav-link" data-toggle="tab" href="#menu1">Jadwal Penugasan</a>
                 </li>
               </ul>
-              
+
               <!-- Tab panes -->
               <div class="tab-content">
                 <div class="tab-pane container active" id="home">
@@ -74,13 +74,13 @@
                             <a href="" target="_blank" id="lampiran"><u> Lihat Lampiran</u></a>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="tab-pane container fade" id="menu1">
                     <div class="row mt-4">
                         <div class="col-md-12" id="place-detail">
                         </div>
-                    </div>                    
+                    </div>
                 </div>
               </div>
         </div>
@@ -147,7 +147,7 @@
                             <div class="card mb-3">
                                 <div class="card-header alert-success font-weight-bold d-flex justify-content-between">
                                     <div>
-                                        <span class="fa fa-calendar-alt mr-2"></span> 
+                                        <span class="fa fa-calendar-alt mr-2"></span>
                                         <span></span>
                                         ${moment(v.waktu.tanggal).format('D MMMM Y')}
                                     </div>
@@ -188,22 +188,25 @@
                                     <hr>
                                     <label>Daftar Anggota Bertugas : </label>
                                     <ol style="padding-left:20px" id="anggota${i}">
-                                        <li></li>
                                     </ol>
                                 </div>
                             </div>
                         `)
                         $.each(v.anggota, function(index,val){
-                            if(val.status=='Anggota'){
+                            var ketua = v.ketua;
+                            var isKetua = ketua == val.id ? ' (Ketua)' : '';
+                            // if(val.status=='Anggota'){
                                 $("#anggota"+i).append(`
-                                    <li data-id="${val.id}">${val.nama}</li> 
+                                    <li data-id="${val.id}">${val.nama} ${isKetua}</li>
                                 `)
-                            }
-                            else{
-                                $("#anggota"+i).find("li[data-id='"+val.id+"']").remove()
-                                $("#anggota"+i+" li:first").html(val.nama+" (Ketua)")
-                            }
+                            // }
+                            // else{
+                            //     $("#anggota"+i).find("li[data-id='"+val.id+"']").remove()
+                            //     $("#anggota"+i+" li:first").html(val.nama+" (Ketua)")
+                            // }
                         })
+                        console.log(v.anggota);
+                        console.log(v.ketua);
                     })
                   }
               })

@@ -34,7 +34,7 @@
         <div class="col-md-6">
             <div class="card card-free">
                 <div class="card-header btn-rgb-primary">
-                    <h6 class="mb-0">Anggota Free</h6>
+                    <h6 class="mb-0">Anggota Tidak Bertugas</h6>
                 </div>
                 <div class="card-body">
                     <div class="loop-anggota-free"></div>
@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 @endsection
 @push('custom-script')
 <script>
@@ -61,7 +61,7 @@
             var waktu_mulai = $("#waktu_mulai").val()
             var waktu_selesai = $("#waktu_selesai").val()
             var terakhir_bertugas = $("#terakhir_bertugas").val()
-            var dataSend = {tanggal : tanggal, dari :waktu_mulai, sampai : waktu_selesai, terakhir_bertugas:terakhir_bertugas} 
+            var dataSend = {tanggal : tanggal, dari :waktu_mulai, sampai : waktu_selesai, terakhir_bertugas:terakhir_bertugas}
 
             $.ajax({
                 type: "GET",
@@ -76,7 +76,7 @@
                     $("#row-anggota").show()
                     appendAnggotaFree(response.free);
                     appendAnggotaNotFree(response.tugas);
-                } 
+                }
             })
         })
         function appendAnggotaFree(res){
